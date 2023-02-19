@@ -1,6 +1,7 @@
 import Device from "./Device";
+import type DeviceAirValveData from "./DeviceAirValveData";
 
 export default class DeviceAirValve extends Device
 {
-    public flow: number|null = null;
+    public data: DeviceAirValveData|null = null;
 }

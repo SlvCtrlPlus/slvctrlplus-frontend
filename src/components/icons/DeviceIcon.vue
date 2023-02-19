@@ -5,9 +5,10 @@
 
 <script setup lang="ts">
 import {computed, defineAsyncComponent} from "vue";
+import type Device from "../../model/Device.js";
 
 interface Props {
-  componentName: string;
+  device: Device;
 }
 
 const props = defineProps<Props>()
@@ -15,11 +16,13 @@ const props = defineProps<Props>()
 const comp = computed<string>(() => {
   let iconComponentName: string;
 
-  switch (props.componentName) {
-    case 'airValve': iconComponentName = 'mdi-fan'; break;
-    case 'et312': iconComponentName = 'mdi-lightning-bolt'; break;
-    case 'strikerMk2': iconComponentName = 'mdi-swap-horizontal'; break;
-    case 'distance': iconComponentName = 'mdi-ruler'; break;
+  const deviceTypeModel = `${props.device.type}${props.device.type === 'generic' ? `-${props.device.deviceModel}` : ''}`;
+
+  switch (deviceTypeModel) {
+    case 'generic-air_valve': iconComponentName = 'mdi-fan'; break;
+    case 'generic-et312': iconComponentName = 'mdi-lightning-bolt'; break;
+    case 'generic-strikerMk2': iconComponentName = 'mdi-swap-horizontal'; break;
+    case 'generic-distance': iconComponentName = 'mdi-ruler'; break;
     default: iconComponentName = 'mdi-robot'; break;
   }
 

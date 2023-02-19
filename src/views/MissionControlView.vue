@@ -18,7 +18,7 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
         <v-col cols="12" xs="12" sm="6" md="4" v-for="device in deviceList" xs4>
           <v-card class="rounded-sm">
             <v-card-title>
-              <DeviceIcon :componentName="device.type" class="icon" />
+              <DeviceIcon :device="device" class="icon" />
               {{ device.deviceName }}
             </v-card-title>
             <v-divider></v-divider>

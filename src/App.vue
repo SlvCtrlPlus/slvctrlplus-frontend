@@ -74,7 +74,7 @@ io.on('deviceRefreshed', device => {
       <v-app-bar-nav-icon color="primary" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title color="logo">SlvCtrl+</v-toolbar-title>
       <v-spacer></v-spacer>
-      <span class="text-grey-darken-3">v0.1.0-alpha</span>
+      <span class="text-grey-darken-3 mr-5">v0.1.0-alpha</span>
     </v-app-bar>
 
     <v-navigation-drawer
