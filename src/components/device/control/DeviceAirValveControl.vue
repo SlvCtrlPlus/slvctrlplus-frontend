@@ -3,6 +3,7 @@ import type DeviceAirValve from "../../../model/DeviceAirValve";
 import { reactive } from "vue";
 import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
 import type { Socket } from "socket.io-client";
+import DeviceCommunicator from "../../../helper/DeviceCommunicator";
 
 interface Props {
   device: DeviceAirValve;
@@ -12,15 +13,10 @@ const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
 const device = reactive<DeviceAirValve>(props.device);
+const deviceComm = new DeviceCommunicator(props.device, io);
 
-const flowChangeHandler = (newFlow: number): void => {
-  props.device.receiveUpdates = false;
-  io.emit("deviceUpdate", {
-    deviceId: props.device.deviceId,
-    data: { flow: newFlow },
-  });
-  setTimeout(() => (props.device.receiveUpdates = true), 500);
-};
+const flowChangeHandler = (newFlow: number): void =>
+  deviceComm.setAttribute("flow", newFlow);
 </script>
 
 <template>
