@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, toRaw } from "vue";
+import { reactive } from "vue";
 import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
 import type { Socket } from "socket.io-client";
 import type DeviceGeneric from "../../../model/DeviceGeneric";
@@ -19,11 +19,7 @@ const deviceComm = new DeviceCommunicator(props.device, io);
 const attributeChangeHandler = (
   attrName: string,
   newValue: string | boolean | number
-): void => {
-  deviceComm.setAttribute(attrName, newValue);
-};
-
-console.log(toRaw(props.device).attributes);
+): void => deviceComm.setAttribute(attrName, newValue);
 </script>
 
 <template>
