@@ -17,18 +17,18 @@ const comp = computed<string>(() => {
 
   if (props.device.type === "generic") {
     switch (props.device.deviceModel) {
-      /*case "air_valve":
+      case "air_valve":
         controlComponent = "DeviceAirValveControl";
-        break;*/
+        break;
       case "et312":
         controlComponent = "DeviceEt312Control";
         break;
-      /*case "strikerMk2":
+      case "strikerMk2":
         controlComponent = "DeviceStrikerMk2Control";
         break;
       case "distance":
         controlComponent = "DeviceDistanceControl";
-        break;*/
+        break;
       default:
         controlComponent = "GenericDeviceControl";
     }
