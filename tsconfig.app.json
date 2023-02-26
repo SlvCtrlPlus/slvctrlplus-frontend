@@ -14,6 +14,8 @@
     "baseUrl": "./slvctrl-plus-frontend",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   }
 }

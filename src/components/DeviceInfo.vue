@@ -39,32 +39,42 @@ function formatFwVersion(fwVersion: string): string {
     <v-card-text class="pa-0">
       <v-list>
         <v-list-item>
-          <v-list-item-title>ID</v-list-item-title>
-          <v-list-item-subtitle
-            v-text="device.deviceId"
-          ></v-list-item-subtitle>
+          <v-list-item-header>
+            <v-list-item-title>ID</v-list-item-title>
+            <v-list-item-subtitle
+              v-text="device.deviceId"
+            ></v-list-item-subtitle>
+          </v-list-item-header>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title>Type</v-list-item-title>
-          <v-list-item-subtitle
-            v-text="deviceTypeModel"
-          ></v-list-item-subtitle>
+          <v-list-item-header>
+            <v-list-item-title>Type</v-list-item-title>
+            <v-list-item-subtitle
+              v-text="deviceTypeModel"
+            ></v-list-item-subtitle>
+          </v-list-item-header>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title>Firmware</v-list-item-title>
-          <v-list-item-subtitle
-            v-text="formatFwVersion(device.fwVersion)"
-          ></v-list-item-subtitle>
+          <v-list-item-header>
+            <v-list-item-title>Firmware</v-list-item-title>
+            <v-list-item-subtitle
+              v-text="formatFwVersion(device.fwVersion)"
+            ></v-list-item-subtitle>
+          </v-list-item-header>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title>Connected since</v-list-item-title>
-          <v-list-item-subtitle
-            v-text="new Date(device.connectedSince).toISOString()"
-          ></v-list-item-subtitle>
+          <v-list-item-header>
+            <v-list-item-title>Connected since</v-list-item-title>
+            <v-list-item-subtitle
+              v-text="new Date(device.connectedSince).toISOString()"
+            ></v-list-item-subtitle>
+          </v-list-item-header>
         </v-list-item>
         <v-list-item>
-          <v-list-item-title>Last refresh</v-list-item-title>
-          <v-list-item-subtitle v-text="lastRefreshed"></v-list-item-subtitle>
+          <v-list-item-header>
+            <v-list-item-title>Last refresh</v-list-item-title>
+            <v-list-item-subtitle v-text="lastRefreshed"></v-list-item-subtitle>
+          </v-list-item-header>
         </v-list-item>
       </v-list>
     </v-card-text>

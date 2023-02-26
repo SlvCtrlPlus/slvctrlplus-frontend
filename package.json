@@ -1,6 +1,7 @@
 {
   "name": "slvctrl-plus-frontend",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "test:unit": "vitest --environment jsdom",
@@ -26,7 +27,9 @@
     "vue-router": "^4.0.14",
     "vue-socket.io": "^3.0.10",
     "vuetify": "npm:@vuetify/nightly@next",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "class-transformer": "^0.5.1",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

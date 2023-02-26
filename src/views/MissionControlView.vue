@@ -2,8 +2,8 @@
 import DeviceIcon from "../components/icons/DeviceIcon.vue";
 import DeviceControl from "../components/device/DeviceControl.vue";
 import LoadingState from "../components/LoadingState.vue";
-import {useDevicesStore} from "../stores/devices.js";
-import {storeToRefs} from "pinia";
+import { useDevicesStore } from "../stores/devices.js";
+import { storeToRefs } from "pinia";
 import EmptyState from "../components/EmptyState.vue";
 
 const devicesStore = useDevicesStore();
@@ -29,14 +29,18 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
         </v-col>
       </v-row>
     </v-container>
-    <EmptyState v-else msg="Currently no connected devices" icon="mdi-emoticon-sad-outline" />
+    <EmptyState
+      v-else
+      msg="Currently no connected devices"
+      icon="mdi-emoticon-sad-outline"
+    />
   </v-container>
-  <LoadingState v-else msg="Getting devices"/>
+  <LoadingState v-else msg="Getting devices" />
 </template>
 
 <style scoped>
-  .icon {
-    width: 1em;
-    margin: 0 0.25em 0 0;
-  }
+.icon {
+  width: 1em;
+  margin: 0 0.25em 0 0;
+}
 </style>
