@@ -75,6 +75,7 @@ const code =
 const { theme } = storeToRefs(settingsStore);
 const options: monaco.editor.IEditorOptions = {
   fontSize: 16,
+  scrollBeyondLastLine: false,
 };
 const refOptions = reactive(options);
 let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
