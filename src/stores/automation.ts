@@ -14,9 +14,9 @@ const defaultCode = `// Write your automation here. The script will fire on devi
 
 export type AutomationState = {
   scripts: AutomationScript[];
-    currentScriptName: string | null;
+  currentScriptName: string | null;
   currentCode: string;
-  scriptRunning: boolean
+  scriptRunning: boolean;
 };
 
 export const useAutomationStore = defineStore({
@@ -24,9 +24,9 @@ export const useAutomationStore = defineStore({
   state: () =>
     ({
       scripts: [],
-        currentScriptName: null,
-        currentCode: defaultCode,
-        scriptRunning: false,
+      currentScriptName: null,
+      currentCode: defaultCode,
+      scriptRunning: false,
     } as AutomationState),
   getters: {
     scriptList: (state) => Object.values(state.scripts),
@@ -34,12 +34,12 @@ export const useAutomationStore = defineStore({
   actions: {
     fetchScripts(): Promise<AutomationScript[]> {
       return fetch(`http://${location.hostname}:1337/automation/scripts`)
-        .then(response => {
-            if (200 !== response.status) {
-                throw new Error(`Could not fetch scripts: ${response.statusText}`)
-            }
+        .then((response) => {
+          if (200 !== response.status) {
+            throw new Error(`Could not fetch scripts: ${response.statusText}`);
+          }
 
-            return response.json()
+          return response.json();
         })
         .then((data) => {
           this.scripts = [];
@@ -48,65 +48,96 @@ export const useAutomationStore = defineStore({
             this.scripts.push(v);
           });
 
-          console.log('List of scripts updated')
+          console.log("List of scripts updated");
 
           return this.scripts;
         });
     },
-      fetchScript(scriptName: string): Promise<string> {
-          this.currentScriptName = scriptName;
+    fetchScript(scriptName: string): Promise<string> {
+      this.currentScriptName = scriptName;
 
-          return fetch(`http://${location.hostname}:1337/automation/scripts/${scriptName}`)
-              .then(response => {
-                  if (200 !== response.status) {
-                      throw new Error(`Could not fetch script ${scriptName}: ${response.statusText}`)
-                  }
+      return fetch(
+        `http://${location.hostname}:1337/automation/scripts/${scriptName}`
+      )
+        .then((response) => {
+          if (200 !== response.status) {
+            throw new Error(
+              `Could not fetch script ${scriptName}: ${response.statusText}`
+            );
+          }
 
-                  return response.text()
-              })
-              .then((data) => {
-                  this.currentCode = data;
-                  console.log(`Script loaded: ${this.currentScriptName}`)
+          return response.text();
+        })
+        .then((data) => {
+          this.currentCode = data;
+          console.log(`Script loaded: ${this.currentScriptName}`);
 
-                  return data;
-              });
-      },
-      saveScript(): Promise<void> {
-          return fetch(`http://${location.hostname}:1337/automation/scripts/${this.currentScriptName}`, {
-              headers: {
-                  "Content-Type": "text/plain",
-              },
-              method: "POST",
-              body: this.currentCode,
-          }).then((response: Response) => {
-              if (201 !== response.status) {
-                  throw new Error(`Could not save script "${this.currentScriptName}": ${response.statusText}`)
-              }
-          })
-      },
-      runScript(): Promise<void> {
-          return fetch(`http://${location.hostname}:1337/automation/run`, {
-              headers: {
-                  "Content-Type": "text/plain",
-              },
-              method: "POST",
-              body: this.currentCode,
-          }).then(response => {
-              if (200 !== response.status) {
-                  throw new Error(`Could not run script: ${response.statusText}`)
-              }
+          return data;
+        });
+    },
+    saveScript(): Promise<void> {
+      return fetch(
+        `http://${location.hostname}:1337/automation/scripts/${this.currentScriptName}`,
+        {
+          headers: {
+            "Content-Type": "text/plain",
+          },
+          method: "POST",
+          body: this.currentCode,
+        }
+      ).then((response: Response) => {
+        if (201 !== response.status) {
+          throw new Error(
+            `Could not save script "${this.currentScriptName}": ${response.statusText}`
+          );
+        }
+      });
+    },
+    deleteScript(scriptName: string): Promise<void> {
+      return fetch(
+        `http://${location.hostname}:1337/automation/scripts/${scriptName}`,
+        {
+          headers: {
+            "Content-Type": "text/plain",
+          },
+          method: "DELETE",
+        }
+      ).then((response: Response) => {
+        if (204 !== response.status) {
+          throw new Error(
+            `Could not delete script "${this.currentScriptName}": ${response.statusText}`
+          );
+        }
+      });
+    },
+    runScript(): Promise<void> {
+      return fetch(`http://${location.hostname}:1337/automation/run`, {
+        headers: {
+          "Content-Type": "text/plain",
+        },
+        method: "POST",
+        body: this.currentCode,
+      }).then((response) => {
+        if (200 !== response.status) {
+          throw new Error(`Could not run script: ${response.statusText}`);
+        }
 
-              this.scriptRunning = true;
-          });
-      },
-      stopScript(): Promise<void> {
-          return fetch(`http://${location.hostname}:1337/automation/stop`).then(response => {
-              if (200 !== response.status) {
-                  throw new Error(`Could not stop script: ${response.statusText}`)
-              }
+        this.scriptRunning = true;
+      });
+    },
+    stopScript(): Promise<void> {
+      return fetch(`http://${location.hostname}:1337/automation/stop`).then(
+        (response) => {
+          if (200 !== response.status) {
+            throw new Error(`Could not stop script: ${response.statusText}`);
+          }
 
-              this.scriptRunning = false;
-          });
-      }
+          this.scriptRunning = false;
+        }
+      );
+    },
+    getDefaultCode(): string {
+      return defaultCode;
+    },
   },
 });
