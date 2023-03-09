@@ -108,7 +108,7 @@ const itemKeyDelete = ref("");
     <v-row class="flex-grow-0 w-100">
       <v-col cols="12">
         <h2 class="text-h4 text-grey-darken-1 py-4">Automation</h2>
-        <v-row class="mx-0">
+        <v-row class="mx-0 mt-3">
           <v-select
             :items="selectOptions"
             v-model="currentScriptName"
