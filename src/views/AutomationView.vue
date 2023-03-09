@@ -6,6 +6,7 @@ import { computed, reactive, ref } from "vue";
 import { useAppStore } from "@/stores/app.js";
 import CreateForm from "@/components/automation/CreateForm.vue";
 import type AutomationScript from "../model/AutomationScript.js";
+import LogViewer from "../components/automation/LogViewer.vue";
 
 const automationStore = useAutomationStore();
 const appStore = useAppStore();
@@ -16,7 +17,7 @@ const button = reactive({
   icon: "mdi-play",
 });
 
-const { currentScriptName, currentCode, scriptRunning } =
+const { currentScriptName, currentCode, scriptRunning, logMessages } =
   storeToRefs(automationStore);
 
 async function runScript(): Promise<void> {
@@ -98,8 +99,10 @@ automationStore.fetchScripts();
 const selectOptions = computed(() =>
   automationStore.scriptList.map((file: AutomationScript) => file.fileName)
 );
+
 const showCreateDialog = ref(false);
 const showDeleteDialog = ref(false);
+const showLogDialog = ref(false);
 const itemKeyDelete = ref("");
 </script>
 
@@ -153,15 +156,25 @@ const itemKeyDelete = ref("");
     <v-row class="flex-grow-0 w-100">
       <v-col cols="12">
         <v-row justify="space-between" class="mb-5 mt-1 mx-0">
-          <v-btn :color="button.color" @click="runScript">
-            <v-icon start :icon="button.icon"></v-icon>
-            {{ button.label }}
-          </v-btn>
-
+          <v-sheet>
+            <v-btn :color="button.color" @click="runScript">
+              <v-icon start :icon="button.icon"></v-icon>
+              {{ button.label }}
+            </v-btn>
+            <v-btn
+              color="grey"
+              class="ml-3"
+              @click="showLogDialog = true"
+              v-if="scriptRunning"
+            >
+              <v-icon start icon="mdi-note-text-outline"></v-icon>
+              logs
+            </v-btn>
+          </v-sheet>
           <v-btn
             color="grey-darken-1"
             @click="saveScript"
-            :disabled="(scriptRunning)"
+            :disabled="scriptRunning"
           >
             <v-icon start icon="mdi-content-save"></v-icon>
             save
@@ -196,6 +209,11 @@ const itemKeyDelete = ref("");
       :onCancel="() => (this.showCreateDialog = false)"
     />
   </v-dialog>
-</template>
 
-<style scoped></style>
+  <v-dialog v-model="showLogDialog" persistent>
+    <LogViewer
+      :logData="logMessages"
+      :onClose="() => (this.showLogDialog = false)"
+    />
+  </v-dialog>
+</template>

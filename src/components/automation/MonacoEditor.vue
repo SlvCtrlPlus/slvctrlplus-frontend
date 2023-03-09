@@ -66,13 +66,34 @@ const options: monaco.editor.IEditorOptions = {
   minimap: { enabled: false },
 };
 
+window.addEventListener('resize', () => {
+  if (editorInstance === null) {
+    return;
+  }
+  // make editor as small as possible
+  editorInstance.layout({ width: 0, height: 0 })
+
+  // wait for next frame to ensure last layout finished
+  window.requestAnimationFrame(() => {
+    const monacoElement = document.getElementById("monaco-wrapper");
+
+    if (null === editorInstance || null === monacoElement) {
+      return;
+    }
+
+    // get the parent dimensions and re-layout the editor
+    const rect = monacoElement.getBoundingClientRect();
+    editorInstance.layout({ width: rect.width, height: rect.height });
+  });
+});
+
 function storeEditorInstance(
   editor: monaco.editor.IStandaloneCodeEditor
 ): void {
-  editorInstance = editor;
-  editorInstance.addCommand(KeyMod.CtrlCmd | KeyCode.KeyS, (): void => {
+  editor.addCommand(KeyMod.CtrlCmd | KeyCode.KeyS, (): void => {
     props.onSave();
   });
+  editorInstance = editor;
 }
 
 watch(
@@ -90,14 +111,15 @@ const updateValue = (event) => emit("update:code", event);
 </script>
 
 <template>
-  <MonacoEditor
-    class="fill-height"
-    :theme="theme === 'dark' ? 'vs-dark' : 'vs'"
-    :options="options"
-    language="javascript"
-    width="100%"
-    :value="props.code"
-    @change="updateValue"
-    @editorDidMount="storeEditorInstance"
-  ></MonacoEditor>
+  <v-container class="fill-height ma-0 pa-0" id="monaco-wrapper" fluid>
+    <MonacoEditor
+
+      :theme="theme === 'dark' ? 'vs-dark' : 'vs'"
+      :options="options"
+      language="javascript"
+      :value="props.code"
+      @change="updateValue"
+      @editorDidMount="storeEditorInstance"
+    ></MonacoEditor>
+  </v-container>
 </template>

@@ -876,10 +876,10 @@
   resolved "https://registry.yarnpkg.com/@vue/tsconfig/-/tsconfig-0.1.3.tgz#4a61dbd29783d01ddab504276dcf0c2b6988654f"
   integrity sha512-kQVsh8yyWPvHpb8gIc9l/HIDiiVUy1amynLNpCy8p+FoCiZXCo6fQos5/097MmnNZc9AtseDsCrfkhqCrJ8Olg==
 
-"@vuetify/loader-shared@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@vuetify/loader-shared/-/loader-shared-1.4.0.tgz#b993665d126660355924bd4f6d2c176f9bf1e738"
-  integrity sha512-aBlBuDC40tRRLFXXeOMB2mQiIOI4GTaezxv4RjLE4NzC3g2QIQH6yc51E7vWHHp621Ys4vaU3Yo+HdO5lbfJ9g==
+"@vuetify/loader-shared@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@vuetify/loader-shared/-/loader-shared-1.7.1.tgz#0f63a3d41b6df29a2db1ff438aa1819b237c37a3"
+  integrity sha512-kLUvuAed6RCvkeeTNJzuy14pqnkur8lTuner7v7pNE/kVhPR97TuyXwBSBMR1cJeiLiOfu6SF5XlCYbXByEx1g==
   dependencies:
     find-cache-dir "^3.3.2"
     upath "^2.0.1"
@@ -2806,6 +2806,11 @@ minimist@^1.2.5, minimist@^1.2.6:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
   integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
+mkdirp@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
+  integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
+
 monaco-editor-vue3@^0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/monaco-editor-vue3/-/monaco-editor-vue3-0.1.6.tgz#56f871001b1e84cb9c2b13178e49d98bf7dcea1d"
@@ -3800,16 +3805,17 @@ webidl-conversions@^7.0.0:
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-7.0.0.tgz#256b4e1882be7debbf01d05f0aa2039778ea080a"
   integrity sha512-VwddBukDzu71offAQR975unBIGqfKZpM+8ZX6ySk8nYhVoo5CYaZyzt3YBvYtRtO+aoGlqxPg/B87NGVZ/fu6g==
 
-webpack-plugin-vuetify@^2.0.0-alpha.0:
-  version "2.0.0-alpha.10"
-  resolved "https://registry.yarnpkg.com/webpack-plugin-vuetify/-/webpack-plugin-vuetify-2.0.0-alpha.10.tgz#8850b021cb3cc958d305886f5f1b6d6946297881"
-  integrity sha512-ydIsKTuD87OCpCjh0YzvtRqQyteeNfIQIlOb4UOwCGcu4WeFXkggG0Epz7DYfoNIAPQOuGvOO5BLa9XuXMxBOQ==
+webpack-plugin-vuetify@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/webpack-plugin-vuetify/-/webpack-plugin-vuetify-2.0.1.tgz#735da7458a93670431399115bcb1f6cc72cb65b3"
+  integrity sha512-vopDoL1Il9lhDReAYdhToMi/OkFqV8BebEEyviZqMwFvQ3XnsRIdPyDDvee336h46QzCg3utp/FL5h2DhqeqAw==
   dependencies:
-    "@vuetify/loader-shared" "^1.4.0"
+    "@vuetify/loader-shared" "^1.7.1"
     decache "^4.6.0"
     file-loader "^6.2.0"
     find-cache-dir "^3.3.2"
     loader-utils "^2.0.0"
+    mkdirp "^1.0.4"
     null-loader "^4.0.1"
     upath "^2.0.1"
 

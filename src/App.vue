@@ -5,6 +5,7 @@ import { useSocketIO } from "./plugins/vueSocketIOClient.js";
 import type { Socket } from "socket.io-client";
 import type Device from "./model/Device.js";
 import { useSettingsStore } from "./stores/settings.js";
+import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
 
@@ -40,6 +41,7 @@ const menuItems = [
 const io = useSocketIO() as Socket;
 const settingsStore = useSettingsStore();
 const appStore = useAppStore();
+const automationStore = useAutomationStore();
 
 const { theme } = storeToRefs(settingsStore);
 const { snackbar } = storeToRefs(appStore);
@@ -67,6 +69,13 @@ io.on("deviceConnected", (device) => {
 });
 io.on("deviceRefreshed", (device) => {
   devicesStore.updateDevice(device);
+});
+io.on("automationConsoleLog", (data: string) => {
+  automationStore.logMessages.push(data);
+
+  if (automationStore.logMessages.length > 500) {
+    automationStore.logMessages.shift();
+  }
 });
 </script>
 

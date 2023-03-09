@@ -17,6 +17,7 @@ export type AutomationState = {
   currentScriptName: string | null;
   currentCode: string;
   scriptRunning: boolean;
+  logMessages: string[];
 };
 
 export const useAutomationStore = defineStore({
@@ -27,6 +28,7 @@ export const useAutomationStore = defineStore({
       currentScriptName: null,
       currentCode: defaultCode,
       scriptRunning: false,
+      logMessages: [],
     } as AutomationState),
   getters: {
     scriptList: (state) => Object.values(state.scripts),
@@ -122,6 +124,7 @@ export const useAutomationStore = defineStore({
           throw new Error(`Could not run script: ${response.statusText}`);
         }
 
+        this.logMessages = [];
         this.scriptRunning = true;
       });
     },
