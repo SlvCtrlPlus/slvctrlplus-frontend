@@ -46,6 +46,14 @@ async function runScript(): Promise<void> {
 }
 
 async function saveScript(): Promise<void> {
+  // If there's no currentScriptName to save the content to
+  // we ask for a new script name, else we save the content
+  // to the currently selected scriptName
+  if (null === automationStore.currentScriptName) {
+    showCreateDialog.value = true;
+    return;
+  }
+
   automationStore
     .saveScript()
     .then(() => {
@@ -107,6 +115,7 @@ const itemKeyDelete = ref("");
             @update:modelValue="changeScript"
             hide-details="hide-details"
             density="compact"
+            :disabled="scriptRunning"
           >
             <template v-slot:item="{ item, props }">
               <v-list-item v-bind="props">
@@ -120,7 +129,12 @@ const itemKeyDelete = ref("");
             </template>
           </v-select>
 
-          <v-btn color="primary" class="ml-3" @click="showCreateDialog = true">
+          <v-btn
+            color="primary"
+            class="ml-3"
+            @click="showCreateDialog = true"
+            :disabled="scriptRunning"
+          >
             <v-icon start icon="mdi-plus"></v-icon>
             create
           </v-btn>
@@ -147,7 +161,7 @@ const itemKeyDelete = ref("");
           <v-btn
             color="grey-darken-1"
             @click="saveScript"
-            :disabled="currentScriptName === null"
+            :disabled="(scriptRunning)"
           >
             <v-icon start icon="mdi-content-save"></v-icon>
             save
@@ -159,17 +173,14 @@ const itemKeyDelete = ref("");
 
   <v-dialog v-model="showDeleteDialog" persistent>
     <v-card>
-      <v-card-title class="text-h5">
-        Delete script
-      </v-card-title>
-      <v-card-text>Are you sure you want to delete script <b>{{itemKeyDelete}}</b>?</v-card-text>
+      <v-card-title class="text-h5"> Delete script </v-card-title>
+      <v-card-text
+        >Are you sure you want to delete script <b>{{ itemKeyDelete }}</b
+        >?</v-card-text
+      >
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn
-          color="grey"
-          variant="text"
-          @click="showDeleteDialog = false"
-        >
+        <v-btn color="grey" variant="text" @click="showDeleteDialog = false">
           Cancel
         </v-btn>
         <v-btn color="primary" variant="text" @click="deleteScript">

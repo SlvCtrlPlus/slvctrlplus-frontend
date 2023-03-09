@@ -38,8 +38,10 @@ const scriptNameRules = [
 function createScript(): void {
   const scriptNameWithExt = `${newScriptName.value}.js`;
 
+  if (null !== automationStore.currentScriptName) {
+    automationStore.currentCode = automationStore.getDefaultCode();
+  }
   automationStore.currentScriptName = scriptNameWithExt;
-  automationStore.currentCode = automationStore.getDefaultCode();
 
   automationStore
     .saveScript()
