@@ -18,19 +18,19 @@ jobs:
         with:
           node-version: '18.x'
       - name: Install modules
-          run: yarn install
+        run: yarn install
       - name: Build app
         run: |
           yarn run build
       - name: Compress build
-          uses: a7ul/tar-action@v1.1.0
-          id: compress
-          with:
-            command: c
-            cwd: ./
-            files: |
-              ./dist
-            outPath: dist.tar.gz
+        uses: a7ul/tar-action@v1.1.0
+        id: compress
+        with:
+          command: c
+          cwd: ./
+          files: |
+            ./dist
+          outPath: dist.tar.gz
       - name: Create Release Notes File
         run: |
           echo "${{ github.event.head_commit.message }}" > ./release_notes.txt
