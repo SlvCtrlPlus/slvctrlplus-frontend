@@ -30,7 +30,8 @@
     "vue-router": "^4.0.14",
     "vue-socket.io": "^3.0.10",
     "vuetify": "3.1.6",
-    "webfontloader": "^1.0.0"
+    "webfontloader": "^1.0.0",
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

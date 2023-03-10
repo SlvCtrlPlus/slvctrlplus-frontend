@@ -17,6 +17,7 @@ export type AutomationState = {
   currentScriptName: string | null;
   currentCode: string;
   scriptRunning: boolean;
+  runningSince: Date | null;
   logMessages: string[];
 };
 
@@ -28,12 +29,22 @@ export const useAutomationStore = defineStore({
       currentScriptName: null,
       currentCode: defaultCode,
       scriptRunning: false,
+      runningSince: null,
       logMessages: [],
     } as AutomationState),
   getters: {
     scriptList: (state) => Object.values(state.scripts),
   },
   actions: {
+    init() {
+      fetch(`http://${location.hostname}:1337/automation/status`)
+        .then((response) => response.json())
+        .then((data) => {
+          this.runningSince = new Date(data.runningSince);
+          this.scriptRunning = data.running;
+        })
+        .catch(console.log);
+    },
     fetchScripts(): Promise<AutomationScript[]> {
       return fetch(`http://${location.hostname}:1337/automation/scripts`)
         .then((response) => {
@@ -119,14 +130,22 @@ export const useAutomationStore = defineStore({
         },
         method: "POST",
         body: this.currentCode,
-      }).then((response) => {
-        if (200 !== response.status) {
-          throw new Error(`Could not run script: ${response.statusText}`);
-        }
+      })
+        .then((response) => {
+          if (200 !== response.status) {
+            throw new Error(`Could not run script: ${response.statusText}`);
+          }
 
-        this.logMessages = [];
-        this.scriptRunning = true;
-      });
+          this.logMessages = [];
+          this.scriptRunning = true;
+
+          return response;
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          this.runningSince = new Date(data.runningSince);
+          this.scriptRunning = data.running;
+        });
     },
     stopScript(): Promise<void> {
       return fetch(`http://${location.hostname}:1337/automation/stop`).then(

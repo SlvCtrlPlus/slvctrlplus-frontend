@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import {computed, nextTick, ref, watch} from "vue";
+import { computed, nextTick, ref, watch } from "vue";
+import moment from "moment";
 
 interface Props {
   logData: string[];
+  runningSince: Date;
   onClose: () => void;
 }
 
 const props = defineProps<Props>();
 
 const logData = computed(() => `${props.logData.join("\n")}\n\n`);
+const runningSinceFormatted = computed(() => {
+  const momentDate = moment(props.runningSince);
+  return `${momentDate.format("YYYY-MM-DD, hh:mm:ss")} (${momentDate.fromNow()})`;
+});
 
 const logDataContainer = ref<HTMLElement | null>(null);
 
@@ -23,7 +29,10 @@ watch(logData, async () => {
   <v-card>
     <v-card-title class="text-h5">Logs</v-card-title>
     <v-card-text>
-      <pre id="log-data" ref="logDataContainer" class="bg-grey-darken-3 pa-3">{{logData }}</pre>
+      <p>Running since: {{ runningSinceFormatted }}</p>
+      <pre id="log-data" ref="logDataContainer" class="bg-grey-darken-3 pa-3">{{
+        logData
+      }}</pre>
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>

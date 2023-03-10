@@ -2,7 +2,7 @@
 import { useAutomationStore } from "@/stores/automation.js";
 import MonacoEditor from "@/components/automation/MonacoEditor.vue";
 import { storeToRefs } from "pinia";
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useAppStore } from "@/stores/app.js";
 import CreateForm from "@/components/automation/CreateForm.vue";
 import type AutomationScript from "@/model/AutomationScript.js";
@@ -11,24 +11,35 @@ import LogViewer from "@/components/automation/LogViewer.vue";
 const automationStore = useAutomationStore();
 const appStore = useAppStore();
 
-const button = reactive({
-  label: "run",
-  color: "primary",
-  icon: "mdi-play",
-});
+const {
+  currentScriptName,
+  currentCode,
+  scriptRunning,
+  logMessages,
+  runningSince,
+} = storeToRefs(automationStore);
 
-const { currentScriptName, currentCode, scriptRunning, logMessages } =
-  storeToRefs(automationStore);
+const button = computed(() => {
+  if (scriptRunning.value) {
+    return {
+      label: "stop",
+      color: "red",
+      icon: "mdi-stop",
+    };
+  } else {
+    return {
+      label: "run",
+      color: "primary",
+      icon: "mdi-play",
+    };
+  }
+});
 
 async function runScript(): Promise<void> {
   if (!scriptRunning.value) {
     automationStore
       .runScript()
       .then(() => {
-        button.label = "stop";
-        button.color = "red";
-        button.icon = "mdi-stop";
-
         appStore.displaySnackbar(`Script execution started`);
       })
       .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
@@ -36,10 +47,6 @@ async function runScript(): Promise<void> {
     automationStore
       .stopScript()
       .then(() => {
-        button.label = "run";
-        button.color = "primary";
-        button.icon = "mdi-play";
-
         appStore.displaySnackbar(`Script execution stopped`);
       })
       .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
@@ -50,7 +57,7 @@ async function saveScript(): Promise<void> {
   // If there's no currentScriptName to save the content to
   // we ask for a new script name, else we save the content
   // to the currently selected scriptName
-  if (null === automationStore.currentScriptName) {
+  if (null === currentScriptName.value) {
     showCreateDialog.value = true;
     return;
   }
@@ -213,6 +220,7 @@ const itemKeyDelete = ref("");
   <v-dialog v-model="showLogDialog" persistent>
     <LogViewer
       :logData="logMessages"
+      :runningSince="runningSince"
       :onClose="() => (this.showLogDialog = false)"
     />
   </v-dialog>

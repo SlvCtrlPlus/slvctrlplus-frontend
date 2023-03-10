@@ -42,6 +42,7 @@ const io = useSocketIO() as Socket;
 const settingsStore = useSettingsStore();
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
+automationStore.init();
 
 const { theme } = storeToRefs(settingsStore);
 const { snackbar } = storeToRefs(appStore);
