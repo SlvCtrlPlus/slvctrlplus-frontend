@@ -162,7 +162,7 @@ const itemKeyDelete = ref("");
               {{ button.label }}
             </v-btn>
             <v-btn
-              color="grey"
+              color="grey-darken-1"
               class="ml-3"
               @click="showLogDialog = true"
               v-if="scriptRunning"

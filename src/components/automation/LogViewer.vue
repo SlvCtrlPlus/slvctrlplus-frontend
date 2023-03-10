@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref, watch} from "vue";
+import {computed, nextTick, ref, watch} from "vue";
 
 interface Props {
   logData: string[];
@@ -12,8 +12,9 @@ const logData = computed(() => `${props.logData.join("\n")}\n\n`);
 
 const logDataContainer = ref<HTMLElement | null>(null);
 
-watch(logData, () => {
+watch(logData, async () => {
   if (null === logDataContainer.value) return;
+  await nextTick();
   logDataContainer.value.scrollTop = logDataContainer.value?.scrollHeight;
 });
 </script>
