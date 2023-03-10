@@ -36,7 +36,7 @@ jobs:
           echo "${{ github.event.head_commit.message }}" > ./release_notes.txt
       - name: Set Tag Output
         id: set-tag
-        run: echo "tag_name=$(sh date '+%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
+        run: echo "tag_name=fooo" >> $GITHUB_OUTPUT
       - name: Create Tag
         uses: actions/github-script@v3
         env:
