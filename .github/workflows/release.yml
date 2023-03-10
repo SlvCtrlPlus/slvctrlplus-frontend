@@ -36,7 +36,7 @@ jobs:
           echo "${{ github.event.head_commit.message }}" > ./release_notes.txt
       - name: Set Tag Output
         id: set-tag
-        run:  echo "::set-output name=tag_name::$(sh date '+%Y%m%d-%H%M%S')"
+        run: echo "tag_name=$(sh date '+%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
       - name: Create Tag
         uses: actions/github-script@v3
         env:
@@ -56,4 +56,4 @@ jobs:
           tag: ${{ steps.set-tag.outputs.tag_name }}
           bodyFile: './release_notes.txt'
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "dist.tar.gz"
+          artifacts: "${{ steps.set-tag.outputs.tag_name }}-dist.tar.gz"
