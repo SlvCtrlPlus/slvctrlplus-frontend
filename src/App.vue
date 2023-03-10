@@ -78,6 +78,15 @@ io.on("automationConsoleLog", (data: string) => {
     automationStore.logMessages.shift();
   }
 });
+
+function stopScript() {
+  automationStore
+    .stopScript()
+    .then(() => {
+      appStore.displaySnackbar(`Script execution stopped`);
+    })
+    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+}
 </script>
 
 <template>
@@ -89,7 +98,9 @@ io.on("automationConsoleLog", (data: string) => {
       ></v-app-bar-nav-icon>
       <v-toolbar-title color="logo">SlvCtrl+</v-toolbar-title>
       <v-spacer></v-spacer>
-      <span class="text-grey-darken-3 mr-5">v0.1.0-alpha</span>
+      <v-sheet v-if="automationStore.scriptRunning" class="mr-5">
+        <v-btn size="small" icon="mdi-stop" variant="elevated" color="red" @click="stopScript" />
+      </v-sheet>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute bottom temporary>
@@ -104,6 +115,8 @@ io.on("automationConsoleLog", (data: string) => {
           link
         ></v-list-item>
       </v-list>
+      <v-divider />
+      <v-sheet class="text-grey-darken-3 text-center pa-3">v0.1.0-alpha</v-sheet>
     </v-navigation-drawer>
 
     <v-main>

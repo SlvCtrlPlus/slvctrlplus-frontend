@@ -8,8 +8,8 @@ const defaultCode = `// Write your automation here. The script will fire on devi
 //  - deviceDisconnected: A device was disconnected from SlvCtrl+
 //  - deviceRefreshed: New data has been pulled from a device
 //
-// You can get information about the event and the device that invoked your script through the global "event" variable.
-// To access other devices you can use the global variable "devices" -> devices.getById(\`{device uuid}\`)
+// You can get information about the event and the device that invoked your script through the global "event"
+// variable. To access other devices you can use the global variable "devices" -> devices.getById(\`{device uuid}\`)
 `;
 
 export type AutomationState = {
