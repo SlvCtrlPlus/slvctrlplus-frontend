@@ -9,7 +9,10 @@
     "src/**/__tests__/*"
   ],
   "compilerOptions": {
-    "lib": ["es2017"],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
     "composite": true,
     "baseUrl": "./slvctrl-plus-frontend",
     "paths": {

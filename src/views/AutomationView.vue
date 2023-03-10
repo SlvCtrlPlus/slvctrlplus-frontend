@@ -5,8 +5,8 @@ import { storeToRefs } from "pinia";
 import { computed, reactive, ref } from "vue";
 import { useAppStore } from "@/stores/app.js";
 import CreateForm from "@/components/automation/CreateForm.vue";
-import type AutomationScript from "../model/AutomationScript.js";
-import LogViewer from "../components/automation/LogViewer.vue";
+import type AutomationScript from "@/model/AutomationScript.js";
+import LogViewer from "@/components/automation/LogViewer.vue";
 
 const automationStore = useAutomationStore();
 const appStore = useAppStore();
