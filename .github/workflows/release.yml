@@ -62,4 +62,4 @@ jobs:
           tag: "${TAG}"
           bodyFile: './release_notes.txt'
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "${TAG}-dist.tar.gz"
+          artifacts: "dist.tar.gz"
