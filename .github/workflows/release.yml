@@ -59,7 +59,7 @@ jobs:
         env:
           TAG: ${{ steps.set_tag.outputs.tag_name }}
         with:
-          tag: ${{ TAG }}
+          tag: "${TAG}"
           bodyFile: './release_notes.txt'
           token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "${TAG}-dist.tar.gz"
