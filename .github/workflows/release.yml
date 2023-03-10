@@ -40,7 +40,7 @@ jobs:
         id: set-tag
         run: echo "tag_name=$(sh date '+%Y%m%d-%H%M%S')" >> $GITHUB_OUTPUT
       - name: Create Tag
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         env:
           TAG: ${{ steps.set-tag.outputs.tag_name }}
         with:
