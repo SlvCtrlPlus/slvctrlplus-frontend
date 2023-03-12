@@ -212,8 +212,8 @@ const itemKeyDelete = ref("");
 
   <v-dialog v-model="showCreateDialog" persistent>
     <CreateForm
-      @save="this.showCreateDialog = false"
-      @cancel="this.showCreateDialog = false"
+      @save="showCreateDialog = false"
+      @cancel="showCreateDialog = false"
     />
   </v-dialog>
 
