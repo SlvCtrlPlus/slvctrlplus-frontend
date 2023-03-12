@@ -5,7 +5,6 @@ import moment from "moment";
 interface Props {
   logData: string[];
   runningSince: Date;
-  onClose: () => void;
 }
 
 const props = defineProps<Props>();
@@ -36,7 +35,7 @@ watch(logData, async () => {
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" variant="text" @click="props.onClose">
+      <v-btn color="primary" variant="text" @click="$emit('close')">
         Close
       </v-btn>
     </v-card-actions>

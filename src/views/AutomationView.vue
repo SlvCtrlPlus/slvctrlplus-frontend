@@ -212,8 +212,8 @@ const itemKeyDelete = ref("");
 
   <v-dialog v-model="showCreateDialog" persistent>
     <CreateForm
-      :onSave="() => (this.showCreateDialog = false)"
-      :onCancel="() => (this.showCreateDialog = false)"
+      @save="this.showCreateDialog = false"
+      @cancel="this.showCreateDialog = false"
     />
   </v-dialog>
 
@@ -221,7 +221,7 @@ const itemKeyDelete = ref("");
     <LogViewer
       :logData="logMessages"
       :runningSince="runningSince"
-      :onClose="() => (this.showLogDialog = false)"
+      @close="showLogDialog = false"
     />
   </v-dialog>
 </template>

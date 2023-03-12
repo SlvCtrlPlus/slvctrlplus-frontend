@@ -3,12 +3,7 @@ import { ref } from "vue";
 import { useAutomationStore } from "@/stores/automation.js";
 import { useAppStore } from "@/stores/app.js";
 
-interface Props {
-  onSave: () => void;
-  onCancel: () => void;
-}
-
-const props = defineProps<Props>();
+const emit = defineEmits(["save"])
 
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
@@ -50,7 +45,7 @@ function createScript(): void {
       automationStore.fetchScript(scriptNameWithExt);
     })
     .then(() => {
-      props.onSave();
+      emit("save");
       newScriptName.value = "";
     })
     .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
@@ -73,7 +68,7 @@ function createScript(): void {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="props.onCancel">
+        <v-btn color="grey" variant="text" @click="$emit('cancel')">
           Cancel
         </v-btn>
         <v-btn
