@@ -10,7 +10,7 @@ const { deviceList, devicesLoaded } = storeToRefs(devicesStore);
 </script>
 
 <template>
-  <v-container v-if="devicesLoaded" fluid class="px-8 fill-height">
+  <v-container v-if="devicesLoaded" fluid class="px-sm-6">
     <h2 class="text-h4 text-grey-darken-1 py-4">
       Connected devices
       <v-chip pill color="primary">{{ deviceList.length }}</v-chip>
@@ -19,7 +19,7 @@ const { deviceList, devicesLoaded } = storeToRefs(devicesStore);
       v-if="deviceList.length > 0"
       fluid
       grid-list-md
-      class="px-0 fill-height"
+      class="px-0"
     >
       <v-row row wrap class="fill-height">
         <v-col

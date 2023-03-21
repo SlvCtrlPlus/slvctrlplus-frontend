@@ -8,6 +8,7 @@ import { useSettingsStore } from "./stores/settings.js";
 import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
+import {useHealthStore} from "./stores/health";
 
 let drawer = ref(false);
 const menuItems = [
@@ -40,6 +41,7 @@ const menuItems = [
 
 const io = useSocketIO() as Socket;
 const settingsStore = useSettingsStore();
+const healthStore = useHealthStore();
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
 automationStore.init();
@@ -49,6 +51,8 @@ const { snackbar } = storeToRefs(appStore);
 
 const devicesStore = useDevicesStore();
 devicesStore.init();
+
+healthStore.init();
 
 io.on("deviceDisconnected", (device) => {
   devicesStore.removeDevice(device);
