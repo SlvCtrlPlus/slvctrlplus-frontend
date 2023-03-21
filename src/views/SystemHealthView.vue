@@ -9,7 +9,6 @@ import type { Ref } from "vue";
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useHealthStore } from "../stores/health";
-import {useDisplay} from "vuetify";
 
 const healthStore = useHealthStore();
 const { state, chartData } = storeToRefs(healthStore);
@@ -98,6 +97,10 @@ const uptime = computed(() => {
                 <v-list-item class="px-1">
                   <v-list-item-title>IP address</v-list-item-title>
                   <v-list-item-subtitle v-text="state.system.ip"></v-list-item-subtitle>
+                </v-list-item>
+                <v-list-item class="px-1">
+                  <v-list-item-title>Hostname</v-list-item-title>
+                  <v-list-item-subtitle v-text="state.system.hostname"></v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>Uptime</v-list-item-title>

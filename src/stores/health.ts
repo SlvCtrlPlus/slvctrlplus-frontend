@@ -27,6 +27,7 @@ interface SystemInfo {
       name: string;
     };
     uptime: number;
+    hostname: string;
     ip: string;
   };
 }
