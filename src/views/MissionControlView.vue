@@ -11,15 +11,16 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
 </script>
 
 <template>
-  <v-container v-if="devicesLoaded" fluid class="px-sm-6 d-flex align-start flex-column fill-height">
-    <h2 cols="12" class="text-h4 text-grey-darken-1 py-4 flex-shrink-0 flex-grow-0">Mission control</h2>
+  <v-container
+    v-if="devicesLoaded"
+    fluid
+    class="px-sm-6 d-flex align-start flex-column fill-height"
+  >
+    <h2 class="text-h4 text-grey-darken-1 py-4 flex-shrink-0 flex-grow-0">
+      Mission control
+    </h2>
     <v-container fluid class="pa-0 flex-shrink-0 flex-grow-1">
-      <v-container
-        v-if="deviceList.length > 0"
-        fluid
-        grid-list-md
-        class="px-0"
-      >
+      <v-container v-if="deviceList.length > 0" fluid grid-list-md class="px-0">
         <v-row row wrap>
           <v-col
             cols="12"
@@ -50,7 +51,7 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
       />
     </v-container>
   </v-container>
-  <LoadingState v-else msg="Getting devices" />
+  <LoadingState v-else msg="Loading connected devices" />
 </template>
 
 <style scoped>
