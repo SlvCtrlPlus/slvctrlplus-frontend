@@ -24,7 +24,7 @@ const attributeChangeHandler = (
 
 <template>
   <div :key="attr.name" v-for="attr in props.device.attributes">
-    <dl v-if="device.data[attr.name] !== null">
+    <dl>
       <dt>
         <label>{{ attr.name }}</label>
       </dt>

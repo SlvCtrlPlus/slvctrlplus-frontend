@@ -29,6 +29,9 @@ const comp = computed<string>(() => {
       case "distance":
         controlComponent = "DeviceDistanceControl";
         break;
+      case "display":
+        controlComponent = "DeviceDisplayControl";
+        break;
       default:
         controlComponent = "GenericDeviceControl";
     }
