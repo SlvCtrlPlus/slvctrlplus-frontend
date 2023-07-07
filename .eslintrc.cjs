@@ -23,7 +23,7 @@ module.exports = {
       "error",
       {
         code: 120,
-        tabWidth: 2,
+        tabWidth: 4,
         ignoreComments: true, //"comments": 80
         ignoreUrls: true,
         ignoreStrings: true,

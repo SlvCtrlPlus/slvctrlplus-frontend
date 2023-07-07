@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref, watch } from "vue";
+import { reactive } from "vue";
 import type DeviceStrikerMk2 from "../../../model/DeviceStrikerMk2.js";
 import type { Socket } from "socket.io-client";
 import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
