@@ -62,9 +62,7 @@ const uptime = computed(() => {
     return "calculating...";
   }
 
-  return moment
-    .duration(healthStore.state.system.uptime, "seconds")
-    .humanize();
+  return moment.duration(healthStore.state.system.uptime, "seconds").humanize();
 });
 </script>
 
@@ -80,31 +78,31 @@ const uptime = computed(() => {
               <v-list class="py-0">
                 <v-list-item class="px-1">
                   <v-list-item-title>CPU</v-list-item-title>
-                  <v-list-item-subtitle
-                      v-text="
-                      `${state.system.cpu.model} (${state.system.os.arch}, ${state.system.cpu.cores} cores)`
-                    "
-                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle>{{
+                    `${state.system.cpu.model} (${state.system.os.arch}, ${state.system.cpu.cores} cores)`
+                  }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>Operating System</v-list-item-title>
-                  <v-list-item-subtitle
-                      v-text="
-                      `${state.system.os.name} (${state.system.os.type})`
-                    "
-                  ></v-list-item-subtitle>
+                  <v-list-item-subtitle>{{
+                    `${state.system.os.name} (${state.system.os.type})`
+                  }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>IP address</v-list-item-title>
-                  <v-list-item-subtitle v-text="state.system.ip"></v-list-item-subtitle>
+                  <v-list-item-subtitle>{{
+                    state.system.ip
+                  }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>Hostname</v-list-item-title>
-                  <v-list-item-subtitle v-text="state.system.hostname"></v-list-item-subtitle>
+                  <v-list-item-subtitle>{{
+                    state.system.hostname
+                  }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>Uptime</v-list-item-title>
-                  <v-list-item-subtitle v-text="uptime"></v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ uptime }}</v-list-item-subtitle>
                 </v-list-item>
               </v-list>
             </v-card-item>
@@ -115,15 +113,27 @@ const uptime = computed(() => {
             <v-card-title>Memory (SlvCtrl+)</v-card-title>
             <v-card-item>
               <p class="mb-3">
-                <b>RSS:</b> {{ (state.process.memoryUsage.rss / 1024 / 1024).toFixed(2) }} MB,
-                <b>Heap:</b> {{ (state.process.memoryUsage.heapTotal / 1024 / 1024).toFixed(2) }} MB
-                (used: {{ (state.process.memoryUsage.heapUsed / 1024 / 1024).toFixed(2) }} MB)
+                <b>RSS:</b>
+                {{ (state.process.memoryUsage.rss / 1024 / 1024).toFixed(2) }}
+                MB, <b>Heap:</b>
+                {{
+                  (state.process.memoryUsage.heapTotal / 1024 / 1024).toFixed(2)
+                }}
+                MB (used:
+                {{
+                  (state.process.memoryUsage.heapUsed / 1024 / 1024).toFixed(2)
+                }}
+                MB)
               </p>
               <StreamLineChart
                 :chartData="rawChartDataProcessMemory"
                 :chartOptions="chartOptionsProcessMemory"
-                @mouseover="ChartHelper.pauseChart(chartOptionsProcessMemoryRef)"
-                @mouseleave="ChartHelper.resumeChart(chartOptionsProcessMemoryRef)"
+                @mouseover="
+                  ChartHelper.pauseChart(chartOptionsProcessMemoryRef)
+                "
+                @mouseleave="
+                  ChartHelper.resumeChart(chartOptionsProcessMemoryRef)
+                "
               />
             </v-card-item>
           </v-card>
@@ -162,7 +172,9 @@ const uptime = computed(() => {
                 :chartData="rawChartDataSystemMemory"
                 :chartOptions="chartOptionsSystemMemory"
                 @mouseover="ChartHelper.pauseChart(chartOptionsSystemMemoryRef)"
-                @mouseleave="ChartHelper.resumeChart(chartOptionsSystemMemoryRef)"
+                @mouseleave="
+                  ChartHelper.resumeChart(chartOptionsSystemMemoryRef)
+                "
               />
             </v-card-item>
           </v-card>

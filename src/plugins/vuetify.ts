@@ -45,7 +45,7 @@ const light: ThemeDefinition = {
 };
 
 export const vuetify: Plugin = {
-  install: async (app: App, options: any): Promise<void> => {
+  install: async (app: App): Promise<void> => {
     const vuetify = createVuetify({
       components,
       directives,

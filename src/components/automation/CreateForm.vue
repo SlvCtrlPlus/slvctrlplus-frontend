@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useAutomationStore } from "@/stores/automation.js";
 import { useAppStore } from "@/stores/app.js";
 
-const emit = defineEmits(["save"])
+const emit = defineEmits(["save"]);
 
 const appStore = useAppStore();
 const automationStore = useAutomationStore();

@@ -12,7 +12,9 @@ const props = defineProps<Props>();
 const logData = computed(() => `${props.logData.join("\n")}\n\n`);
 const runningSinceFormatted = computed(() => {
   const momentDate = moment(props.runningSince);
-  return `${momentDate.format("YYYY-MM-DD, hh:mm:ss")} (${momentDate.fromNow()})`;
+  return `${momentDate.format(
+    "YYYY-MM-DD, hh:mm:ss"
+  )} (${momentDate.fromNow()})`;
 });
 
 const logDataContainer = ref<HTMLElement | null>(null);

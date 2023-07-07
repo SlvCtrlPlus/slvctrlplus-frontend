@@ -43,15 +43,15 @@ const attributeChangeHandler = (
         ></v-checkbox>
 
         <v-select
-            v-if="attr.type === 'list'"
-            v-model="device.data[attr.name]"
-            :items="attr.values"
-            color="primary"
-            class="pa-0 ma-0"
-            @update:modelValue="
+          v-if="attr.type === 'list'"
+          v-model="device.data[attr.name]"
+          :items="attr.values"
+          color="primary"
+          class="pa-0 ma-0"
+          @update:modelValue="
             attributeChangeHandler(attr.name, device.data[attr.name])
           "
-            :disabled="attr.modifier === 'ro'"
+          :disabled="attr.modifier === 'ro'"
         ></v-select>
         <v-text-field
           v-if="
