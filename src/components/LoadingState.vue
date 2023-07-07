@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
-  msg: string
-}>()
+  msg: string;
+}>();
 </script>
 
 <template>
@@ -11,11 +11,13 @@ defineProps<{
         {{ msg }}
       </v-col>
       <v-col cols="12" class="text-subtitle-1 text-center">
-        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

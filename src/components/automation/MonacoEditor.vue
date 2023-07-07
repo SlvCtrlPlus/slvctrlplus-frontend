@@ -66,12 +66,12 @@ const options: monaco.editor.IEditorOptions = {
   minimap: { enabled: false },
 };
 
-window.addEventListener('resize', () => {
+window.addEventListener("resize", () => {
   if (editorInstance === null) {
     return;
   }
   // make editor as small as possible
-  editorInstance.layout({ width: 0, height: 0 })
+  editorInstance.layout({ width: 0, height: 0 });
 
   // wait for next frame to ensure last layout finished
   window.requestAnimationFrame(() => {
@@ -113,7 +113,6 @@ const updateValue = (event) => emit("update:code", event);
 <template>
   <v-container class="fill-height ma-0 pa-0" id="monaco-wrapper" fluid>
     <MonacoEditor
-
       :theme="theme === 'dark' ? 'vs-dark' : 'vs'"
       :options="options"
       language="javascript"

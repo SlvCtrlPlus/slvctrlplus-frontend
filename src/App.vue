@@ -8,9 +8,9 @@ import { useSettingsStore } from "./stores/settings.js";
 import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
-import {useHealthStore} from "./stores/health";
+import { useHealthStore } from "./stores/health";
 
-let drawer = ref(false);
+const drawer = ref(false);
 const menuItems = [
   {
     title: "Mission Control",
@@ -103,7 +103,13 @@ function stopScript() {
       <v-toolbar-title color="logo">SlvCtrl+</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-sheet v-if="automationStore.scriptRunning" class="mr-5">
-        <v-btn size="small" icon="mdi-stop" variant="elevated" color="red" @click="stopScript" />
+        <v-btn
+          size="small"
+          icon="mdi-stop"
+          variant="elevated"
+          color="red"
+          @click="stopScript"
+        />
       </v-sheet>
     </v-app-bar>
 
@@ -120,7 +126,9 @@ function stopScript() {
         ></v-list-item>
       </v-list>
       <v-divider />
-      <v-sheet class="text-grey-darken-3 text-center pa-3">v0.1.0-alpha</v-sheet>
+      <v-sheet class="text-grey-darken-3 text-center pa-3"
+        >v0.1.0-alpha</v-sheet
+      >
     </v-navigation-drawer>
 
     <v-main>

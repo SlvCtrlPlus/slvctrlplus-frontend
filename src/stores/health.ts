@@ -49,16 +49,40 @@ export const useHealthStore = defineStore({
       chartData: {
         processMemory: {
           datasets: [
-            ChartHelper.createEmptyDataSet("Resident Set Size", { r: 0, g: 189, b: 126 }, 0),
-            ChartHelper.createEmptyDataSet("Heap total", { r: 0, g: 189, b: 126 }, 0),
-            ChartHelper.createEmptyDataSet("Heap used", { r: 204, g: 0, b: 0 }, 0),
+            ChartHelper.createEmptyDataSet(
+              "Resident Set Size",
+              { r: 0, g: 189, b: 126 },
+              0
+            ),
+            ChartHelper.createEmptyDataSet(
+              "Heap total",
+              { r: 0, g: 189, b: 126 },
+              0
+            ),
+            ChartHelper.createEmptyDataSet(
+              "Heap used",
+              { r: 204, g: 0, b: 0 },
+              0
+            ),
           ],
         },
         systemCpu: {
-          datasets: [ChartHelper.createEmptyDataSet("Percentage", { r: 0, g: 189, b: 126 }, 0)],
+          datasets: [
+            ChartHelper.createEmptyDataSet(
+              "Percentage",
+              { r: 0, g: 189, b: 126 },
+              0
+            ),
+          ],
         },
         systemMemory: {
-          datasets: [ChartHelper.createEmptyDataSet("Percentage", { r: 0, g: 189, b: 126 }, 0)],
+          datasets: [
+            ChartHelper.createEmptyDataSet(
+              "Percentage",
+              { r: 0, g: 189, b: 126 },
+              0
+            ),
+          ],
         },
       },
     } as HealthState;

@@ -9,7 +9,7 @@ export default abstract class ChartHelper {
     duration: number,
     refreshMs: number,
     delayMs: number,
-    onRefresh: ((this: RealTimeScale, chart: Chart) => void | null)|null
+    onRefresh: ((this: RealTimeScale, chart: Chart) => void | null) | null
   ): ChartOptions {
     return {
       responsive: true,
@@ -27,7 +27,12 @@ export default abstract class ChartHelper {
             duration: duration,
             refresh: refreshMs,
             delay: delayMs,
-            onRefresh: onRefresh !== null ? onRefresh : () => { /* no-op */ },
+            onRefresh:
+              onRefresh !== null
+                ? onRefresh
+                : () => {
+                    /* no-op */
+                  },
           },
           display: false,
         },
