@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type Device from "../model/Device";
+import type Device from "../model/Device.js";
 import type DeviceGeneric from "../model/DeviceGeneric.js";
 
 export type DeviceState = {
