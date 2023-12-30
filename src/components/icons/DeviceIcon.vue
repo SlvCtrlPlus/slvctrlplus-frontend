@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type Device from "../../model/Device.js";
+import type Device from "../../model/Device";
 
 interface Props {
   device: Device;

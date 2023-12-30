@@ -15,7 +15,7 @@ const props = defineProps<Props>();
 const comp = computed<string>(() => {
   let controlComponent: string | null = null;
 
-  if (props.device.type === "generic") {
+  if (props.device.type === "slvCtrlPlus") {
     switch (props.device.deviceModel) {
       case "air_valve":
         controlComponent = "DeviceAirValveControl";
@@ -35,6 +35,8 @@ const comp = computed<string>(() => {
       default:
         controlComponent = "GenericDeviceControl";
     }
+  } else if (props.device.type === "buttplugIo") {
+    controlComponent = "GenericDeviceControl";
   } else {
     console.log(
       `Cannot find control component for device of type ${props.device.type}`

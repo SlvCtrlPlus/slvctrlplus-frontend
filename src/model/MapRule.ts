@@ -1,5 +1,5 @@
 import Rule from "./Rule.js";
-import type Device from "./Device.js";
+import type Device from "./Device";
 import type ValueMap from "./ValueMap.js";
 
 export default class MapRule extends Rule {

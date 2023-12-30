@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type Device from "../model/Device.js";
+import type Device from "../model/Device";
 import type DeviceGeneric from "../model/DeviceGeneric.js";
 
 export type DeviceState = {
@@ -46,7 +46,9 @@ export const useDevicesStore = defineStore({
 
       device.lastRefresh = updatedDevice.lastRefresh;
 
-      if (device.type === "generic") {
+      if (device.type === "slvCtrlPlus") {
+        (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
+      } else if (device.type === "buttplugIo") {
         (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
       } else {
         console.log(
