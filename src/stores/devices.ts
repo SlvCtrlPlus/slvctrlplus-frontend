@@ -51,9 +51,7 @@ export const useDevicesStore = defineStore({
       } else if (device.type === "buttplugIo") {
         (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
       } else {
-        console.log(
-          `Device update for unhandled device of type: ${updatedDevice.type} (${updatedDevice.deviceName})`
-        );
+        (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
       }
     },
   },

@@ -14,6 +14,10 @@ const router = createRouter({
       component: () => import("../views/MissionControlView.vue"),
     },
     {
+      path: "/mission-control/device/:id",
+      component: import("../views/MissionControlView.vue"),
+    },
+    {
       path: "/automation",
       name: "automation",
       component: () => import("../views/AutomationView.vue"),

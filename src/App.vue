@@ -116,7 +116,7 @@ function stopScript() {
     <v-navigation-drawer v-model="drawer" absolute bottom temporary>
       <v-list>
         <v-list-item
-          active-color="primary"
+          color="primary"
           v-for="item in menuItems"
           :prepend-icon="item.icon"
           :title="item.title"
@@ -143,7 +143,7 @@ function stopScript() {
         {{ snackbar.text }}
 
         <template v-slot:actions>
-          <v-btn text @click="snackbar.display = false">
+          <v-btn text="" @click="snackbar.display = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </template>
