@@ -7,6 +7,7 @@ import { loadFonts } from "./plugins/webfontloader";
 import { vueSocketIOClient } from "./plugins/vueSocketIOClient.js";
 import { createPinia } from "pinia";
 import { vuetify } from "./plugins/vuetify.js";
+import VueFullscreen from "vue-fullscreen";
 
 loadFonts().catch(console.log);
 
@@ -19,4 +20,5 @@ createApp(App)
   })
   .use(router)
   .use(vuetify)
+  .use(VueFullscreen)
   .mount("#app");

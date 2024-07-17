@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import LayoutWithMenu from "../layouts/LayoutWithMenu.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -6,21 +7,30 @@ const router = createRouter({
     {
       path: "/",
       name: "welcome",
-      component: () => import("../views/WelcomeView.vue"),
+      components: {
+        default: () => import("../views/WelcomeView.vue"),
+        layout: LayoutWithMenu,
+      },
     },
     {
       path: "/mission-control",
       name: "mission-control",
-      component: () => import("../views/MissionControlView.vue"),
+      components: {
+        default: () => import("../views/MissionControlView.vue"),
+        layout: LayoutWithMenu,
+      },
     },
     {
       path: "/mission-control/device/:id",
-      component: import("../views/MissionControlView.vue"),
+      component: () => import("../views/MissionControlSingleView.vue"),
     },
     {
       path: "/automation",
       name: "automation",
-      component: () => import("../views/AutomationView.vue"),
+      components: {
+        default: () => import("../views/AutomationView.vue"),
+        layout: LayoutWithMenu,
+      },
     },
     {
       path: "/devices",
@@ -28,17 +38,26 @@ const router = createRouter({
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
-      component: () => import("../views/DevicesView.vue"),
+      components: {
+        default: () => import("../views/DevicesView.vue"),
+        layout: LayoutWithMenu,
+      },
     },
     {
       path: "/health",
       name: "health",
-      component: () => import("../views/SystemHealthView.vue"),
+      components: {
+        default: () => import("../views/SystemHealthView.vue"),
+        layout: LayoutWithMenu,
+      },
     },
     {
       path: "/settings",
       name: "settings",
-      component: () => import("../views/SettingsView.vue"),
+      components: {
+        default: () => import("../views/SettingsView.vue"),
+        layout: LayoutWithMenu,
+      },
     },
   ],
 });
