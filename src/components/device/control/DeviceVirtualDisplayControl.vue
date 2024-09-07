@@ -72,7 +72,7 @@ const controlsCurrentlyHovered = ref<boolean>(false);
 const isMouseInWrapper = ref<boolean>(false);
 let hideControlsTimeout: TimerId | undefined = undefined;
 
-function showControls() {
+function showControls(): void {
   if (!isMouseInWrapper.value) return;
 
   controlsVisible.value = true;
@@ -83,13 +83,21 @@ function showControls() {
   updateCursorVisibility();
 }
 
-function hideControls() {
+// Add a new debounced function for resetting the hide timer:
+const resetHideTimer = debounce((): void => {
+  if (controlsVisible.value && !controlsCurrentlyHovered.value) {
+    clearTimeout(hideControlsTimeout);
+    hideControlsTimeout = setTimeout(hideControls, CONTROLS_HIDE_DELAY);
+  }
+}, 200);
+
+function hideControls(): void {
   controlsVisible.value = false;
   clearTimeout(hideControlsTimeout);
   updateCursorVisibility();
 }
 
-function onWrapperMouseEnter() {
+function onWrapperMouseEnter(): void {
   if (isMouseInWrapper.value) {
     return;
   }
@@ -98,12 +106,17 @@ function onWrapperMouseEnter() {
   showControls();
 }
 
-function onWrapperMouseLeave() {
+function onWrapperMouseLeave(): void {
   isMouseInWrapper.value = false;
   hideControls();
 }
 
-function onControlsMouseEnter() {
+function onWrapperMouseMove(): void {
+  showControls();
+  resetHideTimer();
+}
+
+function onControlsMouseEnter(): void {
   controlsCurrentlyHovered.value = true;
   clearTimeout(hideControlsTimeout);
   updateCursorVisibility();
@@ -145,8 +158,6 @@ function debounce(func: (...args: any[]) => void, wait: number) {
     timeout = setTimeout(later, wait);
   };
 }
-
-const debouncedShowControls = debounce(showControls, 200);
 </script>
 
 <template>
@@ -155,7 +166,7 @@ const debouncedShowControls = debounce(showControls, 200);
     ref="fullscreenElement"
     @pointerenter="onWrapperMouseEnter"
     @pointerleave="onWrapperMouseLeave"
-    @pointermove="debouncedShowControls"
+    @pointermove="onWrapperMouseMove"
   >
     <div
       class="display content text-h4 bg-grey-darken-3"
