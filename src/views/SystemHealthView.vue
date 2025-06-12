@@ -67,7 +67,11 @@ const uptime = computed(() => {
 </script>
 
 <template>
-  <v-container fluid v-if="state !== undefined" class="px-sm-6">
+  <v-container
+    fluid
+    v-if="state !== undefined"
+    class="px-sm-6 d-flex align-start flex-column fill-height"
+  >
     <h2 class="text-h4 text-grey-darken-1 py-4">System health</h2>
     <v-container fluid class="px-0">
       <v-row>

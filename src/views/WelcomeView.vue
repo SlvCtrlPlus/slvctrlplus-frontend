@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="px-sm-6">
+  <v-container fluid class="px-sm-6 d-flex align-start flex-column fill-height">
     <h2 class="text-h2 text-grey-darken-1 py-4">Hello there!</h2>
     <p class="my-6 text-h6">
       Check out what SlvCtrl+ has to offer. Don't be afraid to click the

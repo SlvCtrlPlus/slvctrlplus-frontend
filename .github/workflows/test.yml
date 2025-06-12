@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install Yarn
+        run: npm install -g yarn
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Set node version

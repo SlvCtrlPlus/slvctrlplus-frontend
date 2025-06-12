@@ -37,11 +37,23 @@ const comp = computed<string>(() => {
     }
   } else if (props.device.type === "buttplugIo") {
     controlComponent = "GenericDeviceControl";
+  } else if (props.device.type === "virtual") {
+    controlComponent = "";
+    switch (props.device.deviceModel) {
+      case "display":
+        controlComponent = "DeviceVirtualDisplayControl";
+        break;
+      case "randomGenerator":
+        controlComponent = "DeviceVirtualRandomGeneratorControl";
+        break;
+      default:
+        controlComponent = "GenericDeviceControl";
+    }
   } else {
     console.log(
-      `Cannot find control component for device of type ${props.device.type}`
+      `Cannot find control component for device of type ${props.device.type}, fall back to generic device control`
     );
-    return null;
+    controlComponent = "GenericDeviceControl";
   }
 
   return defineAsyncComponent(

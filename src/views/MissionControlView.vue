@@ -5,6 +5,8 @@ import LoadingState from "../components/LoadingState.vue";
 import { useDevicesStore } from "../stores/devices.js";
 import { storeToRefs } from "pinia";
 import EmptyState from "../components/EmptyState.vue";
+import type Device from "../model/Device";
+import DeviceCard from "@/components/device/DeviceCard.vue";
 
 const devicesStore = useDevicesStore();
 const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
@@ -31,16 +33,7 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
             :key="device.deviceId"
             v-for="device in deviceList"
           >
-            <v-card class="rounded-sm">
-              <v-card-title>
-                <DeviceIcon :device="device" class="icon" />
-                {{ device.deviceName }}
-              </v-card-title>
-              <v-divider></v-divider>
-              <v-card-text>
-                <DeviceControl :device="device" />
-              </v-card-text>
-            </v-card>
+            <DeviceCard :device="device" :render-popup-link="true" />
           </v-col>
         </v-row>
       </v-container>
@@ -54,9 +47,4 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
   <LoadingState v-else msg="Loading connected devices" />
 </template>
 
-<style scoped>
-.icon {
-  width: 1em;
-  margin: 0 0.25em 0 0;
-}
-</style>
+<style scoped></style>

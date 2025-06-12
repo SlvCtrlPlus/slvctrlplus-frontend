@@ -15,6 +15,8 @@
   },
   "dependencies": {
     "@mdi/font": "^6.7.96",
+    "@vueuse/components": "^10.11.0",
+    "@vueuse/core": "^10.11.0",
     "chart.js": "^3.8.0",
     "chartjs-adapter-luxon": "^1.1.0",
     "chartjs-plugin-streaming": "^2.0.0",
@@ -28,12 +30,14 @@
     "socket.io-client": "^4.5.1",
     "vue": "^3.2.33",
     "vue-chartjs": "^4.1.1",
+    "vue-fullscreen": "^3.1.2",
     "vue-router": "^4.0.14",
     "vue-socket.io": "^3.0.10",
     "vuetify": "^3.1.10",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.27.4",
     "@rushstack/eslint-patch": "^1.1.0",
     "@types/jsdom": "^21.1.0",
     "@types/node": "^18.15.0",
