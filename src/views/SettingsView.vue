@@ -19,31 +19,33 @@ const serverUrlRules = [
 </script>
 
 <template>
-  <v-container fluid class="px-sm-6">
+  <v-container fluid class="px-sm-6 d-flex align-start flex-column fill-height">
     <h2 class="text-h4 text-grey-darken-1 py-4">Settings</h2>
-    <v-form v-model="valid">
-      <v-row>
-        <v-col cols="6">
-          <v-text-field
-            v-model="serverUrl"
-            :rules="serverUrlRules"
-            label="Server URL"
-            required
-          ></v-text-field>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6">
-          <v-switch
-            color="primary"
-            v-model="theme"
-            false-value="light"
-            true-value="dark"
-            :label="`Dark mode: ${'dark' === theme ? 'on' : 'off'}`"
-          ></v-switch>
-        </v-col>
-      </v-row>
-    </v-form>
+    <v-container fluid class="px-0">
+      <v-form v-model="valid">
+        <v-row>
+          <v-col cols="6">
+            <v-text-field
+              v-model="serverUrl"
+              :rules="serverUrlRules"
+              label="Server URL"
+              required
+            ></v-text-field>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="6">
+            <v-switch
+              color="primary"
+              v-model="theme"
+              false-value="light"
+              true-value="dark"
+              :label="`Dark mode: ${'dark' === theme ? 'on' : 'off'}`"
+            ></v-switch>
+          </v-col>
+        </v-row>
+      </v-form>
+    </v-container>
   </v-container>
 </template>
 

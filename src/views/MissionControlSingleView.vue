@@ -46,5 +46,4 @@ function updateDevice(deviceId: string) {
   <LoadingState v-else msg="Loading device details" />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <v-main>
@@ -7,5 +6,4 @@
   </v-main>
 </template>
 
-<style>
-</style>
+<style></style>

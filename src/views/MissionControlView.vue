@@ -10,24 +10,6 @@ import DeviceCard from "@/components/device/DeviceCard.vue";
 
 const devicesStore = useDevicesStore();
 const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
-
-const openInNewWindow = (device: Device): void => {
-  console.log("open popup for device: " + device.deviceId);
-  const popup = window.open(
-    `${location.protocol}//${location.host}/mission-control/device/${device.deviceId}`,
-    "",
-    "width=600,height=400"
-  );
-
-  if (!popup) {
-    return;
-  }
-
-  popup.addEventListener("load", () => {
-    popup.document.title = `${document.title}: ${device.deviceName}`;
-  });
-};
-
 </script>
 
 <template>
@@ -65,5 +47,4 @@ const openInNewWindow = (device: Device): void => {
   <LoadingState v-else msg="Loading connected devices" />
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

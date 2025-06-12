@@ -80,9 +80,7 @@ function stopScript() {
       ></v-list-item>
     </v-list>
     <v-divider />
-    <v-sheet class="text-grey-darken-3 text-center pa-3"
-      >v0.1.0-alpha</v-sheet
-    >
+    <v-sheet class="text-grey-darken-3 text-center pa-3">v0.1.0-alpha</v-sheet>
   </v-navigation-drawer>
 
   <v-main>

@@ -23,7 +23,7 @@ const onPopupClose = () => {
 
 const openInNewWindow = (device: Device): void => {
   if (isPopupOpen.value === true && popup !== null) {
-    console.log(`popup is already open. Bring it into focus`)
+    console.log(`popup is already open. Bring it into focus`);
     popup.focus();
     return;
   }
