@@ -1,5 +1,3 @@
-import Device from "./Device";
-
-export default class DeviceDisplayData extends Device {
+export default class DeviceDisplayData {
   public content: string | null = null;
 }

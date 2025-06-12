@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from "vue";
-import type DeviceDisplay from "../../../model/DeviceDisplay";
 import { useFullscreen, useWakeLock } from "@vueuse/core";
+import type VirtualDeviceDisplay from "../../../model/virtual/VirtualDeviceDisplay";
 
 type TimerId = ReturnType<typeof setTimeout>;
 
 interface Props {
-  device: DeviceDisplay;
+  device: VirtualDeviceDisplay;
 }
 
 const props = defineProps<Props>();
-const device = reactive<DeviceDisplay>(props.device);
+const device = reactive<VirtualDeviceDisplay>(props.device);
 
 const displayHtml = computed(() => {
   if (null === device.data || null === device.data["content"]) {
