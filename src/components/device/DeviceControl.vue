@@ -46,6 +46,9 @@ const comp = computed<string>(() => {
       case "randomGenerator":
         controlComponent = "DeviceVirtualRandomGeneratorControl";
         break;
+      case "tts":
+        controlComponent = "DeviceVirtualTtsControl";
+        break;
       default:
         controlComponent = "GenericDeviceControl";
     }

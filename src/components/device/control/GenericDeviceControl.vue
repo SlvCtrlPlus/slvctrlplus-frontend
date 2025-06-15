@@ -29,7 +29,7 @@ const attributeChangeHandler = (
         <label>{{ attr.name }}</label>
       </dt>
       <dd>
-        <v-checkbox
+        <v-switch
           v-if="attr.type === 'bool'"
           v-model="device.data[attr.name]"
           :label="attr.name"
@@ -40,7 +40,7 @@ const attributeChangeHandler = (
             attributeChangeHandler(attr.name, device.data[attr.name])
           "
           :disabled="attr.modifier === 'ro'"
-        ></v-checkbox>
+        ></v-switch>
 
         <v-select
           v-if="attr.type === 'list'"
