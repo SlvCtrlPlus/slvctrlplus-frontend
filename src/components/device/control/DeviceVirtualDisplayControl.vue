@@ -147,9 +147,12 @@ function updateCursorVisibility() {
   }
 }
 
-function debounce(func: (...args: any[]) => void, wait: number) {
+function debounce<T extends unknown[]>(
+  func: (...args: T) => void,
+  wait: number
+) {
   let timeout: TimerId | undefined;
-  return function executedFunction(...args: any[]) {
+  return function executedFunction(...args: T) {
     const later = () => {
       clearTimeout(timeout);
       func(...args);

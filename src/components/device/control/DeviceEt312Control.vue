@@ -9,6 +9,11 @@ interface Props {
   device: DeviceEt312;
 }
 
+type SelectItem = {
+  value: number;
+  title: string;
+};
+
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
@@ -40,7 +45,7 @@ const modes: { [key: number]: string } = {
   0x8c: "User 5",
 };
 
-const selectModes = [];
+const selectModes: SelectItem[] = [];
 
 for (const modeKey in modes) {
   selectModes.push({ value: +modeKey, title: modes[modeKey] });

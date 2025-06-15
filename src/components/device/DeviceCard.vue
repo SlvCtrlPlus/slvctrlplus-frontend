@@ -58,8 +58,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <v-card class="rounded-sm fill-height-card">
-    <v-card-title class="d-flex justify-space-between">
+  <v-card class="rounded-sm">
+    <v-card-title class="d-flex justify-space-between pr-2">
       <div>
         <DeviceIcon :device="device" class="icon" />
         {{ device.deviceName }}
@@ -85,16 +85,5 @@ onBeforeUnmount(() => {
 .icon {
   width: 1em;
   margin: 0 0.25em 0 0;
-}
-
-.fill-height-card {
-  display: flex;
-  flex-direction: column;
-}
-
-.fill-height-grid {
-  flex-grow: 1; /* Ensure v-card-text fills remaining vertical space */
-  display: flex;
-  flex-direction: column;
 }
 </style>

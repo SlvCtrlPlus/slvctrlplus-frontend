@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import DeviceIcon from "../components/icons/DeviceIcon.vue";
-import DeviceControl from "../components/device/DeviceControl.vue";
 import LoadingState from "../components/LoadingState.vue";
 import { useDevicesStore } from "../stores/devices.js";
 import { storeToRefs } from "pinia";
 import EmptyState from "../components/EmptyState.vue";
-import type Device from "../model/Device";
 import DeviceCard from "@/components/device/DeviceCard.vue";
 
 const devicesStore = useDevicesStore();
@@ -21,21 +18,17 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
     <h2 class="text-h4 text-grey-darken-1 py-4 flex-shrink-0 flex-grow-0">
       Mission control
     </h2>
-    <v-container fluid class="pa-0 flex-shrink-0 flex-grow-1">
+    <v-container fluid class="pa-0">
       <v-container v-if="deviceList.length > 0" fluid grid-list-md class="px-0">
-        <v-row row wrap>
-          <v-col
-            cols="12"
-            sm="12"
-            md="6"
-            lg="4"
-            xl="3"
-            :key="device.deviceId"
+        <div class="masonry">
+          <v-sheet
+            class="masonry-item"
             v-for="device in deviceList"
+            :key="device.deviceId"
           >
             <DeviceCard :device="device" :render-popup-link="true" />
-          </v-col>
-        </v-row>
+          </v-sheet>
+        </div>
       </v-container>
       <EmptyState
         v-else
@@ -47,4 +40,33 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
   <LoadingState v-else msg="Loading connected devices" />
 </template>
 
-<style scoped></style>
+<style scoped>
+.masonry {
+  column-count: 4;
+  column-gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 1264px) {
+  .masonry {
+    column-count: 3;
+  }
+}
+@media (max-width: 960px) {
+  .masonry {
+    column-count: 2;
+  }
+}
+@media (max-width: 600px) {
+  .masonry {
+    column-count: 1;
+  }
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  width: 100%; /* Critical for columns */
+  display: inline-block; /* Required for masonry layout */
+}
+</style>
