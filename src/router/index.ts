@@ -53,7 +53,7 @@ const router = createRouter({
     },
     {
       path: "/settings",
-      name: "settings",
+      name: "serverSettings",
       components: {
         default: () => import("../views/SettingsView.vue"),
         layout: LayoutWithMenu,

@@ -55,9 +55,6 @@ monaco.languages.typescript.typescriptDefaults.addExtraLib(libSource, libUri);
 monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
   compilerOptions
 );
-monaco.languages.typescript.javascriptDefaults.setCompilerOptions(
-  compilerOptions
-);
 
 let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
 const options: monaco.editor.IEditorOptions = {
@@ -107,7 +104,7 @@ watch(
 
 const emit = defineEmits(["update:code"]);
 
-const updateValue = (event) => emit("update:code", event);
+const updateValue = (event: string) => emit("update:code", event);
 </script>
 
 <template>

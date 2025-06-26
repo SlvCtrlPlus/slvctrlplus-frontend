@@ -11,6 +11,7 @@ import { useHealthStore } from "./stores/health";
 
 const io = useSocketIO() as Socket;
 const settingsStore = useSettingsStore();
+settingsStore.init();
 const healthStore = useHealthStore();
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
