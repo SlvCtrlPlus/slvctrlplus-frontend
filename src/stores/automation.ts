@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import type AutomationScript from "../model/AutomationScript";
 
 const defaultCode = `// Write your automation here. The script will fire on device events:

@@ -14,7 +14,7 @@ export default defineConfig({
     vue(),
     vueJsx(),
     monacoEditorPlugin({
-      languageWorkers: ['editorWorkerService', 'json', 'typescript'],
+      languageWorkers: ["editorWorkerService", "json", "typescript"],
     }),
   ],
   resolve: {

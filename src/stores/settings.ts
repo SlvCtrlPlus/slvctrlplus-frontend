@@ -1,12 +1,24 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+type ValidationErrors = {
+  message: string;
+  errors: ValidationError[];
+}
+
+type ValidationError = {
+    message: string;
+    instancePath: string;
+    schemaPath: string;
+    keyword: string;
+}
+
 export const useSettingsStore = defineStore("serverSettings", () => {
   // state as refs
   const serverUrl = ref(`http://${location.hostname}:1337`);
   const theme = ref("dark");
   const serverSettings = ref("");
-  const validationErrors = ref<string|null>(null);
+  const validationErrors = ref<ValidationErrors|null>(null);
 
   // actions
   async function init() {

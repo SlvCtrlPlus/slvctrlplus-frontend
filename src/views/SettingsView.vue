@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import {computed, nextTick, ref, watch} from "vue";
+import { nextTick, ref, watch } from "vue";
 import { useSettingsStore } from "../stores/settings.js";
 import { useAppStore } from "../stores/app.js";
 import { storeToRefs } from "pinia";
 import MonacoEditor from "monaco-editor-vue3";
 import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import { KeyCode, KeyMod } from "monaco-editor";
 
 const tab = ref("tab-ui");
 
@@ -49,9 +48,6 @@ function storeEditorInstance(
     editor.layout({ width: rect.width, height: rect.height });
   }
 
-  editor.addCommand(KeyMod.CtrlCmd | KeyCode.KeyS, (): void => {
-    //props.onSave();
-  });
   window.addEventListener("resize", () => {
     // make editor as small as possible
     editor.layout({ width: 0, height: 0 });
@@ -123,7 +119,9 @@ function saveServerSettings(): void {
           <v-alert type="error" variant="tonal" v-if="validationErrors !== null">
             <p>{{ validationErrors.message }}</p>
             <ul class="pl-4 list-disc">
-              <li v-for="error in validationErrors.errors">{{ error.instancePath }} {{ error.message }}</li>
+              <li v-for="(error, index) in validationErrors.errors" :key="index">
+                {{ error.instancePath }} {{ error.message }}
+              </li>
             </ul>
           </v-alert>
           <v-form v-model="validUserInterfaceFrom" @submit.prevent="saveServerSettings">
