@@ -52,6 +52,9 @@ io.on("automationConsoleLog", (data: string) => {
     automationStore.logMessages.shift();
   }
 });
+io.on("settingsChanged", async () => {
+  await settingsStore.getServerSettings()
+});
 </script>
 
 <template>

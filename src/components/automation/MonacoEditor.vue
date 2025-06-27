@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useSettingsStore } from "../../stores/settings.js";
 import MonacoEditor from "monaco-editor-vue3";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { storeToRefs } from "pinia";
 import { KeyCode, KeyMod } from "monaco-editor";
 import { watch } from "vue";
+import type * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 
 const settingsStore = useSettingsStore();
 
@@ -18,45 +18,8 @@ interface Props {
 
 const props = defineProps<Props>();
 
-// extra libraries
-const libSource = `
-interface Device
-{
-    getDeviceId: string
-    getAttribute(attrName: string): bool|number|string
-    setAttribute(attrName: string, value: string): void
-}
-enum DeviceEventType {
-    deviceUpdateReceived = "deviceUpdateReceived",
-    deviceConnected = "deviceConnected",
-    deviceDisconnected = "deviceDisconnected",
-    deviceRefreshed = "deviceRefreshed",
-}
-type DeviceEvent = { type: DeviceEventType, device: Device }
-interface DeviceRepositoryInterface
-{
-    getAll(): Device[];
-    getById(uuid: string): Device|null;
-}
-declare const event: DeviceEvent;
-declare const devices: DeviceRepositoryInterface;
-declare const context: { [key: string]: string };
-`;
-const libUri = "ts:filename/facts.d.ts";
-
-const compilerOptions = {
-  target: monaco.languages.typescript.ScriptTarget.ES2020,
-  lib: ["es2020"],
-  allowNonTsExtensions: true,
-};
-
-monaco.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri);
-monaco.languages.typescript.typescriptDefaults.addExtraLib(libSource, libUri);
-monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
-  compilerOptions
-);
-
 let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
+
 const options: monaco.editor.IEditorOptions = {
   fontSize: 16,
   scrollBeyondLastLine: false,
@@ -83,6 +46,57 @@ window.addEventListener("resize", () => {
     editorInstance.layout({ width: rect.width, height: rect.height });
   });
 });
+
+function editorWillMount(monacoInstance: typeof monaco): void {
+  // extra libraries
+  const libSource = `
+interface Device
+{
+    getDeviceId: string
+    getAttribute(attrName: string): bool|number|string
+    setAttribute(attrName: string, value: bool|number|string): void
+}
+enum DeviceEventType {
+    deviceUpdateReceived = "deviceUpdateReceived",
+    deviceConnected = "deviceConnected",
+    deviceDisconnected = "deviceDisconnected",
+    deviceRefreshed = "deviceRefreshed",
+}
+type DeviceEvent = { type: DeviceEventType, device: Device }
+interface DeviceRepositoryInterface
+{
+    getAll(): Device[];
+    getById(uuid: string): Device|null;
+}
+declare const event: DeviceEvent;
+declare const devices: DeviceRepositoryInterface;
+declare const context: { [key: string]: any };
+declare const console: {
+  log: (...args: any[]) => void;
+  error: (...args: any[]) => void;
+  warn: (...args: any[]) => void;
+  info: (...args: any[]) => void;
+  debug: (...args: any[]) => void;
+  trace: (...args: any[]) => void;
+};
+`;
+  const libUri = "ts:filename/facts.d.ts";
+
+  const compilerOptions = {
+    target: monacoInstance.languages.typescript.ScriptTarget.ES2020,
+    lib: ["es2020"],
+    allowNonTsExtensions: true,
+  };
+
+  monacoInstance.languages.typescript.javascriptDefaults.addExtraLib(libSource, libUri);
+  monacoInstance.languages.typescript.typescriptDefaults.addExtraLib(libSource, libUri);
+  monacoInstance.languages.typescript.typescriptDefaults.setCompilerOptions(
+      compilerOptions
+  );
+  monacoInstance.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+    diagnosticCodesToIgnore: [1108], // suppress "return not in function"
+  });
+}
 
 function storeEditorInstance(
   editor: monaco.editor.IStandaloneCodeEditor
@@ -112,10 +126,11 @@ const updateValue = (event: string) => emit("update:code", event);
     <MonacoEditor
       :theme="theme === 'dark' ? 'vs-dark' : 'vs'"
       :options="options"
-      language="javascript"
+      language="typescript"
       :value="props.code"
       @change="updateValue"
       @editorDidMount="storeEditorInstance"
+      @editorWillMount="editorWillMount"
     ></MonacoEditor>
   </v-container>
 </template>

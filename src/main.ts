@@ -9,6 +9,13 @@ import { createPinia } from "pinia";
 import { vuetify } from "./plugins/vuetify.js";
 import VueFullscreen from "vue-fullscreen";
 
+/*window.MonacoEnvironment = {
+    getWorkerUrl: function (moduleId, label) {
+        console.log(`[Monaco] Loading worker for label: ${label}`);
+        return `/monaco/${label}.worker.js`; // adjust path if needed
+    }
+};*/
+
 loadFonts().catch(console.log);
 
 const pinia = createPinia();
