@@ -1,58 +1,62 @@
 import { defineStore } from "pinia";
+import { ref, reactive, computed } from "vue";
 import type Device from "../model/Device.js";
 import type DeviceGeneric from "../model/DeviceGeneric.js";
 
-export type DeviceState = {
-  devices: { [key: string]: Device };
-  devicesLoaded: boolean;
-};
+export const useDevicesStore = defineStore("devices", () => {
+  // State: use reactive for objects, ref for primitives
+  const devices = reactive<{ [key: string]: Device }>({});
+  const devicesLoaded = ref(false);
 
-export const useDevicesStore = defineStore({
-  id: "devices",
-  state: () =>
-    ({
-      devices: {},
-      devicesLoaded: false,
-    } as DeviceState),
-  getters: {
-    deviceList: (state) => Object.values(state.devices),
-  },
-  actions: {
-    init() {
-      fetch(`http://${location.hostname}:1337/devices`)
+  // Getter
+  const deviceList = computed(() => Object.values(devices));
+
+  // Actions
+  function init() {
+    fetch(`http://${location.hostname}:1337/devices`)
         .then((response) => response.json())
         .then((data) => {
           data.items.forEach((v: Device) => {
             v.receiveUpdates = true;
-            this.devices[v.deviceId as string] = v;
+            devices[v.deviceId as string] = v;
           });
-          this.devicesLoaded = true;
+          devicesLoaded.value = true;
         })
         .catch(console.log);
-    },
-    removeDevice(removedDevice: Device) {
-      delete this.devices[removedDevice.deviceId as string];
-    },
-    addDevice(device: Device) {
-      device.receiveUpdates = true;
-      this.devices[device.deviceId as string] = device;
-    },
-    updateDevice(updatedDevice: Device) {
-      const device = this.devices[updatedDevice.deviceId as string];
+  }
 
-      if (!device || !device.receiveUpdates) {
-        return;
-      }
+  function removeDevice(removedDevice: Device) {
+    delete devices[removedDevice.deviceId as string];
+  }
 
-      device.lastRefresh = updatedDevice.lastRefresh;
+  function addDevice(device: Device) {
+    device.receiveUpdates = true;
+    devices[device.deviceId as string] = device;
+  }
 
-      if (device.type === "slvCtrlPlus") {
-        (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-      } else if (device.type === "buttplugIo") {
-        (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-      } else {
-        (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-      }
-    },
-  },
+  function updateDevice(updatedDevice: Device) {
+    const device = devices[updatedDevice.deviceId as string];
+    if (!device || !device.receiveUpdates) {
+      return;
+    }
+    device.lastRefresh = updatedDevice.lastRefresh;
+
+    if (device.type === "slvCtrlPlus") {
+      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
+    } else if (device.type === "buttplugIo") {
+      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
+    } else {
+      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
+    }
+  }
+
+  return {
+    devices,
+    devicesLoaded,
+    deviceList,
+    init,
+    removeDevice,
+    addDevice,
+    updateDevice,
+  };
 });

@@ -64,11 +64,7 @@ async function saveScript(): Promise<void> {
 
   automationStore
     .saveScript()
-    .then(() => {
-      appStore.displaySnackbar(
-        `Automation script "${currentScriptName.value}" saved`
-      );
-    })
+    .then(() => appStore.displaySnackbar(`Automation script "${currentScriptName.value}" saved`))
     .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
 }
 

@@ -3,7 +3,7 @@ import { fileURLToPath, URL } from "url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import monacoEditorPlugin from "vite-plugin-monaco-editor";
+import monacoEditorPlugin from "vite-plugin-monaco-editor-esm";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,8 +13,8 @@ export default defineConfig({
   plugins: [
     vue(),
     vueJsx(),
-    monacoEditorPlugin.default({
-      languageWorkers: ["typescript", "editorWorkerService"],
+    monacoEditorPlugin({
+      languageWorkers: ["editorWorkerService", "json", "typescript"],
     }),
   ],
   resolve: {
