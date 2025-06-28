@@ -4,7 +4,7 @@ import { useSettingsStore } from "../stores/settings.js";
 import { useAppStore } from "../stores/app.js";
 import { storeToRefs } from "pinia";
 import MonacoEditor from "monaco-editor-vue3";
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 
 const tab = ref("tab-ui");
 
@@ -37,14 +37,20 @@ watch(tab, async (newVal) => {
   }
 });
 
+function editorWillMount(monacoInstance: typeof monaco): void {
+  monacoInstance.languages.json.jsonDefaults.setDiagnosticsOptions({
+    validate: true,
+    allowComments: false,
+  });
+}
+
 function storeEditorInstance(
   editor: monaco.editor.IStandaloneCodeEditor
 ): void {
   const container = document.getElementById("monaco-wrapper");
-  console.log("Editor mounted:", editor);
+
   if (container) {
     const rect = container.getBoundingClientRect();
-    console.log(rect)
     editor.layout({ width: rect.width, height: rect.height });
   }
 
@@ -89,7 +95,7 @@ function saveServerSettings(): void {
         <v-window-item value="tab-ui">
           <v-form v-model="validUserInterfaceFrom">
             <v-row>
-              <v-col cols="6">
+              <v-col cols="12">
                 <v-text-field
                   v-model="serverUrl"
                   :rules="serverUrlRules"
@@ -99,7 +105,7 @@ function saveServerSettings(): void {
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="6">
+              <v-col cols="12">
                 <v-switch
                   color="primary"
                   v-model="theme"
@@ -134,6 +140,7 @@ function saveServerSettings(): void {
                     language="json"
                     v-model:value="serverSettings"
                     @editorDidMount="storeEditorInstance"
+                    @editorWillMount="editorWillMount"
                     v-show="tab === 'tab-server'"
                   ></MonacoEditor>
                 </v-container>
