@@ -74,7 +74,6 @@ export const useHealthStore = defineStore("health", () => {
 
     setInterval(() => {
       if (!appStore.isServerOnline || !chartData || !state.value) {
-        chartData
         return;
       }
 

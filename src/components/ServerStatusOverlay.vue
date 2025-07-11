@@ -1,19 +1,3 @@
-<template>
-  <v-overlay persistent :model-value="!isServerOnline" :scrim="'transparent'"
-      class="sever-status-overlay align-center justify-center text-white text-h6 font-weight-bold text-center"
-  >
-    <div>
-      <p class="mb-4"><v-icon icon="mdi-cloud-off" /></p>
-      <p><span v-if="!wasSeverEverOnline">
-        Cannot connect to server. Please check your network.
-      </span>
-      <span v-else>
-        Connection lost. Trying to reconnect...
-      </span></p>
-    </div>
-  </v-overlay>
-</template>
-
 <script setup lang="ts">
 import {useAppStore} from "@/stores/app.ts";
 import {watch} from "vue";
@@ -27,6 +11,25 @@ watch(isServerOnline, (online) => {
   document.body.style.overflow = online ? '' : 'hidden';
 })
 </script>
+
+<template>
+  <v-overlay
+      persistent
+      :model-value="!isServerOnline"
+      :scrim="'transparent'"
+      class="sever-status-overlay align-center justify-center text-white text-h6 font-weight-bold text-center"
+  >
+    <div>
+      <p class="mb-4"><v-icon icon="mdi-cloud-off" /></p>
+      <p><span v-if="!wasSeverEverOnline">
+        Cannot connect to server. Please check your network.
+      </span>
+        <span v-else>
+        Connection lost. Trying to reconnect...
+      </span></p>
+    </div>
+  </v-overlay>
+</template>
 
 <style scoped>
 .sever-status-overlay {
