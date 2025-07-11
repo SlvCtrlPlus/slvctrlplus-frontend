@@ -8,21 +8,28 @@ import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
 import { useHealthStore } from "./stores/health";
+import ServerStatusOverlay from "@/components/ServerStatusOverlay.vue";
 
 const io = useSocketIO() as Socket;
+
 const settingsStore = useSettingsStore();
-settingsStore.init();
 const healthStore = useHealthStore();
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
-automationStore.init();
+const devicesStore = useDevicesStore();
 
 const { theme } = storeToRefs(settingsStore);
 
-const devicesStore = useDevicesStore();
-devicesStore.init();
+io.on("connect", () => {
+  appStore.setServerOnline(true);
 
-healthStore.init();
+  // Init/update stores with initial data from server
+  settingsStore.init();
+  automationStore.init();
+  devicesStore.init();
+  healthStore.init();
+});
+io.on("disconnect", () => appStore.setServerOnline(false));
 
 io.on("deviceDisconnected", (device) => {
   devicesStore.removeDevice(device);
@@ -59,6 +66,7 @@ io.on("settingsChanged", async () => {
 
 <template>
   <v-app :theme="theme" class="mx-auto overflow-hidden">
+    <ServerStatusOverlay />
     <RouterView name="layout" />
     <RouterView />
   </v-app>

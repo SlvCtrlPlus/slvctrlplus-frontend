@@ -96,7 +96,12 @@ function displayDeleteDialog(scriptName: string): void {
   showDeleteDialog.value = true;
 }
 
-setInterval(() => automationStore.fetchScripts(), 5000);
+setInterval(() => {
+  if (!appStore.isServerOnline) {
+    return;
+  }
+  automationStore.fetchScripts()
+}, 5000);
 automationStore.fetchScripts();
 
 const selectOptions = computed(() =>
