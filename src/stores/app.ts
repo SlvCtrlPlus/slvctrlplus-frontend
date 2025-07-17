@@ -44,6 +44,10 @@ export const useAppStore = defineStore("app", () => {
     }
   }
 
+  function getVersion(): string {
+    return import.meta.env.VITE_APP_VERSION || 'n/a';
+  }
+
   return {
     snackbar,
     displaySnackbar,
@@ -51,5 +55,6 @@ export const useAppStore = defineStore("app", () => {
     wasSeverEverOnline,
 
     setServerOnline,
+    getVersion,
   };
 });

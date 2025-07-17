@@ -15,9 +15,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+      - name: Tag
+        id: set_tag
+        uses: K-Phoen/semver-release-action@v1.3.2
+        with:
+          release_branch: main
+          release_strategy: tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Install modules
         run: yarn install
       - name: Build app
+        env:
+          VITE_APP_VERSION: ${{ steps.set_tag.outputs.tag }}
         run: |
           yarn run build
       - name: Compress build
@@ -34,14 +44,6 @@ jobs:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           echo "$COMMIT_MESSAGE" > ./release_notes.txt
-      - name: Tag
-        id: set_tag
-        uses: K-Phoen/semver-release-action@v1.3.2
-        with:
-          release_branch: main
-          release_strategy: tag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create release
         uses: ncipollo/release-action@v1
         env:

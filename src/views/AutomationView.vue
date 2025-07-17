@@ -125,7 +125,7 @@ const itemKeyDelete = ref("");
             :items="selectOptions"
             v-model="currentScriptName"
             @update:modelValue="changeScript"
-            hide-details="hide-details"
+            :hide-details="true"
             density="compact"
             :disabled="scriptRunning"
           >
