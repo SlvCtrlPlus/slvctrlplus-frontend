@@ -14,10 +14,12 @@
       "dom"
     ],
     "composite": true,
-    "baseUrl": "./slvctrl-plus-frontend",
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
+    "types": ["node", "vite/client"],
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   }

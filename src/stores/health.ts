@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, reactive } from "vue";
 import type { ChartData } from "chart.js";
 import ChartHelper from "../helper/ChartHelper";
+import {useAppStore} from "@/stores/app.ts";
 
 interface SystemInfo {
   process: {
@@ -60,13 +61,19 @@ export const useHealthStore = defineStore("health", () => {
 
   // actions
   function init(): void {
+    const appStore = useAppStore();
+
     setInterval(async () => {
+      if (!appStore.isServerOnline) {
+        return;
+      }
+
       const response = await fetch(`http://${location.hostname}:1337/health`);
       state.value = await response.json();
     }, 500);
 
     setInterval(() => {
-      if (!chartData || !state.value) {
+      if (!appStore.isServerOnline || !chartData || !state.value) {
         return;
       }
 

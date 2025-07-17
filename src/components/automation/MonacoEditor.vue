@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { useSettingsStore } from "../../stores/settings.js";
-import MonacoEditor from "monaco-editor-vue3";
+import { useSettingsStore } from "@/stores/settings.js";
 import { storeToRefs } from "pinia";
-import { KeyCode, KeyMod } from "monaco-editor";
-import { watch } from "vue";
+import {defineAsyncComponent, watch} from "vue";
 import type * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
+
+// Load Monaco Editor asynchronously for performance reasons
+const MonacoEditor = defineAsyncComponent(() => import('monaco-editor-vue3'));
 
 const settingsStore = useSettingsStore();
 
@@ -18,6 +19,7 @@ interface Props {
 
 const props = defineProps<Props>();
 
+let monacoInstanceGlobal: typeof monaco | null = null;
 let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
 
 const options: monaco.editor.IEditorOptions = {
@@ -48,6 +50,9 @@ window.addEventListener("resize", () => {
 });
 
 function editorWillMount(monacoInstance: typeof monaco): void {
+  // Store global Monaco Editor for performance reasons
+  monacoInstanceGlobal = monacoInstance;
+
   // extra libraries
   const libSource = `
 interface Device
@@ -99,11 +104,14 @@ declare const console: {
 }
 
 function storeEditorInstance(
-  editor: monaco.editor.IStandaloneCodeEditor
+  editor: monaco.editor.IStandaloneCodeEditor,
 ): void {
-  editor.addCommand(KeyMod.CtrlCmd | KeyCode.KeyS, (): void => {
-    props.onSave();
-  });
+  if (monacoInstanceGlobal !== null) {
+    // Use global Monaco Editor here for performance reasons
+    editor.addCommand(monacoInstanceGlobal.KeyMod.CtrlCmd | monacoInstanceGlobal.KeyCode.KeyS, (): void => {
+      props.onSave();
+    });
+  }
   editorInstance = editor;
 }
 
