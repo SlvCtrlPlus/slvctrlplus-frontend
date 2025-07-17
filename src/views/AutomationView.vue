@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { useAutomationStore } from "@/stores/automation.js";
-import MonacoEditor from "@/components/automation/MonacoEditor.vue";
+import { useAutomationStore } from "@/stores/automation";
 import { storeToRefs } from "pinia";
-import { computed, ref } from "vue";
-import { useAppStore } from "@/stores/app.js";
+import {computed, defineAsyncComponent, ref} from "vue";
+import { useAppStore } from "@/stores/app";
 import CreateForm from "@/components/automation/CreateForm.vue";
-import type AutomationScript from "@/model/AutomationScript.js";
+import type AutomationScript from "@/model/AutomationScript";
 import LogViewer from "@/components/automation/LogViewer.vue";
+
+const MonacoEditor = defineAsyncComponent(() => import('@/components/automation/MonacoEditor.vue'));
 
 const automationStore = useAutomationStore();
 const appStore = useAppStore();

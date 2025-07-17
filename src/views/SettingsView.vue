@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from "vue";
+import {defineAsyncComponent, nextTick, ref, watch} from "vue";
 import { useSettingsStore } from "../stores/settings.js";
 import { useAppStore } from "../stores/app.js";
 import { storeToRefs } from "pinia";
-import MonacoEditor from "monaco-editor-vue3";
-import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+
+// Load Monaco Editor asynchronously for performance reasons
+const MonacoEditor = defineAsyncComponent(() => import('monaco-editor-vue3'));
 
 const tab = ref("tab-ui");
 

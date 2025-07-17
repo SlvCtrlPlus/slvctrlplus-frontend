@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useAppStore} from "@/stores/app.ts";
+import {useAppStore} from "@/stores/app";
 import {storeToRefs} from "pinia";
 import {computed, ref, watch} from "vue";
 import {format} from "date-fns";
@@ -14,17 +14,15 @@ const disconnectSeconds = ref(0)
 
 watch(isServerOnline, (online) => {
   if (!online) {
-    disconnectSeconds.value = 0
-    disconnectSecondsTimer = window.setInterval(() => disconnectSeconds.value += 1, 1000)
+    disconnectSeconds.value = 0;
+    disconnectSecondsTimer = window.setInterval(() => ++disconnectSeconds.value, 1000);
 
     // Wait 1s before showing overlay
-    debounceTimer = window.setTimeout(() => {
-      shouldShowOverlay.value = true;
-    }, 1000)
+    debounceTimer = window.setTimeout(() => shouldShowOverlay.value = true, 1000);
   } else {
     // Clear timer and hide overlay immediately
     clearTimeout(debounceTimer);
-    clearInterval(disconnectSecondsTimer)
+    clearInterval(disconnectSecondsTimer);
 
     shouldShowOverlay.value = false;
     disconnectSeconds.value = 0;
