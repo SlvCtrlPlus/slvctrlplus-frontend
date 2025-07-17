@@ -44,7 +44,6 @@ jobs:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           echo "$COMMIT_MESSAGE" > ./release_notes.txt
-
       - name: Create release
         uses: ncipollo/release-action@v1
         env:
