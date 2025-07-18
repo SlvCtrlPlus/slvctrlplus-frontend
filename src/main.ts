@@ -8,15 +8,16 @@ import { vueSocketIOClient } from "./plugins/vueSocketIOClient.js";
 import { createPinia } from "pinia";
 import { vuetify } from "./plugins/vuetify.js";
 import VueFullscreen from "vue-fullscreen";
+import {useBackendStore} from "@/stores/backend.ts";
 
 loadFonts().catch(console.log);
 
-const pinia = createPinia();
+const app = createApp(App).use(createPinia());
+const backend = useBackendStore();
 
-createApp(App)
-  .use(pinia)
+app
   .use(vueSocketIOClient, {
-    connection: `http://${location.hostname}:1337`,
+    connection: `${backend.backendUrl}`,
   })
   .use(router)
   .use(vuetify)

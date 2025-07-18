@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LayoutWithMenu from "../layouts/LayoutWithMenu.vue";
+import {useBackendStore} from "@/stores/backend";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,7 +60,23 @@ const router = createRouter({
         layout: LayoutWithMenu,
       },
     },
+    {
+      path: '/start',
+      name: 'start', // Make sure this is set
+      component: () => import('@/views/BackendUrl.vue')
+    },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const backend = useBackendStore()
+  if (!backend.backendUrl && to.name !== 'start') {
+    next({name: 'start'});
+  } else if (backend.backendUrl && to.name === 'start') {
+    next({name: 'welcome'})
+  } else {
+    next()
+  }
+})
 
 export default router;
