@@ -8,65 +8,68 @@ import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
 import { useHealthStore } from "./stores/health";
+import { useBackendStore } from "@/stores/backend.ts";
 import ServerStatusOverlay from "@/components/ServerStatusOverlay.vue";
-
-const io = useSocketIO() as Socket;
 
 const settingsStore = useSettingsStore();
 const healthStore = useHealthStore();
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
 const devicesStore = useDevicesStore();
+const backend = useBackendStore();
 
 const { theme } = storeToRefs(settingsStore);
 
-io.on("connect", () => {
-  appStore.setServerOnline(true);
+if (backend.backendUrl) {
+  const io = useSocketIO() as Socket;
 
-  // Init/update stores with initial data from server
-  settingsStore.init();
-  automationStore.init();
-  devicesStore.init();
-  healthStore.init();
-});
-io.on("disconnect", () => appStore.setServerOnline(false));
+  io.on("connect", () => {
+    appStore.setServerOnline(true);
 
-io.on("deviceDisconnected", (device) => {
-  devicesStore.removeDevice(device);
+    // Init/update stores with initial data from server
+    settingsStore.init();
+    automationStore.init();
+    devicesStore.init();
+    healthStore.init();
+  });
+  io.on("disconnect", () => appStore.setServerOnline(false));
 
-  appStore.displaySnackbar(
-    `Device "${(device as Device).deviceName}" (${
-      (device as Device).type
-    }) disconnected`
-  );
-});
-io.on("deviceConnected", (device) => {
-  devicesStore.addDevice(device);
+  io.on("deviceDisconnected", (device) => {
+    devicesStore.removeDevice(device);
 
-  appStore.displaySnackbar(
-    `Device "${(device as Device).deviceName}" (${
-      (device as Device).type
-    }) connected`
-  );
-});
-io.on("deviceRefreshed", (device) => {
-  devicesStore.updateDevice(device);
-});
-io.on("automationConsoleLog", (data: string) => {
-  automationStore.logMessages.push(data);
+    appStore.displaySnackbar(
+      `Device "${(device as Device).deviceName}" (${
+        (device as Device).type
+      }) disconnected`
+    );
+  });
+  io.on("deviceConnected", (device) => {
+    devicesStore.addDevice(device);
 
-  if (automationStore.logMessages.length > 500) {
-    automationStore.logMessages.shift();
-  }
-});
-io.on("settingsChanged", async () => {
-  await settingsStore.getServerSettings()
-});
+    appStore.displaySnackbar(
+      `Device "${(device as Device).deviceName}" (${
+        (device as Device).type
+      }) connected`
+    );
+  });
+  io.on("deviceRefreshed", (device) => {
+    devicesStore.updateDevice(device);
+  });
+  io.on("automationConsoleLog", (data: string) => {
+    automationStore.logMessages.push(data);
+
+    if (automationStore.logMessages.length > 500) {
+      automationStore.logMessages.shift();
+    }
+  });
+  io.on("settingsChanged", async () => {
+    await settingsStore.getServerSettings()
+  });
+}
 </script>
 
 <template>
   <v-app :theme="theme" class="mx-auto overflow-hidden">
-    <ServerStatusOverlay />
     <RouterView name="layout" />
     <RouterView />
   </v-app>

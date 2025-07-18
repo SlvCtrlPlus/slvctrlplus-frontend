@@ -4,6 +4,7 @@ import { useSettingsStore } from "../stores/settings.js";
 import { useAppStore } from "../stores/app.js";
 import { storeToRefs } from "pinia";
 import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
+import {useBackendStore} from "@/stores/backend.ts";
 
 // Load Monaco Editor asynchronously for performance reasons
 const MonacoEditor = defineAsyncComponent(() => import('monaco-editor-vue3'));
@@ -14,16 +15,8 @@ const validUserInterfaceFrom = ref(false);
 
 const settingsStore = useSettingsStore();
 const appStore = useAppStore();
-const { serverUrl, theme, serverSettings, validationErrors } = storeToRefs(settingsStore);
-
-const serverUrlRules = [
-  (v: string) => !!v || "Server URL is required",
-  (v: string) =>
-    v.length >= 10 || "Server URL must be at least 10 characters long",
-  (v: string) =>
-    /^https?:\/\/.+/.test(v) || "Server URL must start with http(s)://",
-  (v: string) => /[^/]$/.test(v) || "Server URL must not end in a /",
-];
+const backendStore = useBackendStore();
+const { theme, serverSettings, validationErrors } = storeToRefs(settingsStore);
 
 let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
 const options: monaco.editor.IEditorOptions = {
@@ -81,6 +74,12 @@ function saveServerSettings(): void {
       .then(() => appStore.displaySnackbar(`Server settings saved`))
       .catch((err: Error) => appStore.displaySnackbar(`Sever settings could not be saved: ${err.message}`, "red"));
 }
+
+function clearBackendUrl(): void {
+  console.log(`Reset backend url`)
+  backendStore.clearBackendUrl();
+  location.reload();
+}
 </script>
 
 <template>
@@ -99,11 +98,11 @@ function saveServerSettings(): void {
             <v-row>
               <v-col cols="12">
                 <v-text-field
-                  v-model="serverUrl"
-                  :rules="serverUrlRules"
                   label="Server URL"
-                  required
+                  v-model="backendStore.backendUrl"
+                  readonly
                 ></v-text-field>
+                <v-btn @click="clearBackendUrl">Change</v-btn>
               </v-col>
             </v-row>
             <v-row>
