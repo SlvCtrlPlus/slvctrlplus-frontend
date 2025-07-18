@@ -9,7 +9,6 @@ import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
 import { useHealthStore } from "./stores/health";
 import { useBackendStore } from "@/stores/backend.ts";
-import ServerStatusOverlay from "@/components/ServerStatusOverlay.vue";
 
 const settingsStore = useSettingsStore();
 const healthStore = useHealthStore();

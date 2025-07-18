@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { useBackendStore } from '@/stores/backend.ts'
 import { useAppStore } from "@/stores/app.ts";
 
+const validFrom = ref(false);
+
 const backendStore = useBackendStore()
 const appStore = useAppStore();
 const backendInput = ref('')
@@ -38,14 +40,15 @@ function select(url: string) {
     <v-card class="mx-auto pa-4" style="width: 800px; max-width: 100%;">
       <v-card-title class="text-h2 text-center my-4">SlvCtrl+</v-card-title>
       <v-card-text>
-        <v-form v-model="validUserInterfaceFrom" @submit.prevent="saveServerSettings">
+        <v-form v-model="validFrom" @submit.prevent="connect">
           <v-text-field
             v-model="backendInput"
             label="Enter backend URL"
             :rules="serverUrlRules"
+            validate-on="submit"
             class="mb-2"
           />
-          <v-btn color="primary" block @click="connect">
+          <v-btn type="submit" color="primary" block>
             Connect
           </v-btn>
       </v-form>
