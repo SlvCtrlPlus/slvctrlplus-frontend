@@ -95,27 +95,49 @@ function clearBackendUrl(): void {
       <v-window v-model="tab" class="mt-4">
         <v-window-item value="tab-ui">
           <v-form v-model="validUserInterfaceFrom">
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  label="Server URL"
-                  v-model="backendStore.backendUrl"
-                  readonly
-                ></v-text-field>
-                <v-btn @click="clearBackendUrl">Change</v-btn>
+            <v-divider class="my-4" />
+            <v-row class="align-center">
+              <v-col cols="12" sm="2" class="pb-0 pb-md-4">
+                <label for="dark-mode">
+                  <strong>Dark Mode</strong>
+                  <div class="text-caption text-grey">Enable dark theme UI</div>
+                </label>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col cols="12">
+              <v-col cols="12" sm="10">
                 <v-switch
-                  color="primary"
-                  v-model="theme"
-                  false-value="light"
-                  true-value="dark"
-                  :label="`Dark mode: ${'dark' === theme ? 'on' : 'off'}`"
+                    id="dark-mode"
+                    color="primary"
+                    hide-details
+                    v-model="theme"
+                    false-value="light"
+                    true-value="dark"
+                    :label="`${'dark' === theme ? 'on' : 'off'}`"
                 ></v-switch>
               </v-col>
             </v-row>
+
+            <v-divider class="my-4" />
+
+            <v-row class="align-center">
+              <v-col cols="12" sm="2" class="pb-0 pb-md-4">
+                <label for="backend-url">
+                  <strong>Server URL</strong>
+                  <div class="text-caption text-grey">Where to connect</div>
+                </label>
+              </v-col>
+              <v-col cols="12" sm="10" class="d-flex align-center">
+                <v-text-field
+                    id="backend-url"
+                    v-model="backendStore.backendUrl"
+                    hide-details
+                    readonly
+                    disabled
+                ></v-text-field>
+                <v-btn color="primary" class="ml-4" @click="clearBackendUrl">Change</v-btn>
+              </v-col>
+            </v-row>
+
+            <v-divider class="my-4"  />
           </v-form>
         </v-window-item>
 
