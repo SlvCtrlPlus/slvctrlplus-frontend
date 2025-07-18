@@ -28,7 +28,7 @@ export const useSettingsStore = defineStore("serverSettings", () => {
   }
 
   async function saveServerSettings(): Promise<void> {
-    const response = await fetch(`http://${backendStore.backendUrl}:1337/settings`, {
+    const response = await fetch(`${backendStore.backendUrl}/settings`, {
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
       method: "PUT",
       body: serverSettings.value,
