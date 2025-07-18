@@ -15,15 +15,15 @@ const healthStore = useHealthStore();
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
 const devicesStore = useDevicesStore();
-const backend = useBackendStore();
+const backendStore = useBackendStore();
 
 const { theme } = storeToRefs(settingsStore);
 
-if (backend.backendUrl) {
+if (backendStore.backendUrl) {
   const io = useSocketIO() as Socket;
 
   io.on("connect", () => {
-    appStore.setServerOnline(true);
+    backendStore.setServerOnline(true);
 
     // Init/update stores with initial data from server
     settingsStore.init();
@@ -31,7 +31,7 @@ if (backend.backendUrl) {
     devicesStore.init();
     healthStore.init();
   });
-  io.on("disconnect", () => appStore.setServerOnline(false));
+  io.on("disconnect", () => backendStore.setServerOnline(false));
 
   io.on("deviceDisconnected", (device) => {
     devicesStore.removeDevice(device);

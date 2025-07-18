@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import {useAppStore} from "@/stores/app";
 import {useBackendStore} from "@/stores/backend.ts";
 import {storeToRefs} from "pinia";
 import {computed, ref, watch} from "vue";
 import {format} from "date-fns";
 
-const appStore = useAppStore();
 const backendStore = useBackendStore();
-const { isServerOnline, wasSeverEverOnline } = storeToRefs(appStore);
+const { isServerOnline, wasSeverEverOnline } = storeToRefs(backendStore);
 
 let debounceTimer: number | undefined = undefined;
 let disconnectSecondsTimer: number | undefined = undefined
