@@ -3,7 +3,6 @@ import { ref } from "vue";
 import { useAutomationStore } from "../stores/automation";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "../stores/app";
-import ServerStatusOverlay from "@/components/ServerStatusOverlay.vue";
 
 const drawer = ref(false);
 const menuItems = [
