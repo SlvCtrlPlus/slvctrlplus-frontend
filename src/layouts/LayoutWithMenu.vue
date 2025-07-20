@@ -50,7 +50,6 @@ function stopScript() {
 </script>
 
 <template>
-  <ServerStatusOverlay />
   <v-app-bar prominent>
     <v-app-bar-nav-icon
       color="primary"

@@ -8,7 +8,8 @@ import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "./stores/app";
 import { useHealthStore } from "./stores/health";
-import { useBackendStore } from "@/stores/backend.ts";
+import { useBackendStore } from "@/stores/backend";
+import ServerStatusOverlay from "@/components/ServerStatusOverlay.vue";
 
 const settingsStore = useSettingsStore();
 const healthStore = useHealthStore();
@@ -69,6 +70,7 @@ if (backendStore.backendUrl) {
 
 <template>
   <v-app :theme="theme" class="mx-auto overflow-hidden">
+    <ServerStatusOverlay />
     <RouterView name="layout" />
     <RouterView />
   </v-app>

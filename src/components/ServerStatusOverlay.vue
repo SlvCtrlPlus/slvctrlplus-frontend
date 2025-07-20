@@ -5,7 +5,7 @@ import {computed, ref, watch} from "vue";
 import {format} from "date-fns";
 
 const backendStore = useBackendStore();
-const { isServerOnline, wasSeverEverOnline } = storeToRefs(backendStore);
+const { backendUrl, isServerOnline, wasServerEverOnline } = storeToRefs(backendStore);
 
 let debounceTimer: number | undefined = undefined;
 let disconnectSecondsTimer: number | undefined = undefined
@@ -13,7 +13,7 @@ const shouldShowOverlay = ref(false);
 const disconnectSeconds = ref(0)
 
 watch(isServerOnline, (online) => {
-  if (!online) {
+  if (backendUrl.value && !online) {
     disconnectSeconds.value = 0;
     disconnectSecondsTimer = window.setInterval(() => ++disconnectSeconds.value, 1000);
 
@@ -51,7 +51,7 @@ function clearBackendUrl(): void {
     <div>
       <p class="mb-4"><v-icon icon="mdi-cloud-off" /></p>
       <p>
-        <span v-if="!wasSeverEverOnline">
+        <span v-if="!wasServerEverOnline">
           Cannot connect to server. Please check your network.
         </span>
           <span v-else>

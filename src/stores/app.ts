@@ -10,8 +10,8 @@ export type AppState = {
   };
   displaySnackbar(
       text: string,
-      color: string,
-      timeout: number,
+      color?: string,
+      timeout?: number,
   ): void;
   getVersion(): string;
 };
@@ -28,9 +28,9 @@ export const useAppStore = defineStore("app", (): AppState => {
   // actions
   function displaySnackbar(
       text: string,
-      color = "primary",
-      timeout = 5000
-  ) {
+      color: string = "primary",
+      timeout: number = 5000
+  ): void {
     snackbar.text = text;
     snackbar.color = color;
     snackbar.timeout = timeout;

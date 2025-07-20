@@ -7,28 +7,47 @@ export const useBackendStore = defineStore('backend', () => {
     const backendUrl = ref<string|undefined>(localStorage.getItem('backendUrl') || '');
     const history = ref<string[]>(JSON.parse(localStorage.getItem('backendHistory') || '[]') as string[]);
     const isServerOnline = ref<boolean>(false);
-    const wasSeverEverOnline = ref<boolean>(false);
+    const wasServerEverOnline = ref<boolean>(false);
 
     function setBackendUrl(url: string): void {
-        backendUrl.value = url
-        localStorage.setItem('backendUrl', url)
+        try {
+            localStorage.setItem('backendUrl', url);
+            backendUrl.value = url;
+        } catch (error) {
+            console.error("Error setting backend URL:", error);
+        }
 
         if (!history.value.includes(url)) {
-            history.value.unshift(url)
-            localStorage.setItem('backendHistory', JSON.stringify(history.value))
+            history.value.unshift(url);
+
+            if (history.value.length > 5) {
+                history.value.pop(); // Keep only the last few entries
+            }
+
+            try {
+                localStorage.setItem('backendHistory', JSON.stringify(history.value));
+            } catch (error) {
+                console.error("Error saving backend history:", error);
+            }
         }
     }
 
     function clearBackendUrl(): void {
-        backendUrl.value = ''
-        localStorage.removeItem('backendUrl')
+        try {
+            localStorage.removeItem('backendUrl');
+            backendUrl.value = '';
+            wasServerEverOnline.value = false;
+            isServerOnline.value = false;
+        } catch (error) {
+            console.error("Error clearing backend URL:", error);
+        }
     }
 
     function setServerOnline(status: boolean): void {
         isServerOnline.value = status;
 
         if (status) {
-            wasSeverEverOnline.value = true;
+            wasServerEverOnline.value = true;
         }
     }
 
@@ -36,7 +55,7 @@ export const useBackendStore = defineStore('backend', () => {
         backendUrl,
         history,
         isServerOnline,
-        wasSeverEverOnline,
+        wasServerEverOnline,
 
         setServerOnline,
         setBackendUrl,
