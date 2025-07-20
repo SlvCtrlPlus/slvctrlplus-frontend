@@ -4,13 +4,25 @@ import { ref } from "vue";
 
 export const useBackendStore = defineStore('backend', () => {
 
-    const backendUrl = ref<string|undefined>(localStorage.getItem('backendUrl') || '');
-    const history = ref<string[]>(JSON.parse(localStorage.getItem('backendHistory') || '[]') as string[]);
+    const backendUrl = ref<string>('');
+    const history = ref<string[]>([]);
     const isServerOnline = ref<boolean>(false);
     const wasServerEverOnline = ref<boolean>(false);
 
     const historyLocalStoreName = 'backendHistory';
     const backendUrlLocalStoreName = 'backendUrl';
+
+    try {
+        backendUrl.value = localStorage.getItem(backendUrlLocalStoreName) || '';
+    } catch {
+        backendUrl.value = '';
+    }
+
+    try {
+        history.value = JSON.parse(localStorage.getItem(historyLocalStoreName) || '[]');
+    } catch {
+        history.value = [];
+    }
 
     function setBackendUrl(url: string): void {
         try {
