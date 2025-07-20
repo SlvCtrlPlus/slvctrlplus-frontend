@@ -9,9 +9,12 @@ export const useBackendStore = defineStore('backend', () => {
     const isServerOnline = ref<boolean>(false);
     const wasServerEverOnline = ref<boolean>(false);
 
+    const historyLocalStoreName = 'backendHistory';
+    const backendUrlLocalStoreName = 'backendUrl';
+
     function setBackendUrl(url: string): void {
         try {
-            localStorage.setItem('backendUrl', url);
+            localStorage.setItem(backendUrlLocalStoreName, url);
             backendUrl.value = url;
         } catch (error) {
             console.error("Error setting backend URL:", error);
@@ -25,7 +28,7 @@ export const useBackendStore = defineStore('backend', () => {
             }
 
             try {
-                localStorage.setItem('backendHistory', JSON.stringify(history.value));
+                localStorage.setItem(historyLocalStoreName, JSON.stringify(history.value));
             } catch (error) {
                 console.error("Error saving backend history:", error);
             }
@@ -34,12 +37,27 @@ export const useBackendStore = defineStore('backend', () => {
 
     function clearBackendUrl(): void {
         try {
-            localStorage.removeItem('backendUrl');
+            localStorage.removeItem(backendUrlLocalStoreName);
             backendUrl.value = '';
             wasServerEverOnline.value = false;
             isServerOnline.value = false;
         } catch (error) {
             console.error("Error clearing backend URL:", error);
+        }
+    }
+
+    function removeBackendUrlFromHistory(url: string) {
+        const index = history.value.indexOf(url);
+        if (index === -1) {
+            return;
+        }
+
+        history.value.splice(index, 1);
+
+        try {
+            localStorage.setItem(historyLocalStoreName, JSON.stringify(history.value));
+        } catch (error) {
+            console.error("Error saving backend history:", error);
         }
     }
 
@@ -60,5 +78,6 @@ export const useBackendStore = defineStore('backend', () => {
         setServerOnline,
         setBackendUrl,
         clearBackendUrl,
+        removeBackendUrlFromHistory,
     };
 });

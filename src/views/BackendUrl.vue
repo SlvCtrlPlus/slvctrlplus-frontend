@@ -61,10 +61,15 @@ function select(url: string) {
             <v-list-item
                 v-for="url in history"
                 :key="url"
-                @click="select(url)"
                 class="cursor-pointer"
+                @click="select(url)"
             >
               <v-list-item-title>{{ url }}</v-list-item-title>
+              <template v-slot:append>
+                <v-btn icon variant="plain" @click.stop="backendStore.removeBackendUrlFromHistory(url)">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </template>
             </v-list-item>
           </v-list>
         </div>
