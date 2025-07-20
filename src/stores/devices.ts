@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
 import type Device from "../model/Device.js";
 import type DeviceGeneric from "../model/DeviceGeneric.js";
+import {apiFetch} from "@/utils/apiFetch";
 
 export const useDevicesStore = defineStore("devices", () => {
   // State: use reactive for objects, ref for primitives
@@ -13,7 +14,7 @@ export const useDevicesStore = defineStore("devices", () => {
 
   // Actions
   function init() {
-    fetch(`http://${location.hostname}:1337/devices`)
+    apiFetch(`/devices`)
         .then((response) => response.json())
         .then((data) => {
           data.items.forEach((v: Device) => {

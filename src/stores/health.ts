@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
-import { ref, reactive } from "vue";
+import { ref, reactive, type Ref } from "vue";
 import type { ChartData } from "chart.js";
 import ChartHelper from "../helper/ChartHelper";
-import {useAppStore} from "@/stores/app.ts";
+import { useBackendStore } from "@/stores/backend";
+import { apiFetch } from "@/utils/apiFetch";
 
 interface SystemInfo {
   process: {
@@ -34,7 +35,19 @@ interface SystemInfo {
   };
 }
 
-export const useHealthStore = defineStore("health", () => {
+type HealthChartData = {
+  processMemory: ChartData<"line">;
+  systemCpu: ChartData<"line">;
+  systemMemory: ChartData<"line">;
+}
+
+type HealthStore = {
+  state: Ref<SystemInfo | undefined>;
+  chartData: HealthChartData;
+  init: () => void;
+};
+
+export const useHealthStore = defineStore("health", (): HealthStore => {
   // state refs/reactive
   const state = ref<SystemInfo | undefined>(undefined);
 
@@ -61,19 +74,19 @@ export const useHealthStore = defineStore("health", () => {
 
   // actions
   function init(): void {
-    const appStore = useAppStore();
+    const backendStore = useBackendStore();
 
     setInterval(async () => {
-      if (!appStore.isServerOnline) {
+      if (!backendStore.isServerOnline) {
         return;
       }
 
-      const response = await fetch(`http://${location.hostname}:1337/health`);
+      const response = await apiFetch(`/health`);
       state.value = await response.json();
     }, 500);
 
     setInterval(() => {
-      if (!appStore.isServerOnline || !chartData || !state.value) {
+      if (!backendStore.isServerOnline || !chartData || !state.value) {
         return;
       }
 

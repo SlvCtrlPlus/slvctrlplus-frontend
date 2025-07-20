@@ -1,18 +1,22 @@
 import { defineStore } from "pinia";
-import {reactive, ref} from "vue";
+import { reactive } from "vue";
 
 export type AppState = {
-  isServerOnline: boolean,
-  wasSeverEverOnline: boolean,
   snackbar: {
     display: boolean;
     text: string;
     color: string;
     timeout: number;
   };
+  displaySnackbar(
+      text: string,
+      color?: string,
+      timeout?: number,
+  ): void;
+  getVersion(): string;
 };
 
-export const useAppStore = defineStore("app", () => {
+export const useAppStore = defineStore("app", (): AppState => {
   // reactive state
   const snackbar = reactive<AppState["snackbar"]>({
     display: false,
@@ -21,27 +25,16 @@ export const useAppStore = defineStore("app", () => {
     timeout: 5000,
   });
 
-  const isServerOnline = ref<AppState["isServerOnline"]>(false);
-  const wasSeverEverOnline = ref<AppState["wasSeverEverOnline"]>(false);
-
   // actions
   function displaySnackbar(
       text: string,
-      color = "primary",
-      timeout = 5000
-  ) {
+      color: string = "primary",
+      timeout: number = 5000
+  ): void {
     snackbar.text = text;
     snackbar.color = color;
     snackbar.timeout = timeout;
     snackbar.display = true;
-  }
-
-  function setServerOnline(status: boolean): void {
-    isServerOnline.value = status;
-
-    if (status) {
-      wasSeverEverOnline.value = true;
-    }
   }
 
   function getVersion(): string {
@@ -50,11 +43,8 @@ export const useAppStore = defineStore("app", () => {
 
   return {
     snackbar,
-    displaySnackbar,
-    isServerOnline,
-    wasSeverEverOnline,
 
-    setServerOnline,
+    displaySnackbar,
     getVersion,
   };
 });

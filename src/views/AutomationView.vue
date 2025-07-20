@@ -6,11 +6,13 @@ import { useAppStore } from "@/stores/app";
 import CreateForm from "@/components/automation/CreateForm.vue";
 import type AutomationScript from "@/model/AutomationScript";
 import LogViewer from "@/components/automation/LogViewer.vue";
+import {useBackendStore} from "@/stores/backend.ts";
 
 const MonacoEditor = defineAsyncComponent(() => import('@/components/automation/MonacoEditor.vue'));
 
 const automationStore = useAutomationStore();
 const appStore = useAppStore();
+const backendStore = useBackendStore();
 
 const {
   currentScriptName,
@@ -98,7 +100,7 @@ function displayDeleteDialog(scriptName: string): void {
 }
 
 setInterval(() => {
-  if (!appStore.isServerOnline) {
+  if (!backendStore.isServerOnline) {
     return;
   }
   automationStore.fetchScripts()

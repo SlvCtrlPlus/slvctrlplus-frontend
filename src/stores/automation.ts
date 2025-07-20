@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import type AutomationScript from "../model/AutomationScript";
+import {apiFetch} from "@/utils/apiFetch";
 
 const defaultCode = `// Write your automation here. The script will fire on device events:
 //
@@ -27,7 +28,7 @@ export const useAutomationStore = defineStore("automation", () => {
 
     // Actions
     function init() {
-        fetch(`http://${location.hostname}:1337/automation/status`)
+        apiFetch(`/automation/status`)
             .then((response) => response.json())
             .then((data) => {
                 runningSince.value = new Date(data.runningSince);
@@ -37,7 +38,7 @@ export const useAutomationStore = defineStore("automation", () => {
     }
 
     async function fetchScripts(): Promise<AutomationScript[]> {
-        const response = await fetch(`http://${location.hostname}:1337/automation/scripts`);
+        const response = await apiFetch(`/automation/scripts`);
         if (response.status !== 200) {
             throw new Error(`Could not fetch scripts: ${response.statusText}`);
         }
@@ -53,7 +54,7 @@ export const useAutomationStore = defineStore("automation", () => {
     async function fetchScript(scriptName: string): Promise<string> {
         currentScriptName.value = scriptName;
 
-        const response = await fetch(`http://${location.hostname}:1337/automation/scripts/${scriptName}`);
+        const response = await apiFetch(`/automation/scripts/${scriptName}`);
         if (response.status !== 200) {
             throw new Error(`Could not fetch script ${scriptName}: ${response.statusText}`);
         }
@@ -66,7 +67,7 @@ export const useAutomationStore = defineStore("automation", () => {
     async function saveScript(): Promise<void> {
         if (!currentScriptName.value) throw new Error("No script selected to save");
 
-        const response = await fetch(`http://${location.hostname}:1337/automation/scripts/${currentScriptName.value}`, {
+        const response = await apiFetch(`/automation/scripts/${currentScriptName.value}`, {
             headers: { "Content-Type": "text/plain" },
             method: "POST",
             body: currentCode.value,
@@ -77,7 +78,7 @@ export const useAutomationStore = defineStore("automation", () => {
     }
 
     async function deleteScript(scriptName: string): Promise<void> {
-        const response = await fetch(`http://${location.hostname}:1337/automation/scripts/${scriptName}`, {
+        const response = await apiFetch(`/automation/scripts/${scriptName}`, {
             headers: { "Content-Type": "text/plain" },
             method: "DELETE",
         });
@@ -87,7 +88,7 @@ export const useAutomationStore = defineStore("automation", () => {
     }
 
     async function runScript(): Promise<void> {
-        const response = await fetch(`http://${location.hostname}:1337/automation/run`, {
+        const response = await apiFetch(`/automation/run`, {
             headers: { "Content-Type": "text/plain" },
             method: "POST",
             body: currentCode.value,
@@ -104,7 +105,7 @@ export const useAutomationStore = defineStore("automation", () => {
     }
 
     async function stopScript(): Promise<void> {
-        const response = await fetch(`http://${location.hostname}:1337/automation/stop`);
+        const response = await apiFetch(`/automation/stop`);
         if (response.status !== 200) {
             throw new Error(`Could not stop script: ${response.statusText}`);
         }

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {useAppStore} from "@/stores/app";
+import {useBackendStore} from "@/stores/backend.ts";
 import {storeToRefs} from "pinia";
 import {computed, ref, watch} from "vue";
 import {format} from "date-fns";
 
-const appStore = useAppStore();
-const { isServerOnline, wasSeverEverOnline } = storeToRefs(appStore);
+const backendStore = useBackendStore();
+const { backendUrl, isServerOnline, wasServerEverOnline } = storeToRefs(backendStore);
 
 let debounceTimer: number | undefined = undefined;
 let disconnectSecondsTimer: number | undefined = undefined
@@ -13,7 +13,7 @@ const shouldShowOverlay = ref(false);
 const disconnectSeconds = ref(0)
 
 watch(isServerOnline, (online) => {
-  if (!online) {
+  if (backendUrl.value && !online) {
     disconnectSeconds.value = 0;
     disconnectSecondsTimer = window.setInterval(() => ++disconnectSeconds.value, 1000);
 
@@ -33,6 +33,11 @@ const durationHuman = computed(() => {
   const durationDate = new Date(disconnectSeconds.value * 1000)
   return format(durationDate, 'm:ss')
 });
+
+function clearBackendUrl(): void {
+  backendStore.clearBackendUrl();
+  location.reload();
+}
 </script>
 
 <template>
@@ -45,12 +50,17 @@ const durationHuman = computed(() => {
   >
     <div>
       <p class="mb-4"><v-icon icon="mdi-cloud-off" /></p>
-      <p><span v-if="!wasSeverEverOnline">
-        Cannot connect to server. Please check your network.
-      </span>
-        <span v-else>
-        Connection lost. Trying to reconnect... ({{ durationHuman }})
-      </span></p>
+      <p>
+        <span v-if="!wasServerEverOnline">
+          Cannot connect to server. Please check your network.
+        </span>
+          <span v-else>
+          Connection lost. Trying to reconnect... ({{ durationHuman }})
+        </span>
+      </p>
+      <p class="mt-4">
+        <v-btn @click="clearBackendUrl">Connect to another server</v-btn>
+      </p>
     </div>
   </v-overlay>
 </template>
