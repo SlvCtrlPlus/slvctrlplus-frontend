@@ -3,6 +3,7 @@ import { ref, reactive, type Ref } from "vue";
 import type { ChartData } from "chart.js";
 import ChartHelper from "../helper/ChartHelper";
 import { useBackendStore } from "@/stores/backend";
+import { apiFetch } from "@/utils/apiFetch";
 
 interface SystemInfo {
   process: {
@@ -80,7 +81,7 @@ export const useHealthStore = defineStore("health", (): HealthStore => {
         return;
       }
 
-      const response = await fetch(`http://${location.hostname}:1337/health`);
+      const response = await apiFetch(`/health`);
       state.value = await response.json();
     }, 500);
 

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import {useBackendStore} from "@/stores/backend.ts";
+import { apiFetch } from "@/utils/apiFetch";
 
 type ValidationErrors = {
   message: string;
@@ -15,8 +15,6 @@ type ValidationError = {
 }
 
 export const useSettingsStore = defineStore("serverSettings", () => {
-  const backendStore = useBackendStore();
-
   // state as refs
   const theme = ref("dark");
   const serverSettings = ref("");
@@ -28,7 +26,7 @@ export const useSettingsStore = defineStore("serverSettings", () => {
   }
 
   async function saveServerSettings(): Promise<void> {
-    const response = await fetch(`${backendStore.backendUrl}/settings`, {
+    const response = await apiFetch(`/settings`, {
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
       method: "PUT",
       body: serverSettings.value,
@@ -45,7 +43,7 @@ export const useSettingsStore = defineStore("serverSettings", () => {
   }
 
   async function getServerSettings(): Promise<void> {
-    const response = await fetch(`${backendStore.backendUrl}/settings`);
+    const response = await apiFetch(`/settings`);
     if (response.status !== 200) {
       throw new Error(`Could not get settings from server: ${response.statusText}`);
     }
