@@ -43,7 +43,8 @@ function select(url: string) {
         <v-form v-model="validForm" @submit.prevent="connect">
           <v-text-field
             v-model="backendInput"
-            label="Enter backend URL"
+            label="Enter server URL"
+            type="url"
             :rules="serverUrlRules"
             validate-on="submit"
             class="mb-2"
@@ -51,12 +52,11 @@ function select(url: string) {
           <v-btn type="submit" color="primary" block>
             Connect
           </v-btn>
-      </v-form>
-
-        <v-divider class="my-8" />
+        </v-form>
 
         <div v-if="history.length">
-          <p class="text-h6 mb-2">Recent</p>
+          <v-divider class="my-8" />
+          <p class="text-h6 ma-0 pa-0">Recent</p>
           <v-list dense>
             <v-list-item
                 v-for="url in history"
@@ -66,7 +66,7 @@ function select(url: string) {
             >
               <v-list-item-title>{{ url }}</v-list-item-title>
               <template v-slot:append>
-                <v-btn icon variant="plain" @click.stop="backendStore.removeBackendUrlFromHistory(url)">
+                <v-btn icon variant="plain" size="medium" density="compact" class="ml-auto" @click.stop="backendStore.removeBackendUrlFromHistory(url)">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </template>
