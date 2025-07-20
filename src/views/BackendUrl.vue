@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { useBackendStore } from '@/stores/backend.ts'
 import { useAppStore } from "@/stores/app.ts";
 
-const validFrom = ref(false);
+const validForm = ref(false);
 
 const backendStore = useBackendStore()
 const appStore = useAppStore();
@@ -20,7 +20,7 @@ const serverUrlRules = [
 ];
 
 function connect() {
-  if (backendInput.value.trim()) {
+  if (validForm.value && backendInput.value.trim()) {
     backendStore.setBackendUrl(backendInput.value.trim());
     location.reload();
   }
@@ -40,7 +40,7 @@ function select(url: string) {
     <v-card class="mx-auto pa-4" style="width: 800px; max-width: 100%;">
       <v-card-title class="text-h2 text-center my-4">SlvCtrl+</v-card-title>
       <v-card-text>
-        <v-form v-model="validFrom" @submit.prevent="connect">
+        <v-form v-model="validForm" @submit.prevent="connect">
           <v-text-field
             v-model="backendInput"
             label="Enter backend URL"
