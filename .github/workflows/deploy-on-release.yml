@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Deploy
 
 on:
   workflow_run: # Using workflow_run event because release.published doesn't trigger
@@ -19,10 +19,8 @@ jobs:
           file: 'dist.tar.gz'
           target: 'dist.tar.gz'
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create dist directory
-        run: mkdir -p dist
       - name: Extract asset
-        run: tar -xzf dist.tar.gz -C dist
+        run: tar -xzf dist.tar.gz
       - name: Upload to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         with:
