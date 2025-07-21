@@ -65,6 +65,14 @@ const router = createRouter({
       name: 'start', // Make sure this is set
       component: () => import('@/views/BackendUrl.vue')
     },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      components: {
+        default: () => import("../views/NotFoundView.vue"),
+        layout: LayoutWithMenu,
+      },
+    },
   ],
 });
 
