@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download release asset (ZIP)
+      - name: Download release asset
         uses: dsaltares/fetch-gh-release-asset@1.1.2
         with:
           version: tags/${{ github.event.release.tag_name }}
