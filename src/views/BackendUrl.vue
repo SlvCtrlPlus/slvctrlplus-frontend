@@ -13,10 +13,11 @@ const history = backendStore.history
 const serverUrlRules = [
   (v: string) => !!v || "Server URL is required",
   (v: string) =>
-      v.length >= 10 || "Server URL must be at least 10 characters long",
-  (v: string) =>
       /^https?:\/\/.+/.test(v) || "Server URL must start with http(s)://",
   (v: string) => /[^/]$/.test(v) || "Server URL must not end in a /",
+  (v: string) =>
+      v.length >= 10 || "Server URL must be at least 10 characters long",
+  (v: string) => /^https?:\/\/[^\/?#]+$/.test(v) || "Server URL must not have a path or query",
 ];
 
 function connect() {
@@ -46,10 +47,10 @@ function select(url: string) {
             label="Enter server URL"
             type="url"
             :rules="serverUrlRules"
-            validate-on="submit"
+            validate-on="input"
             class="mb-2"
           />
-          <v-btn type="submit" color="primary" block>
+          <v-btn type="submit" color="primary" block :disabled="!validForm">
             Connect
           </v-btn>
         </v-form>
