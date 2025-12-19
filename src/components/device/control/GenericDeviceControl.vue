@@ -26,13 +26,12 @@ const attributeChangeHandler = (
   <div :key="attr.name" v-for="attr in props.device.attributes">
     <dl>
       <dt>
-        <label>{{ attr.name }}</label>
+        <label>{{ attr.label ?? attr.name }} <span v-if="attr.uom">({{ attr.uom }})</span></label>
       </dt>
       <dd>
         <v-switch
           v-if="attr.type === 'bool'"
           v-model="device.data[attr.name]"
-          :label="attr.name"
           color="primary"
           hide-details="hide-details"
           class="pa-0 ma-0"
@@ -45,7 +44,7 @@ const attributeChangeHandler = (
         <v-select
           v-if="attr.type === 'list'"
           v-model="device.data[attr.name]"
-          :items="attr.values"
+          :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key) }))"
           color="primary"
           class="pa-0 ma-0"
           @update:modelValue="
@@ -74,7 +73,7 @@ const attributeChangeHandler = (
           "
           :min="attr.min"
           :max="attr.max"
-          step="1"
+          :step="attr.incrementStep ?? 1"
           color="primary"
           hide-details
           :disabled="attr.modifier === 'ro'"

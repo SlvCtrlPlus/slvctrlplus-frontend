@@ -41,6 +41,7 @@ export const useDevicesStore = defineStore("devices", () => {
       return;
     }
     device.lastRefresh = updatedDevice.lastRefresh;
+    (device as DeviceGeneric).attributes = (updatedDevice as DeviceGeneric).attributes;
 
     if (device.type === "slvCtrlPlus") {
       (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
