@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
+import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import type DeviceGeneric from "../../../model/DeviceGeneric";
 import DeviceCommunicator from "../../../helper/DeviceCommunicator";
@@ -33,7 +33,7 @@ const attributeChangeHandler = (
           v-if="attr.type === 'bool'"
           v-model="device.data[attr.name]"
           color="primary"
-          hide-details="hide-details"
+          :hide-details="true"
           class="pa-0 ma-0"
           @update:modelValue="
             attributeChangeHandler(attr.name, device.data[attr.name])
@@ -67,7 +67,7 @@ const attributeChangeHandler = (
         ></v-text-field>
         <v-slider
           v-if="attr.type === 'range'"
-          v-model="device.data[attr.name]"
+          v-model="device.data[attr.name] as number"
           @update:modelValue="
             attributeChangeHandler(attr.name, device.data[attr.name])
           "

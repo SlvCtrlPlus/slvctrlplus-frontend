@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from "vue";
-import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
+import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "../../../helper/DeviceCommunicator";
 import type VirtualDeviceTts from "../../../model/virtual/VirtualDeviceTts.js";
@@ -34,8 +34,11 @@ const sendTextHandler = (): void => {
   deviceComm.setAttribute("text", text.value);
   text.value = "";
 };
-const changeQueuing = (newValue: boolean): void =>
-  deviceComm.setAttribute("queuing", newValue);
+const changeQueuing = (newValue: boolean | null): void => {
+  if (newValue !== null) {
+    deviceComm.setAttribute("queuing", newValue);
+  }
+};
 </script>
 
 <template>
@@ -53,7 +56,7 @@ const changeQueuing = (newValue: boolean): void =>
 
   <v-switch
     v-model="device.data.queuing"
-    hide-details="hide-details"
+    :hide-details="true"
     color="primary"
     class="pa-0 ma-0"
     :label="queuingLabel"
