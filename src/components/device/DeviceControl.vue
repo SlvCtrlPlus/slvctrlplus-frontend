@@ -37,6 +37,8 @@ const comp = computed<string>(() => {
     }
   } else if (props.device.type === "buttplugIo") {
     controlComponent = "GenericDeviceControl";
+  } else if (props.device.type === "zc95") {
+    controlComponent = "DeviceZc95Control";
   } else if (props.device.type === "virtual") {
     controlComponent = "";
     switch (props.device.deviceModel) {

@@ -1,4 +1,4 @@
-import Device from "./Device";
+import type Device from "./Device";
 
 interface DeviceAttribute {
   name: string;
@@ -12,8 +12,11 @@ interface DeviceAttribute {
   incrementStep?: number;
 }
 
-export default class DeviceGeneric extends Device {
-  public data: Record<string, string | number | boolean> = {};
+export default interface DeviceGeneric<T = Record<string, string |number|boolean>> extends Device {
+  data: T;
+  attributes: DeviceAttribute[];
+}
 
-  public attributes: DeviceAttribute[] = [];
+export function getDeviceAttribute(device: DeviceGeneric, attrName: string): DeviceAttribute|undefined {
+    return device.attributes.find(attr => attr.name === attrName);
 }
