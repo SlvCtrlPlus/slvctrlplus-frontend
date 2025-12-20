@@ -1,6 +1,6 @@
 import type Device from "./Device";
 
-interface DeviceAttribute {
+export interface DeviceAttribute {
   name: string;
   label?: string;
   uom?: string;
