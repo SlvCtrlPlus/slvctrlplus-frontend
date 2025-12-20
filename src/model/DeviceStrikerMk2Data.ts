@@ -1,5 +1,5 @@
-import Device from "./Device";
+import type Device from "./Device";
 
-export default class DeviceStrikerMk2Data extends Device {
-  public speed: number | null = null;
+export default interface DeviceStrikerMk2Data extends Device {
+  speed: number | null;
 }

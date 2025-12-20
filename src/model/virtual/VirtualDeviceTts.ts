@@ -8,5 +8,5 @@ interface VirtualDeviceTtsData {
 }
 
 export default class VirtualDeviceTts extends Device {
-  public data: VirtualDeviceTtsData | null = null;
+  public data: VirtualDeviceTtsData = {} as VirtualDeviceTtsData;
 }

@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
-import type Device from "../model/Device.js";
-import type DeviceGeneric from "../model/DeviceGeneric.js";
+import type Device from "@/model/Device";
 import {apiFetch} from "@/utils/apiFetch";
 
 export const useDevicesStore = defineStore("devices", () => {
@@ -40,14 +39,15 @@ export const useDevicesStore = defineStore("devices", () => {
     if (!device || !device.receiveUpdates) {
       return;
     }
+
     device.lastRefresh = updatedDevice.lastRefresh;
 
-    if (device.type === "slvCtrlPlus") {
-      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-    } else if (device.type === "buttplugIo") {
-      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-    } else {
-      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
+    if ('attributes' in device && 'attributes' in updatedDevice) {
+      device.attributes = updatedDevice.attributes;
+    }
+
+    if ('data' in device && 'data' in updatedDevice) {
+      device.data = updatedDevice.data;
     }
   }
 
