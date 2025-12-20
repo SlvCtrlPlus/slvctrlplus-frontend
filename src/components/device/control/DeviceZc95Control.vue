@@ -34,8 +34,8 @@ const sliderAttributes = computed(() => {
   const powerChannels = allKeys
     .filter(key => key.startsWith('powerChannel'))
     .sort((a, b) => {
-      const numA = parseInt(a.replace('powerChannel', ''));
-      const numB = parseInt(b.replace('powerChannel', ''));
+      const numA = parseInt(a.replace('powerChannel', ''), 10);
+      const numB = parseInt(b.replace('powerChannel', ''), 10);
       return numA - numB;
     })
     .map(key => getDeviceAttributeDefinition(props.device, key as keyof DeviceZc95Data))
@@ -43,22 +43,25 @@ const sliderAttributes = computed(() => {
 
   const patternAttributes = allKeys
     .filter(key => key.startsWith('patternAttribute'))
-    .sort((a, b) => {
-      const numA = parseInt(a.replace('patternAttribute', ''));
-      const numB = parseInt(b.replace('patternAttribute', ''));
-      return numA - numB;
-    })
     .map(key => getDeviceAttributeDefinition(props.device, key as keyof DeviceZc95Data))
     .filter(attr => attr !== undefined);
 
   return { powerChannels, patternAttributes };
+});
+
+const activePatternItems = computed(() => {
+  const values = getDeviceAttributeDefinition(props.device, 'activePattern')?.values || {};
+  return Object.entries(values).map(([key, value]) => ({
+    title: value,
+    value: parseInt(key, 10)
+  }));
 });
 </script>
 
 <template>
   <v-select
     :model-value="props.device.data.activePattern"
-    :items="Object.entries(getDeviceAttributeDefinition(device, 'activePattern')?.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key) }))"
+    :items="activePatternItems"
     label="Mode"
     hide-details
     @update:modelValue="value => attrChangeHandler('activePattern', value)"
