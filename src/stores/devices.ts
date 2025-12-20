@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
-import type Device from "../model/Device.js";
-import type DeviceGeneric from "../model/DeviceGeneric.js";
+import type Device from "@/model/Device";
 import {apiFetch} from "@/utils/apiFetch";
 
 export const useDevicesStore = defineStore("devices", () => {
