@@ -2,7 +2,7 @@
 import { reactive, computed } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "../../../helper/DeviceCommunicator";
+import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import type {DeviceZc95} from "@/model/DeviceZc95";
 import {getDeviceAttribute} from "@/model/DeviceGeneric";
 import type DeviceZc95Data from "@/model/DeviceZc95Data";

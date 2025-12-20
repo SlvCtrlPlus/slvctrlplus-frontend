@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
-import type DeviceGeneric from "../../../model/DeviceGeneric";
-import type Device from "../../../model/Device";
-import DeviceCommunicator from "../../../helper/DeviceCommunicator";
+import type DeviceGeneric from "@/model/DeviceGeneric";
+import type Device from "@/model/Device";
+import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 
 interface Props {
