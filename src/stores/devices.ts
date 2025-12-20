@@ -40,15 +40,15 @@ export const useDevicesStore = defineStore("devices", () => {
     if (!device || !device.receiveUpdates) {
       return;
     }
-    device.lastRefresh = updatedDevice.lastRefresh;
-    (device as DeviceGeneric).attributes = (updatedDevice as DeviceGeneric).attributes;
 
-    if (device.type === "slvCtrlPlus") {
-      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-    } else if (device.type === "buttplugIo") {
-      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
-    } else {
-      (device as DeviceGeneric).data = (updatedDevice as DeviceGeneric).data;
+    device.lastRefresh = updatedDevice.lastRefresh;
+
+    if ('attributes' in device && 'attributes' in updatedDevice) {
+      device.attributes = updatedDevice.attributes;
+    }
+
+    if ('data' in device && 'data' in updatedDevice) {
+      device.data = updatedDevice.data;
     }
   }
 
