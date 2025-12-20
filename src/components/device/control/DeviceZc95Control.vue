@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { reactive, computed } from "vue";
+import { computed } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import type {DeviceZc95} from "@/model/DeviceZc95";
-import {getDeviceAttribute} from "@/model/DeviceGeneric";
-import type DeviceZc95Data from "@/model/DeviceZc95Data";
+import {getDeviceAttributeDefinition} from "@/model/DeviceGeneric";
+import type {DeviceZc95Data} from "@/model/DeviceZc95Data";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 
 interface Props {
@@ -14,8 +14,6 @@ interface Props {
 
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
-
-const device = reactive<DeviceZc95>(props.device);
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 
@@ -28,9 +26,9 @@ const attrChangeHandler = (
 
 // Get all slider attributes (powerChannels + patternAttributes) sorted
 const sliderAttributes = computed(() => {
-  if (!device.data) return { powerChannels: [], patternAttributes: [] };
+  if (!props.device.data) return { powerChannels: [], patternAttributes: [] };
 
-  const allKeys = Object.keys(device.data)
+  const allKeys = Object.keys(props.device.data)
     .filter(key => key.startsWith('powerChannel') || key.startsWith('patternAttribute'));
 
   const powerChannels = allKeys
@@ -40,7 +38,7 @@ const sliderAttributes = computed(() => {
       const numB = parseInt(b.replace('powerChannel', ''));
       return numA - numB;
     })
-    .map(key => getDeviceAttribute(device, key as keyof DeviceZc95Data))
+    .map(key => getDeviceAttributeDefinition(props.device, key as keyof DeviceZc95Data))
     .filter(attr => attr !== undefined);
 
   const patternAttributes = allKeys
@@ -50,7 +48,7 @@ const sliderAttributes = computed(() => {
       const numB = parseInt(b.replace('patternAttribute', ''));
       return numA - numB;
     })
-    .map(key => getDeviceAttribute(device, key as keyof DeviceZc95Data))
+    .map(key => getDeviceAttributeDefinition(props.device, key as keyof DeviceZc95Data))
     .filter(attr => attr !== undefined);
 
   return { powerChannels, patternAttributes };
@@ -59,16 +57,16 @@ const sliderAttributes = computed(() => {
 
 <template>
   <v-select
-    v-model="device.data.activePattern"
-    :items="Object.entries(getDeviceAttribute(device, 'activePattern')?.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key) }))"
+    :model-value="props.device.data.activePattern"
+    :items="Object.entries(getDeviceAttributeDefinition(device, 'activePattern')?.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key) }))"
     label="Mode"
     hide-details
     @update:modelValue="value => attrChangeHandler('activePattern', value)"
   ></v-select>
-  <v-btn :color="(!device.data.patternStarted ? 'primary' : 'red')" class="mt-4" @click="() => attrChangeHandler('patternStarted', !device.data.patternStarted)"
-  ><span v-if="!device.data.patternStarted">start</span><span v-else>stop</span></v-btn >
+  <v-btn :color="(!props.device.data.patternStarted ? 'primary' : 'red')" class="mt-4" @click="() => attrChangeHandler('patternStarted', !props.device.data.patternStarted)"
+  ><span v-if="!props.device.data.patternStarted">start</span><span v-else>stop</span></v-btn >
 
-  <div v-if="device.data.patternStarted">
+  <div v-if="props.device.data.patternStarted">
     <!-- Power Channels -->
     <div v-if="sliderAttributes.powerChannels.length > 0">
       <v-divider class="my-4" />
@@ -78,10 +76,10 @@ const sliderAttributes = computed(() => {
         </dt>
         <dd>
           <DebouncedSlider
-            :model-value="device.data[attr.name as keyof DeviceZc95Data] as number"
+            :model-value="props.device.data[attr.name as keyof DeviceZc95Data] as number"
             @update:model-value="value => attrChangeHandler(attr.name as keyof DeviceZc95Data, value)"
             :attribute="attr"
-            :disabled="!device.data.patternStarted"
+            :disabled="!props.device.data.patternStarted"
             :slider-debounce="50"
             :input-debounce="100"
           />
@@ -98,10 +96,10 @@ const sliderAttributes = computed(() => {
         </dt>
         <dd>
           <DebouncedSlider
-            :model-value="device.data[attr.name as keyof DeviceZc95Data] as number"
+            :model-value="props.device.data[attr.name as keyof DeviceZc95Data] as number"
             @update:model-value="value => attrChangeHandler(attr.name as keyof DeviceZc95Data, value)"
             :attribute="attr"
-            :disabled="!device.data.patternStarted"
+            :disabled="!props.device.data.patternStarted"
             :slider-debounce="50"
             :input-debounce="100"
           />

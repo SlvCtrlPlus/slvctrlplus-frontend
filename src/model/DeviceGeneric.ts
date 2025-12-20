@@ -12,11 +12,16 @@ export interface DeviceAttribute {
   incrementStep?: number;
 }
 
-export default interface DeviceGeneric<T = Record<string, string |number|boolean>> extends Device {
+export type AttributeValue = string | number | boolean;
+export type DeviceData = Record<string, AttributeValue>;
+
+export default interface DeviceGeneric<T extends DeviceData = DeviceData> extends Device {
   data: T;
   attributes: DeviceAttribute[];
 }
 
-export function getDeviceAttribute(device: DeviceGeneric, attrName: string): DeviceAttribute|undefined {
+export function getDeviceAttributeDefinition<T extends DeviceGeneric>(
+    device: T, attrName: keyof T['data']
+): DeviceAttribute|undefined {
     return device.attributes.find(attr => attr.name === attrName);
 }

@@ -13,18 +13,18 @@ interface Props {
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
-const device = props.device;
-
 const deviceComm = new DeviceCommunicator(props.device as Device, io);
 
-const attributeChangeHandler = (
-  attrName: string,
-  newValue: string | boolean | number
-): void => deviceComm.setAttribute(attrName, newValue);
+const attributeChangeHandler = (attrName: string, newValue: string | boolean | number | null): void => {
+  if (newValue === null) {
+    return;
+  }
+  deviceComm.setAttribute(attrName, newValue);
+};
 </script>
 
 <template>
-  <div :key="attr.name" v-for="attr in device.attributes">
+  <div :key="attr.name" v-for="attr in props.device.attributes">
     <dl>
       <dt>
         <label>{{ attr.label ?? attr.name }} <span v-if="attr.uom">({{ attr.uom }})</span></label>
@@ -32,25 +32,21 @@ const attributeChangeHandler = (
       <dd>
         <v-switch
           v-if="attr.type === 'bool'"
-          v-model="device.data[attr.name]"
+          :model-value="props.device.data[attr.name]"
           color="primary"
           :hide-details="true"
           class="pa-0 ma-0"
-          @update:modelValue="
-            attributeChangeHandler(attr.name, device.data[attr.name] as boolean)
-          "
+          @update:modelValue="value => attributeChangeHandler(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-switch>
 
         <v-select
           v-if="attr.type === 'list'"
-          v-model="device.data[attr.name]"
-          :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key) }))"
+          :model-value="props.device.data[attr.name]"
+          :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key, 10) }))"
           color="primary"
           class="pa-0 ma-0"
-          @update:modelValue="
-            attributeChangeHandler(attr.name, device.data[attr.name] as number)
-          "
+          @update:modelValue="value => attributeChangeHandler(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-select>
 
@@ -58,19 +54,17 @@ const attributeChangeHandler = (
           v-if="
             attr.type === 'str' || attr.type === 'float' || attr.type === 'int'
           "
-          v-model="device.data[attr.name]"
+          :model-value="props.device.data[attr.name]"
           color="primary"
           class="pa-0 ma-0"
           :type="attr.type === 'str' ? 'text' : 'number'"
-          @update:modelValue="
-            attributeChangeHandler(attr.name, device.data[attr.name] as string | number)
-          "
+          @update:modelValue="value => attributeChangeHandler(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-text-field>
 
         <DebouncedSlider
           v-if="attr.type === 'range'"
-          :model-value="device.data[attr.name] as number"
+          :model-value="props.device.data[attr.name] as number"
           @update:model-value="value => attributeChangeHandler(attr.name, value)"
           :attribute="attr"
           :disabled="attr.modifier === 'ro'"
