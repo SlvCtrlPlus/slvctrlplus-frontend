@@ -3,7 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, Component } from "vue";
+import { computed, defineAsyncComponent } from "vue";
+import type { Component } from "vue";
 import type Device from "@/model/devices/Device";
 
 interface Props {
