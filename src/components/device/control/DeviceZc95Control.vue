@@ -74,7 +74,7 @@ const activePatternItems = computed(() => {
             :model-value="attr.value"
             @update:model-value="value => attrChangeHandler(key, value)"
             :attribute="attr"
-            :disabled="!props.device.attributes.patternStarted.value"
+            :disabled="!props.device.attributes.patternStarted.value || attr.min === attr.max"
             :slider-debounce="50"
             :input-debounce="100"
           />
