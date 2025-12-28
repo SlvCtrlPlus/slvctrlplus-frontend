@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import {IntRangeDeviceAttribute} from "@/model/devices/Device";
+import type {IntRangeDeviceAttribute} from "@/model/devices/Device";
 
 interface Props {
   modelValue: number|undefined;

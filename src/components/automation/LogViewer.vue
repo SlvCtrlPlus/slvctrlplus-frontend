@@ -4,13 +4,17 @@ import moment from "moment";
 
 interface Props {
   logData: string[];
-  runningSince: Date;
+  runningSince: Date | null;
 }
 
 const props = defineProps<Props>();
 
 const logData = computed(() => `${props.logData.join("\n")}\n\n`);
 const runningSinceFormatted = computed(() => {
+  if (null === props.runningSince) {
+    return `<i>currently not running</i>`;
+  }
+
   const momentDate = moment(props.runningSince);
   return `${momentDate.format(
     "YYYY-MM-DD, hh:mm:ss"

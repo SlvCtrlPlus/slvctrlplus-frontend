@@ -3,7 +3,7 @@ import { reactive } from "vue";
 import type { Socket } from "socket.io-client";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
-import {DeviceStrikerMk2} from "@/model/devices/slvctrl/DeviceStrikerMk2";
+import type {DeviceStrikerMk2} from "@/model/devices/slvctrl/DeviceStrikerMk2";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 
 interface Props {

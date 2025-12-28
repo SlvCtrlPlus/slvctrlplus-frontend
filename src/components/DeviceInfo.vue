@@ -2,6 +2,7 @@
 import type Device from "@/model/devices/Device";
 import DeviceIcon from "./icons/DeviceIcon.vue";
 import { computed, reactive } from "vue";
+import {hasProperty} from "@/utils/utils";
 
 interface Props {
   device: Device;
@@ -48,7 +49,7 @@ function formatFwVersion(fwVersion: string): string {
           <v-list-item-title>Type</v-list-item-title>
           <v-list-item-subtitle>{{ deviceTypeModel }}</v-list-item-subtitle>
         </v-list-item>
-        <v-list-item v-if="device.type === 'slvCtrlPlus'">
+        <v-list-item v-if="hasProperty(device, 'fwVersion') && typeof device.fwVersion === 'string'">
           <v-list-item-title>Firmware</v-list-item-title>
           <v-list-item-subtitle>{{
             formatFwVersion(device.fwVersion)

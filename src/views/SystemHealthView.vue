@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { ChartOptions } from "chart.js";
-import ChartHelper from "../helper/ChartHelper.js";
+import ChartHelper from "@/helper/ChartHelper.js";
 import { merge } from "chart.js/helpers";
-import StreamLineChart from "../components/chart/StreamLineChart.vue";
-import LoadingState from "../components/LoadingState.vue";
+import StreamLineChart from "@/components/chart/StreamLineChart.vue";
+import LoadingState from "@/components/LoadingState.vue";
 import { computed, ref, toRaw } from "vue";
 import type { Ref } from "vue";
 import moment from "moment";
 import { storeToRefs } from "pinia";
-import { useHealthStore } from "../stores/health";
+import { useHealthStore } from "@/stores/health";
 
 const healthStore = useHealthStore();
 const { state, chartData } = storeToRefs(healthStore);

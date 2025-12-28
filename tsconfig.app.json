@@ -22,6 +22,7 @@
     "types": ["vite/client"],
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
   }
 }

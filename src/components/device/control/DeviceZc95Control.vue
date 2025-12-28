@@ -9,7 +9,7 @@ import type {
   PowerChannelDeviceZc95Attributes
 } from "@/model/devices/zc95/DeviceZc95";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import {DeviceData} from "@/model/devices/Device";
+import type {DeviceData} from "@/model/devices/Device";
 import {isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
 
 interface Props {
@@ -105,7 +105,7 @@ const activePatternItems = computed(() => {
           <v-select
               v-if="isListDeviceAttribute(attr)"
               :model-value="attr.value"
-              :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key, 10) }))"
+              :items="Object.entries(attr.values || {}).map(([paKey, value]) => ({ title: value, value: parseInt(paKey, 10) }))"
               color="primary"
               class="pa-0 ma-0"
               @update:modelValue="value => attrChangeHandler(key, value)"

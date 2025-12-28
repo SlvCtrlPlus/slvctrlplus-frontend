@@ -5,7 +5,7 @@ import type Device from "@/model/devices/Device";
 import type { DeviceAttribute } from "@/model/devices/Device";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import {isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
+import {hasProperty, isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
 import {computed} from "vue";
 
 interface Props {
@@ -27,22 +27,13 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
   }
   deviceComm.setAttribute(attrName, newValue);
 };
-
-const hasUoM = (attr: unknown): attr is { uom: string } => {
-  return (
-    typeof attr === 'object' &&
-    attr !== null &&
-    'uom' in attr &&
-    typeof (attr as { uom: string|undefined }).uom === 'string'
-  );
-}
 </script>
 
 <template>
   <div :key="key" v-for="[key, attr] in definedAttributes">
     <dl>
       <dt>
-        <label>{{ attr.label ?? attr.name }}<span v-if="hasUoM(attr)"> ({{ attr.uom }})</span></label>
+        <label>{{ attr.label ?? attr.name }}<span v-if="hasProperty(attr, 'uom') && 'string' === typeof attr.uom"> ({{ attr.uom }})</span></label>
       </dt>
       <dd>
         <v-switch
@@ -58,7 +49,7 @@ const hasUoM = (attr: unknown): attr is { uom: string } => {
         <v-select
           v-if="isListDeviceAttribute(attr)"
           :model-value="attr.value"
-          :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key, 10) }))"
+          :items="Object.entries(attr.values || {}).map(([laKey, value]) => ({ title: value, value: parseInt(laKey, 10) }))"
           color="primary"
           class="pa-0 ma-0"
           @update:modelValue="value => attributeChangeHandler(attr.name, value)"

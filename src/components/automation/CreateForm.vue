@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useAutomationStore } from "@/stores/automation.js";
 import { useAppStore } from "@/stores/app.js";
 
-const emit = defineEmits(["save"]);
+const emit = defineEmits(["save", "cancel"]);
 
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
@@ -68,7 +68,7 @@ function createScript(): void {
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="grey" variant="text" @click="$emit('cancel')">
+        <v-btn color="grey" variant="text" @click="emit('cancel')">
           Cancel
         </v-btn>
         <v-btn

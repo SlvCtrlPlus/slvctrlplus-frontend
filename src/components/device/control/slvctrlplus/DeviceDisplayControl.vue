@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import {DeviceDisplay} from "@/model/devices/slvctrl/DeviceDisplay";
+import type {DeviceDisplay} from "@/model/devices/slvctrl/DeviceDisplay";
 
 interface Props {
   device: DeviceDisplay;

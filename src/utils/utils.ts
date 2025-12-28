@@ -18,7 +18,7 @@ export const isListDeviceAttribute = (obj: object): obj is ListDeviceAttribute<n
     return hasType(obj, 'list');
 }
 
-const hasType = (obj: unknown, expectedType: string): boolean => {
+export const hasType = (obj: unknown, expectedType: string): boolean => {
     return (
         typeof obj === 'object' &&
         obj !== null &&
@@ -26,3 +26,5 @@ const hasType = (obj: unknown, expectedType: string): boolean => {
         (obj as { type?: string }).type === expectedType
     );
 }
+
+export declare function hasProperty<O extends object, P extends PropertyKey>(obj: O, prop: P): obj is O & Record<P, unknown>;

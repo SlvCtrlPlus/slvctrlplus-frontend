@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useBackendStore } from '@/stores/backend.ts'
-import { useAppStore } from "@/stores/app.ts";
+import { useBackendStore } from '@/stores/backend'
+import { useAppStore } from "@/stores/app";
 
 const validForm = ref(false);
 
