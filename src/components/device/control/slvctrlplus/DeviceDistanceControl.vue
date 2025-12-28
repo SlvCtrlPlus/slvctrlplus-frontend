@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import type { Ref } from "vue";
 import StreamLineChart from "../../../chart/StreamLineChart.vue";
 import type { Chart, ChartData } from "chart.js";
 import ChartHelper from "../../../../helper/ChartHelper";
