@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, nextTick } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
@@ -15,6 +15,7 @@ const io = useSocketIO() as Socket;
 const deviceComm = new DeviceCommunicator(props.device, io);
 
 const text = ref<string>(props.device.attributes.text.value ?? "");
+const textAreaRef = ref();
 const currentlySpeaking = computed<string>(() => {
   return undefined === props.device.attributes.speaking.value || !props.device.attributes.speaking.value
     ? "no"
@@ -32,6 +33,9 @@ const sendTextHandler = (): void => {
   }
   deviceComm.setAttribute("text", text.value);
   text.value = "";
+  nextTick(() => {
+    textAreaRef.value?.focus();
+  });
 };
 const changeQueuing = (newValue: boolean | null): void => {
   if (newValue !== null) {
@@ -43,15 +47,14 @@ const changeQueuing = (newValue: boolean | null): void => {
 <template>
   <v-textarea
     v-model="text"
+    ref="textAreaRef"
     label="Enter text to speech"
     color="primary"
     class="pa-0 ma-0"
     type="text"
     hide-details
-  ></v-textarea
-  ><v-btn color="primary" class="mt-4 mr-4" @click="sendTextHandler"
-    >send</v-btn
-  >
+  ></v-textarea>
+  <v-btn color="primary" class="mt-4 mr-4" @click="sendTextHandler">send</v-btn>
 
   <v-switch
     :model-value="props.device.attributes.queuing.value"

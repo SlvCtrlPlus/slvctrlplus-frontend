@@ -64,6 +64,7 @@ export default abstract class ChartHelper {
       fill: "origin",
       tension: tension,
       data: [],
+      spanGaps: 1000,
     };
   }
 

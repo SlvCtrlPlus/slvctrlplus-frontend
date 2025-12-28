@@ -14,13 +14,17 @@ interface Props {
 
 const props = defineProps<Props>();
 const currentDistance = computed((): number|undefined => {
-  const tmpDistance = props.device.attributes.distance.value;
-
-  if (undefined === tmpDistance) {
+  if (props.device.attributes.sensor.value !== 'ok') {
     return undefined;
   }
 
-  return tmpDistance && tmpDistance < 255 ? tmpDistance : 183;
+  const tmpDistance = props.device.attributes.distance.value;
+
+  if (undefined === tmpDistance || tmpDistance >= 255) {
+    return undefined;
+  }
+
+  return tmpDistance;
 });
 
 const chartData: ChartData<"line"> = {
@@ -52,7 +56,7 @@ const chartOptions = merge(
   }
 );
 
-const chartOptionsRef = ref<ChartOptions>(chartOptions) as Ref<ChartOptions>;
+const chartOptionsRef = ref<ChartOptions>(chartOptions);
 </script>
 
 <template>
@@ -60,7 +64,7 @@ const chartOptionsRef = ref<ChartOptions>(chartOptions) as Ref<ChartOptions>;
     <dt><label>Distance</label></dt>
     <dd class="text-h3 text-primary">
       <span v-if="currentDistance === 183">&gt;</span
-      >{{ undefined === currentDistance ? '??' : (currentDistance * 0.1).toFixed(1) }}cm
+      >{{ undefined === currentDistance ? '&ndash;' : `${(currentDistance * 0.1).toFixed(1)}cm` }}
     </dd>
   </dl>
   <v-divider class="my-4"></v-divider>
