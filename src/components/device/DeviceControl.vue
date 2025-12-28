@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from "vue";
+import { computed, defineAsyncComponent, Component } from "vue";
 import type Device from "@/model/devices/Device";
 
 interface Props {
@@ -14,8 +14,8 @@ const props = defineProps<Props>();
 
 const componentMap = import.meta.glob('./control/**/*.vue');
 
-const comp = computed<string>(() => {
-  let controlComponent: string | null = null;
+const comp = computed<Component>(() => {
+  let controlComponent: string;
 
   if (props.device.type === "slvCtrlPlus") {
     switch (props.device.deviceModel) {
@@ -67,6 +67,6 @@ const comp = computed<string>(() => {
   if (!(importPath in componentMap)) {
     throw new Error(`Component not found: ${importPath}`);
   }
-  return defineAsyncComponent(componentMap[importPath] as () => Promise<any>);
+  return defineAsyncComponent(componentMap[importPath] as () => Promise<Component>);
 });
 </script>

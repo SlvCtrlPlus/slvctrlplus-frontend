@@ -54,7 +54,7 @@ const changeQueuing = (newValue: boolean | null): void => {
   >
 
   <v-switch
-    v-model="device.attributes.queuing.value"
+    :model-value="props.device.attributes.queuing.value"
     :hide-details="true"
     color="primary"
     class="pa-0 ma-0"
@@ -62,10 +62,10 @@ const changeQueuing = (newValue: boolean | null): void => {
     @update:modelValue="changeQueuing"
   ></v-switch>
 
-  <dl v-if="true === device.attributes.queuing.value" class="mt-4 mb-4">
+  <dl v-if="true === props.device.attributes.queuing.value" class="mt-4 mb-4">
     <dt><label>Queue length</label></dt>
     <dd>
-      <b>{{ device.attributes.queueLength.value || "empty" }}</b>
+      <b>{{ props.device.attributes.queueLength.value || "empty" }}</b>
     </dd>
   </dl>
   <dl class="mt-4">

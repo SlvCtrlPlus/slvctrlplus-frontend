@@ -71,7 +71,7 @@ const activePatternItems = computed(() => {
         </dt>
         <dd>
           <DebouncedSlider
-            :model-value="attr.value as number"
+            :model-value="attr.value"
             @update:model-value="value => attrChangeHandler(key, value)"
             :attribute="attr"
             :disabled="!props.device.attributes.patternStarted.value"

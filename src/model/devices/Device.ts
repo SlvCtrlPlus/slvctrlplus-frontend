@@ -26,13 +26,9 @@ export interface IntRangeDeviceAttribute<V extends number|undefined = number|und
    incrementStep: number;
 }
 
-export interface StrDeviceAttribute<V extends string|undefined = string|undefined> extends DeviceAttribute<V> {
+export type StrDeviceAttribute<V extends string|undefined = string|undefined> = DeviceAttribute<V>;
 
-}
-
-export interface BoolDeviceAttribute<V extends boolean|undefined = boolean|undefined> extends DeviceAttribute<V> {
-
-}
+export type BoolDeviceAttribute<V extends boolean|undefined = boolean|undefined> = DeviceAttribute<V>;
 
 export interface ListDeviceAttribute<IKey extends number|string, IValue extends number|string> extends DeviceAttribute<IKey> {
    values: Record<IKey, IValue>;

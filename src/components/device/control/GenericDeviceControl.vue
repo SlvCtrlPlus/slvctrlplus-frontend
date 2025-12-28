@@ -18,7 +18,7 @@ const io = useSocketIO() as Socket;
 const deviceComm = new DeviceCommunicator(props.device, io);
 
 const definedAttributes = computed(() =>
-    typedEntries(props.device.attributes).filter(([_, attr]) => attr !== undefined) as [string, DeviceAttribute][]
+    typedEntries(props.device.attributes).filter(([, attr]) => attr !== undefined) as [string, DeviceAttribute][]
 );
 
 const attributeChangeHandler = (attrName: string, newValue: string | boolean | number | null): void => {
@@ -33,7 +33,7 @@ const hasUoM = (attr: unknown): attr is { uom: string } => {
     typeof attr === 'object' &&
     attr !== null &&
     'uom' in attr &&
-    typeof (attr as any).uom === 'string'
+    typeof (attr as { uom: string|undefined }).uom === 'string'
   );
 }
 </script>
