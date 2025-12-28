@@ -4,6 +4,7 @@
   "compilerOptions": {
     "composite": true,
     "lib": ["es2017"],
+    "module": "esnext",
     "types": ["node", "jsdom"]
   }
 }

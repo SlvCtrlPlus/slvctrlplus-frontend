@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io-client";
 import TimeoutHelper from "./TimeoutHelper";
-import type Device from "../model/Device";
+import type Device from "../model/devices/Device";
 
 export default class DeviceCommunicator {
   private readonly io: Socket;

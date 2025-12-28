@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import type { DeviceAttribute } from '@/model/DeviceGeneric';
+import {IntRangeDeviceAttribute} from "@/model/devices/Device";
 
 interface Props {
-  modelValue: number;
-  attribute: DeviceAttribute;
+  modelValue: number|undefined;
+  attribute: IntRangeDeviceAttribute;
   disabled?: boolean;
   sliderDebounce?: number;
   inputDebounce?: number;
@@ -20,13 +20,13 @@ const emit = defineEmits<{
   'update:modelValue': [value: number];
 }>();
 
-const localValue = ref<number>(props.modelValue);
+const localValue = ref<number|undefined>(props.modelValue);
 const isActive = ref<boolean>(false);
 let debounceTimer: number | undefined;
 
 watch(() => props.modelValue, (newValue) => {
   if (!isActive.value) {
-    localValue.value = newValue;
+    localValue.value = undefined !== newValue ? newValue : props.attribute.min;
   }
 });
 
@@ -64,9 +64,9 @@ const handleEnd = (): void => {
       @update:modelValue="value => handleValueChange(value, sliderDebounce)"
       @start="handleStart"
       @end="handleEnd"
-      :min="attribute.min"
-      :max="attribute.max"
-      :step="attribute.incrementStep ?? 1"
+      :min="props.attribute.min"
+      :max="props.attribute.max"
+      :step="props.attribute.incrementStep ?? 1"
       color="primary"
       hide-details
       :disabled="disabled"
@@ -79,8 +79,8 @@ const handleEnd = (): void => {
           @blur="handleEnd"
           hide-details
           single-line
-          :min="attribute.min"
-          :max="attribute.max"
+          :min="props.attribute.min"
+          :max="props.attribute.max"
           density="compact"
           variant="outlined"
           type="number"

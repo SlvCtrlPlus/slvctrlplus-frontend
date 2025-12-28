@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Device from "@/model/Device";
+import type Device from "@/model/devices/Device";
 import DeviceIcon from "./icons/DeviceIcon.vue";
 import { computed, reactive } from "vue";
 

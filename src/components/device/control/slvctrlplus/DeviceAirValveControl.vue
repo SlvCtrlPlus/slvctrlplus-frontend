@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type DeviceAirValve from "../../../model/DeviceAirValve";
+import type {DeviceAirValve} from "../../../../model/devices/slvctrl/DeviceAirValve";
 import { reactive } from "vue";
-import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
+import { useSocketIO } from "../../../../plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "../../../helper/DeviceCommunicator";
+import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
 
 interface Props {
   device: DeviceAirValve;
@@ -24,7 +24,7 @@ const flowChangeHandler = (newFlow: number): void =>
     <dt><label>Flow</label></dt>
     <dd>
       <v-slider
-        v-model="device.data.flow"
+        v-model="device.attributes.flow.value"
         max="100"
         min="0"
         step="1"
@@ -35,7 +35,7 @@ const flowChangeHandler = (newFlow: number): void =>
       >
         <template v-slot:append>
           <v-text-field
-            v-model="device.data.flow"
+            v-model="device.attributes.flow.value"
             hide-details
             single-line
             max="100"
@@ -44,7 +44,7 @@ const flowChangeHandler = (newFlow: number): void =>
             variant="outlined"
             type="number"
             style="width: 80px"
-            @update:modelValue="flowChangeHandler"
+            @update:modelValue="value => flowChangeHandler(parseInt(value, 10))"
           ></v-text-field>
         </template>
       </v-slider>

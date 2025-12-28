@@ -13,12 +13,13 @@
       "es2017",
       "dom"
     ],
+    "module": "esnext",
     "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "vite/client"],
+    "types": ["vite/client"],
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true

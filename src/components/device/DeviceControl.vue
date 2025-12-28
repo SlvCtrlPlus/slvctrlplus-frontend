@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { computed, defineAsyncComponent } from "vue";
-import type Device from "../../model/Device";
+import type Device from "@/model/devices/Device";
 
 interface Props {
   device: Device;
@@ -12,25 +12,27 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const componentMap = import.meta.glob('./control/**/*.vue');
+
 const comp = computed<string>(() => {
   let controlComponent: string | null = null;
 
   if (props.device.type === "slvCtrlPlus") {
     switch (props.device.deviceModel) {
       case "air_valve":
-        controlComponent = "DeviceAirValveControl";
+        controlComponent = "slvctrlplus/DeviceAirValveControl";
         break;
       case "et312":
-        controlComponent = "DeviceEt312Control";
+        controlComponent = "slvctrlplus/DeviceEt312Control";
         break;
       case "strikerMk2":
-        controlComponent = "DeviceStrikerMk2Control";
+        controlComponent = "slvctrlplus/DeviceStrikerMk2Control";
         break;
       case "distance":
-        controlComponent = "DeviceDistanceControl";
+        controlComponent = "slvctrlplus/DeviceDistanceControl";
         break;
       case "display":
-        controlComponent = "DeviceDisplayControl";
+        controlComponent = "slvctrlplus/DeviceDisplayControl";
         break;
       default:
         controlComponent = "GenericDeviceControl";
@@ -43,13 +45,13 @@ const comp = computed<string>(() => {
     controlComponent = "";
     switch (props.device.deviceModel) {
       case "display":
-        controlComponent = "DeviceVirtualDisplayControl";
+        controlComponent = "virtual/DeviceVirtualDisplayControl";
         break;
       case "randomGenerator":
-        controlComponent = "DeviceVirtualRandomGeneratorControl";
+        controlComponent = "virtual/DeviceVirtualRandomGeneratorControl";
         break;
       case "tts":
-        controlComponent = "DeviceVirtualTtsControl";
+        controlComponent = "virtual/DeviceVirtualTtsControl";
         break;
       default:
         controlComponent = "GenericDeviceControl";
@@ -61,8 +63,10 @@ const comp = computed<string>(() => {
     controlComponent = "GenericDeviceControl";
   }
 
-  return defineAsyncComponent(
-    () => import(`./control/${controlComponent}.vue`)
-  );
+  const importPath = `./control/${controlComponent}.vue`;
+  if (!(importPath in componentMap)) {
+    throw new Error(`Component not found: ${importPath}`);
+  }
+  return defineAsyncComponent(componentMap[importPath] as () => Promise<any>);
 });
 </script>

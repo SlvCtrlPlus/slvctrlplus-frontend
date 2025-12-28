@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { reactive } from "vue";
-import type DeviceEt312 from "../../../model/DeviceEt312";
-import { useSocketIO } from "../../../plugins/vueSocketIOClient.js";
+import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "../../../helper/DeviceCommunicator";
+import DeviceCommunicator from "@/helper/DeviceCommunicator";
+import {DeviceEt312} from "@/model/devices/slvctrl/DeviceEt312";
+import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 
 interface Props {
   device: DeviceEt312;
@@ -53,8 +54,10 @@ for (const modeKey in modes) {
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const adcChangeHandler = (newAdc: boolean): void =>
-  deviceComm.setAttribute("adc", newAdc);
+const adcChangeHandler = (newAdc: boolean | null): void => {
+  const mappedNewAdc = null !== newAdc ? false : false;
+  deviceComm.setAttribute("adc", mappedNewAdc);
+}
 
 const levelChangeHandler = (channel: string, level: number): void =>
   deviceComm.setAttribute("level" + channel.toUpperCase(), level);
@@ -69,21 +72,21 @@ const modeChangeHandler = (newMode: number): void =>
 </script>
 
 <template>
-  <div v-if="device.data.connected === true && device.data.mode !== 0">
+  <div v-if="device.attributes.connected.value === true && device.attributes.mode.value !== 0">
     <v-select
-      v-model="device.data.mode"
+      v-model="device.attributes.mode.value"
       :items="selectModes"
       label="Mode"
       hide-details
       @update:modelValue="modeChangeHandler"
     ></v-select>
     <v-checkbox
-      v-model="device.data.adc"
+      v-model="device.attributes.adc.value"
       :true-value="false"
       :false-value="true"
       label="Control levels"
       color="primary"
-      hide-details="hide-details"
+      :hide-details="true"
       class="pa-0 ma-0"
       @update:modelValue="adcChangeHandler"
     ></v-checkbox>
@@ -91,69 +94,33 @@ const modeChangeHandler = (newMode: number): void =>
       <dl>
         <dt><label>Level A</label></dt>
         <dd>
-          <v-slider
-            v-model="device.data.levelA"
-            @update:modelValue="levelChangeHandlerA"
-            max="99"
-            min="0"
-            step="1"
-            color="primary"
-            hide-details
-            :disabled="device.data.adc"
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model="device.data.levelA"
-                @update:modelValue="levelChangeHandlerA"
-                hide-details
-                single-line
-                max="99"
-                min="0"
-                density="compact"
-                variant="outlined"
-                type="number"
-                style="width: 80px"
-                :disabled="device.data.adc"
-              ></v-text-field>
-            </template>
-          </v-slider>
+          <DebouncedSlider
+            :model-value="device.attributes.levelA.value"
+            @update:model-value="levelChangeHandlerA"
+            :attribute="device.attributes.levelA"
+            :disabled="!device.attributes.adc.value || !props.device.attributes.levelA.value"
+            :slider-debounce="50"
+            :input-debounce="100"
+          />
         </dd>
       </dl>
       <dl>
         <dt><label>Level B</label></dt>
         <dd>
-          <v-slider
-            v-model="device.data.levelB"
-            @update:modelValue="levelChangeHandlerB"
-            max="99"
-            min="0"
-            step="1"
-            color="primary"
-            hide-details
-            :disabled="device.data.adc"
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model="device.data.levelB"
-                @update:modelValue="levelChangeHandlerB"
-                hide-details
-                single-line
-                max="99"
-                min="0"
-                density="compact"
-                variant="outlined"
-                type="number"
-                style="width: 80px"
-                :disabled="device.data.adc"
-              ></v-text-field>
-            </template>
-          </v-slider>
+          <DebouncedSlider
+            :model-value="device.attributes.levelB.value"
+            @update:model-value="levelChangeHandlerB"
+            :attribute="device.attributes.levelB"
+            :disabled="!device.attributes.adc.value || !props.device.attributes.levelB.value"
+            :slider-debounce="50"
+            :input-debounce="100"
+          />
         </dd>
       </dl>
     </div>
   </div>
   <v-alert
-    v-else-if="device.data.connected === true && device.data.mode === 0"
+    v-else-if="device.attributes.connected.value && 0 === device.attributes.mode.value"
     icon="mdi-alert"
     color="grey-darken-3"
     class="text-grey-darken-4"

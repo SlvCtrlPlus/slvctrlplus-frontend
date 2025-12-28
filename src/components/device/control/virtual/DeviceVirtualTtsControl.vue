@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from "vue";
+import { computed, ref } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "../../../helper/DeviceCommunicator";
-import type VirtualDeviceTts from "../../../model/virtual/VirtualDeviceTts.js";
+import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
+import {VirtualDeviceTts} from "@/model/devices/virtual/VirtualDeviceTts";
 
 interface Props {
   device: VirtualDeviceTts;
@@ -12,18 +12,17 @@ interface Props {
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
-const device = reactive<VirtualDeviceTts>(props.device);
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const text = ref<string>(device.data?.text || "");
+const text = ref<string>(props.device.attributes.text.value ?? "");
 const currentlySpeaking = computed<string>(() => {
-  return undefined === device.data?.speaking || false === device.data?.speaking
+  return undefined === props.device.attributes.speaking.value || !props.device.attributes.speaking.value
     ? "no"
     : "yes";
 });
 const queuingLabel = computed<string>(() => {
-  return device.data?.queuing
-    ? `Queuing enabled (Queue: ${device.data.queueLength})`
+  return props.device.attributes.queuing
+    ? `Queuing enabled (Queue: ${props.device.attributes.queueLength.value})`
     : "Queuing disabled";
 });
 
@@ -55,7 +54,7 @@ const changeQueuing = (newValue: boolean | null): void => {
   >
 
   <v-switch
-    v-model="device.data.queuing"
+    v-model="device.attributes.queuing.value"
     :hide-details="true"
     color="primary"
     class="pa-0 ma-0"
@@ -63,10 +62,10 @@ const changeQueuing = (newValue: boolean | null): void => {
     @update:modelValue="changeQueuing"
   ></v-switch>
 
-  <dl v-if="true === device.data?.queuing" class="mt-4 mb-4">
+  <dl v-if="true === device.attributes.queuing.value" class="mt-4 mb-4">
     <dt><label>Queue length</label></dt>
     <dd>
-      <b>{{ device.data?.queueLength || "empty" }}</b>
+      <b>{{ device.attributes.queueLength.value || "empty" }}</b>
     </dd>
   </dl>
   <dl class="mt-4">

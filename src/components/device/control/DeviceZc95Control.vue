@@ -3,10 +3,14 @@ import { computed } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
-import type {DeviceZc95} from "@/model/DeviceZc95";
-import {getDeviceAttributeDefinition} from "@/model/DeviceGeneric";
-import type {DeviceZc95Data} from "@/model/DeviceZc95Data";
+import type {
+  DeviceZc95,
+  PatternDeviceZc95Attributes,
+  PowerChannelDeviceZc95Attributes
+} from "@/model/devices/zc95/DeviceZc95";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
+import {DeviceData} from "@/model/devices/Device";
+import {isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
 
 interface Props {
   device: DeviceZc95;
@@ -18,7 +22,7 @@ const io = useSocketIO() as Socket;
 const deviceComm = new DeviceCommunicator(props.device, io);
 
 const attrChangeHandler = (
-  attrName: keyof DeviceZc95Data,
+  attrName: keyof DeviceData<DeviceZc95>,
   value: string | number | boolean
 ): void => {
   deviceComm.setAttribute(attrName, value);
@@ -26,31 +30,19 @@ const attrChangeHandler = (
 
 // Get all slider attributes (powerChannels + patternAttributes) sorted
 const sliderAttributes = computed(() => {
-  if (!props.device.data) return { powerChannels: [], patternAttributes: [] };
+  const powerChannelAttributes = Object.fromEntries(
+      Object.entries(props.device.attributes).filter(([key]) => key.startsWith('powerChannel'))
+  ) as PowerChannelDeviceZc95Attributes;
 
-  const allKeys = Object.keys(props.device.data)
-    .filter(key => key.startsWith('powerChannel') || key.startsWith('patternAttribute'));
+  const patternAttributes = Object.fromEntries(
+      Object.entries(props.device.attributes).filter(([key]) => key.startsWith('patternAttribute'))
+  ) as PatternDeviceZc95Attributes;
 
-  const powerChannels = allKeys
-    .filter(key => key.startsWith('powerChannel'))
-    .sort((a, b) => {
-      const numA = parseInt(a.replace('powerChannel', ''), 10);
-      const numB = parseInt(b.replace('powerChannel', ''), 10);
-      return numA - numB;
-    })
-    .map(key => getDeviceAttributeDefinition(props.device, key as keyof DeviceZc95Data))
-    .filter(attr => attr !== undefined);
-
-  const patternAttributes = allKeys
-    .filter(key => key.startsWith('patternAttribute'))
-    .map(key => getDeviceAttributeDefinition(props.device, key as keyof DeviceZc95Data))
-    .filter(attr => attr !== undefined);
-
-  return { powerChannels, patternAttributes };
+  return { powerChannelAttributes, patternAttributes };
 });
 
 const activePatternItems = computed(() => {
-  const values = getDeviceAttributeDefinition(props.device, 'activePattern')?.values || {};
+  const values = props.device.attributes.activePattern.values ?? {};
   return Object.entries(values).map(([key, value]) => ({
     title: value,
     value: parseInt(key, 10)
@@ -60,29 +52,29 @@ const activePatternItems = computed(() => {
 
 <template>
   <v-select
-    :model-value="props.device.data.activePattern"
+    :model-value="props.device.attributes.activePattern.value"
     :items="activePatternItems"
     label="Mode"
     hide-details
     @update:modelValue="value => attrChangeHandler('activePattern', value)"
   ></v-select>
-  <v-btn :color="(!props.device.data.patternStarted ? 'primary' : 'red')" class="mt-4" @click="() => attrChangeHandler('patternStarted', !props.device.data.patternStarted)"
-  ><span v-if="!props.device.data.patternStarted">start</span><span v-else>stop</span></v-btn >
+  <v-btn :color="(!props.device.attributes.patternStarted.value ? 'primary' : 'red')" class="mt-4" @click="() => attrChangeHandler('patternStarted', !props.device.attributes.patternStarted.value)"
+  ><span v-if="!props.device.attributes.patternStarted.value">start</span><span v-else>stop</span></v-btn >
 
-  <div v-if="props.device.data.patternStarted">
+  <div v-if="props.device.attributes.patternStarted.value">
     <!-- Power Channels -->
-    <div v-if="sliderAttributes.powerChannels.length > 0">
+    <div v-if="Object.keys(sliderAttributes.powerChannelAttributes).length > 0">
       <v-divider class="my-4" />
-      <dl :key="attr.name" v-for="attr in sliderAttributes.powerChannels">
+      <dl :key="attr.name" v-for="[key, attr] in typedEntries(sliderAttributes.powerChannelAttributes)">
         <dt>
           <label>{{ attr.label ?? attr.name }} <span v-if="attr.uom">({{ attr.uom }})</span></label>
         </dt>
         <dd>
           <DebouncedSlider
-            :model-value="props.device.data[attr.name as keyof DeviceZc95Data] as number"
-            @update:model-value="value => attrChangeHandler(attr.name as keyof DeviceZc95Data, value)"
+            :model-value="attr.value as number"
+            @update:model-value="value => attrChangeHandler(key, value)"
             :attribute="attr"
-            :disabled="!props.device.data.patternStarted"
+            :disabled="!props.device.attributes.patternStarted.value"
             :slider-debounce="50"
             :input-debounce="100"
           />
@@ -91,21 +83,34 @@ const activePatternItems = computed(() => {
     </div>
 
     <!-- Pattern Attributes -->
-    <div v-if="sliderAttributes.patternAttributes.length > 0">
+    <div v-if="Object.keys(sliderAttributes.patternAttributes).length > 0">
       <v-divider class="my-4" />
-      <dl :key="attr.name" v-for="attr in sliderAttributes.patternAttributes">
+      <dl :key="attr.name" v-for="[key, attr] in typedEntries(sliderAttributes.patternAttributes)">
         <dt>
-          <label>{{ attr.label ?? attr.name }} <span v-if="attr.uom">({{ attr.uom }})</span></label>
+          <label>
+            {{ attr.label ?? attr.name }}
+            <span v-if="isIntRangeDeviceAttribute(attr) && attr.uom"> ({{ attr.uom }})</span>
+          </label>
         </dt>
         <dd>
           <DebouncedSlider
-            :model-value="props.device.data[attr.name as keyof DeviceZc95Data] as number"
-            @update:model-value="value => attrChangeHandler(attr.name as keyof DeviceZc95Data, value)"
+            v-if="isIntRangeDeviceAttribute(attr)"
+            :model-value="attr.value as number"
+            @update:model-value="value => attrChangeHandler(key, value)"
             :attribute="attr"
-            :disabled="!props.device.data.patternStarted"
+            :disabled="!props.device.attributes.patternStarted.value"
             :slider-debounce="50"
             :input-debounce="100"
           />
+          <v-select
+              v-if="isListDeviceAttribute(attr)"
+              :model-value="attr.value"
+              :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key, 10) }))"
+              color="primary"
+              class="pa-0 ma-0"
+              @update:modelValue="value => attrChangeHandler(key, value)"
+              :disabled="attr.modifier === 'ro'"
+          ></v-select>
         </dd>
       </dl>
     </div>

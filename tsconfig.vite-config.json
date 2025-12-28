@@ -3,6 +3,7 @@
   "include": ["vite.config.*"],
   "compilerOptions": {
     "lib": ["es2017"],
+    "module": "esnext",
     "composite": true,
     "types": ["node", "vitest"]
   }

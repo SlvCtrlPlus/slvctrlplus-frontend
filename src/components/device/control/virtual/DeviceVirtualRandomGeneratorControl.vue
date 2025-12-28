@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { computed, reactive } from "vue";
-import type VirtualRandomGenerator from "../../../model/virtual/VirtualRandomGenerator";
+import {VirtualDeviceRandomGenerator} from "@/model/devices/virtual/VirtualRandomGenerator";
 
 interface Props {
-  device: VirtualRandomGenerator;
+  device: VirtualDeviceRandomGenerator;
 }
 
 const props = defineProps<Props>();
-const device = reactive<VirtualRandomGenerator>(props.device);
 
 const displayHtml = computed(() => {
-  if (null === device.data || null === device.data["value"]) {
+  if (undefined === props.device.attributes.value.value) {
     return "";
   }
-  return device.data["value"];
+  return props.device.attributes.value.value;
 });
 </script>
 

@@ -4,7 +4,7 @@ import { useDevicesStore } from "../stores/devices.js";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { ref, watch } from "vue";
-import type Device from "../model/Device";
+import type Device from "../model/devices/Device";
 import DeviceCard from "../components/device/DeviceCard.vue";
 
 const devicesStore = useDevicesStore();
