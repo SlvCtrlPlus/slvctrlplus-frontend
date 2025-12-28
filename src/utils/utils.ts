@@ -27,4 +27,6 @@ export const hasType = (obj: unknown, expectedType: string): boolean => {
     );
 }
 
-export declare function hasProperty<O extends object, P extends PropertyKey>(obj: O, prop: P): obj is O & Record<P, unknown>;
+export const hasProperty = <O extends object, P extends PropertyKey>(obj: O, prop: P): obj is O & Record<P, unknown> => {
+    return obj != null && typeof obj === 'object' && prop in obj;
+}
