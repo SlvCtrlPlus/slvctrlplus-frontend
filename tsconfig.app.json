@@ -14,7 +14,6 @@
       "dom"
     ],
     "module": "esnext",
-    "composite": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -23,6 +22,7 @@
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "composite": true,
     "skipLibCheck": true
   }
 }

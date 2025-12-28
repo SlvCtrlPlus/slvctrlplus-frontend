@@ -5,7 +5,6 @@ import { merge } from "chart.js/helpers";
 import StreamLineChart from "@/components/chart/StreamLineChart.vue";
 import LoadingState from "@/components/LoadingState.vue";
 import { computed, ref, toRaw } from "vue";
-import type { Ref } from "vue";
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useHealthStore } from "@/stores/health";
@@ -45,17 +44,17 @@ const chartOptionsSystemCpu = merge(
   getScales(0, 100)
 );
 
-const chartOptionsProcessMemoryRef = ref<ChartOptions>(
+const chartOptionsProcessMemoryRef = ref<ChartOptions<"line">>(
   chartOptionsProcessMemory
-) as Ref<ChartOptions>;
+);
 
-const chartOptionsSystemMemoryRef = ref<ChartOptions>(
+const chartOptionsSystemMemoryRef = ref<ChartOptions<"line">>(
   chartOptionsSystemMemory
-) as Ref<ChartOptions>;
+);
 
-const chartOptionsSystemCpuRef = ref<ChartOptions>(
+const chartOptionsSystemCpuRef = ref<ChartOptions<"line">>(
   chartOptionsSystemCpu
-) as Ref<ChartOptions>;
+);
 
 const uptime = computed(() => {
   if (healthStore.state === undefined) {

@@ -13,17 +13,5 @@
     "moduleResolution": "bundler",
     "skipLibCheck": true
   },
-  "files": [],
-  "include": ["src/**/*.ts", "src/**/*.vue"],
-  "references": [
-    {
-      "path": "./tsconfig.vite-config.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ]
+  "include": ["src/**/*.ts", "src/**/*.vue"]
 }

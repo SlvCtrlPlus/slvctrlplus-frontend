@@ -1,5 +1,5 @@
 export default class TimeoutHelper {
-  private timeoutId: number | null = null;
+  private timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   private readonly handler: () => void;
 

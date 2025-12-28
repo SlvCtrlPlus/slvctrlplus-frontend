@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import StreamLineChart from "../../../chart/StreamLineChart.vue";
-import type { Chart, ChartData } from "chart.js";
+import type {Chart, ChartData, ChartOptions} from "chart.js";
 import ChartHelper from "../../../../helper/ChartHelper";
 import { merge } from "chart.js/helpers";
-import type { ChartOptions } from "chart.js";
 import {DeviceDistance} from "@/model/devices/slvctrl/DeviceDistance";
 
 interface Props {
@@ -55,7 +54,7 @@ const chartOptions = merge(
   }
 );
 
-const chartOptionsRef = ref<ChartOptions>(chartOptions);
+const chartOptionsRef = ref<ChartOptions<"line">>(chartOptions);
 </script>
 
 <template>

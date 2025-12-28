@@ -4,7 +4,7 @@
   "compilerOptions": {
     "lib": ["es2017"],
     "module": "esnext",
-    "composite": true,
-    "types": ["node", "vitest"]
+    "types": ["node", "vitest"],
+    "composite": true
   }
 }
