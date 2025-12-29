@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { reactive } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
@@ -17,8 +16,6 @@ type SelectItem = {
 
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
-
-const device = reactive<DeviceEt312>(props.device);
 
 const modes: { [key: number]: string } = {
   0x76: "Waves",
@@ -54,10 +51,8 @@ for (const modeKey in modes) {
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const adcChangeHandler = (newAdc: boolean | null): void => {
-  const mappedNewAdc = null !== newAdc ? false : false;
-  deviceComm.setAttribute("adc", mappedNewAdc);
-}
+const adcChangeHandler = (newAdc: boolean | null): void =>
+  deviceComm.setAttribute("adc", newAdc ?? false);
 
 const levelChangeHandler = (channel: string, level: number): void =>
   deviceComm.setAttribute("level" + channel.toUpperCase(), level);
@@ -72,16 +67,16 @@ const modeChangeHandler = (newMode: number): void =>
 </script>
 
 <template>
-  <div v-if="device.attributes.connected.value === true && device.attributes.mode.value !== 0">
+  <div v-if="props.device.attributes.connected.value && props.device.attributes.mode.value !== 0">
     <v-select
-      v-model="device.attributes.mode.value"
+      :model-value="props.device.attributes.mode.value"
       :items="selectModes"
       label="Mode"
       hide-details
       @update:modelValue="modeChangeHandler"
     ></v-select>
     <v-checkbox
-      v-model="device.attributes.adc.value"
+      :model-value="props.device.attributes.adc.value"
       :true-value="false"
       :false-value="true"
       label="Control levels"
@@ -95,10 +90,10 @@ const modeChangeHandler = (newMode: number): void =>
         <dt><label>Level A</label></dt>
         <dd>
           <DebouncedSlider
-            :model-value="device.attributes.levelA.value"
+            :model-value="props.device.attributes.levelA.value"
             @update:model-value="levelChangeHandlerA"
-            :attribute="device.attributes.levelA"
-            :disabled="!device.attributes.adc.value || !props.device.attributes.levelA.value"
+            :attribute="props.device.attributes.levelA"
+            :disabled="!props.device.attributes.adc.value || !props.device.attributes.levelA.value"
             :slider-debounce="50"
             :input-debounce="100"
           />
@@ -108,10 +103,10 @@ const modeChangeHandler = (newMode: number): void =>
         <dt><label>Level B</label></dt>
         <dd>
           <DebouncedSlider
-            :model-value="device.attributes.levelB.value"
+            :model-value="props.device.attributes.levelB.value"
             @update:model-value="levelChangeHandlerB"
-            :attribute="device.attributes.levelB"
-            :disabled="!device.attributes.adc.value || !props.device.attributes.levelB.value"
+            :attribute="props.device.attributes.levelB"
+            :disabled="!props.device.attributes.adc.value || !props.device.attributes.levelB.value"
             :slider-debounce="50"
             :input-debounce="100"
           />
@@ -120,7 +115,7 @@ const modeChangeHandler = (newMode: number): void =>
     </div>
   </div>
   <v-alert
-    v-else-if="device.attributes.connected.value && 0 === device.attributes.mode.value"
+    v-else-if="props.device.attributes.connected.value && 0 === props.device.attributes.mode.value"
     icon="mdi-alert"
     color="grey-darken-3"
     class="text-grey-darken-4"

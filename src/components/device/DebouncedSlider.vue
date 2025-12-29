@@ -31,6 +31,10 @@ watch(() => props.modelValue, (newValue) => {
 });
 
 const handleValueChange = (value: number, debounceMs: number): void => {
+  if (isNaN(value)) {
+    return;
+  }
+
   localValue.value = value;
 
   if (debounceTimer) {
@@ -74,7 +78,7 @@ const handleEnd = (): void => {
     <template v-slot:append>
       <v-text-field
           v-model="localValue"
-          @update:modelValue="value => handleValueChange(parseInt(value), inputDebounce)"
+          @update:modelValue="value => handleValueChange(parseInt(value, 10), inputDebounce)"
           @focus="handleStart"
           @blur="handleEnd"
           hide-details

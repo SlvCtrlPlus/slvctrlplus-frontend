@@ -7,19 +7,19 @@ interface Props {
   runningSince: Date | null;
 }
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(['close']);
 
 const props = defineProps<Props>();
 
 const logData = computed(() => `${props.logData.join("\n")}\n\n`);
 const runningSinceFormatted = computed(() => {
   if (null === props.runningSince) {
-    return `<i>currently not running</i>`;
+    return null;
   }
 
   const momentDate = moment(props.runningSince);
   return `${momentDate.format(
-    "YYYY-MM-DD, hh:mm:ss"
+    'YYYY-MM-DD, hh:mm:ss'
   )} (${momentDate.fromNow()})`;
 });
 
@@ -36,7 +36,11 @@ watch(logData, async () => {
   <v-card>
     <v-card-title class="text-h5">Logs</v-card-title>
     <v-card-text>
-      <p>Running since: {{ runningSinceFormatted }}</p>
+      <p>
+        Running since:
+        <span v-if="null === runningSinceFormatted">{{ runningSinceFormatted }}</span>
+        <i v-else>currently not running</i>
+      </p>
       <pre id="log-data" ref="logDataContainer" class="bg-grey-darken-3 pa-3">{{
         logData
       }}</pre>

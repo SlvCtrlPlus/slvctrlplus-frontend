@@ -4,6 +4,7 @@ import type {
     IntRangeDeviceAttribute,
     ListDeviceAttribute
 } from "../Device";
+import {AllOrNone} from "@/types";
 
 type RequiredDeviceZc95Attributes = {
     activePattern: ListDeviceAttribute<number, string>;
@@ -21,7 +22,9 @@ export type PatternDeviceZc95Attributes = {
     [key: `patternAttribute${number}`]: ListDeviceAttribute<number, string>|IntRangeDeviceAttribute;
 }
 
-export type DeviceZc95Attributes = Partial<PowerChannelDeviceZc95Attributes & PatternDeviceZc95Attributes>
-    & Required<RequiredDeviceZc95Attributes>;
+export type DeviceZc95Attributes =
+  AllOrNone<PowerChannelDeviceZc95Attributes> &
+  PatternDeviceZc95Attributes &
+  Required<RequiredDeviceZc95Attributes>;
 
 export type DeviceZc95 = Device<DeviceZc95Attributes>;

@@ -95,7 +95,7 @@ const activePatternItems = computed(() => {
         <dd>
           <DebouncedSlider
             v-if="isIntRangeDeviceAttribute(attr)"
-            :model-value="attr.value as number"
+            :model-value="attr.value"
             @update:model-value="value => attrChangeHandler(key, value)"
             :attribute="attr"
             :disabled="!props.device.attributes.patternStarted.value"

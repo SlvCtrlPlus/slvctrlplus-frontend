@@ -15,8 +15,15 @@ const io = useSocketIO() as Socket;
 const device = reactive<DeviceAirValve>(props.device);
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const flowChangeHandler = (newFlow: number): void =>
+const flowChangeHandler = (newFlow: string|number): void => {
+  const numValue = 'string' === typeof newFlow ? parseInt(newFlow, 10) : newFlow;
+
+  if (isNaN(numValue)) {
+    return;
+  }
+
   deviceComm.setAttribute("flow", newFlow);
+}
 </script>
 
 <template>
@@ -44,7 +51,7 @@ const flowChangeHandler = (newFlow: number): void =>
             variant="outlined"
             type="number"
             style="width: 80px"
-            @update:modelValue="value => flowChangeHandler(parseInt(value, 10))"
+            @update:modelValue="value => flowChangeHandler(value)"
           ></v-text-field>
         </template>
       </v-slider>
