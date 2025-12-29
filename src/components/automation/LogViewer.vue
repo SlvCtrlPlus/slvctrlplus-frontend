@@ -7,6 +7,8 @@ interface Props {
   runningSince: Date | null;
 }
 
+const emit = defineEmits(["close"]);
+
 const props = defineProps<Props>();
 
 const logData = computed(() => `${props.logData.join("\n")}\n\n`);
@@ -41,7 +43,7 @@ watch(logData, async () => {
     </v-card-text>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="primary" variant="text" @click="$emit('close')">
+      <v-btn color="primary" variant="text" @click="emit('close')">
         Close
       </v-btn>
     </v-card-actions>
