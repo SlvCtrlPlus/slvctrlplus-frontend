@@ -12,7 +12,7 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
 
 const route = useRoute();
 
-const device = ref<Device | null | undefined>(undefined);
+const device = ref<Device | null | undefined>(null);
 const containerRef = ref<ComponentPublicInstance | undefined>(undefined);
 
 function resizeToContent() {
@@ -72,7 +72,7 @@ watch(
     />
   </v-container>
   <LoadingState
-    v-else-if="device === null"
+    v-else-if="devicesLoaded && device === undefined"
     :msg="`Could not find device with id: ${route.params.id}`"
   />
   <LoadingState v-else msg="Loading device details" />

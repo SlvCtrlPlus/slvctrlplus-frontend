@@ -38,7 +38,7 @@ watch(logData, async () => {
     <v-card-text>
       <p>
         Running since:
-        <span v-if="null === runningSinceFormatted">{{ runningSinceFormatted }}</span>
+        <span v-if="null !== runningSinceFormatted">{{ runningSinceFormatted }}</span>
         <i v-else>currently not running</i>
       </p>
       <pre id="log-data" ref="logDataContainer" class="bg-grey-darken-3 pa-3">{{
