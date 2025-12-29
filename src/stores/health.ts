@@ -18,6 +18,7 @@ interface SystemInfo {
     cpu: {
       usage: number;
       model: string;
+      cores: string;
     };
     memory: {
       totalMemMb: number;
@@ -28,6 +29,8 @@ interface SystemInfo {
     };
     os: {
       name: string;
+      arch: string;
+      type: string;
     };
     uptime: number;
     hostname: string;

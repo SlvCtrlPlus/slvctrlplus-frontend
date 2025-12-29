@@ -6,7 +6,7 @@ import { useAppStore } from "@/stores/app";
 import CreateForm from "@/components/automation/CreateForm.vue";
 import type AutomationScript from "@/model/AutomationScript";
 import LogViewer from "@/components/automation/LogViewer.vue";
-import {useBackendStore} from "@/stores/backend.ts";
+import {useBackendStore} from "@/stores/backend";
 
 const MonacoEditor = defineAsyncComponent(() => import('@/components/automation/MonacoEditor.vue'));
 

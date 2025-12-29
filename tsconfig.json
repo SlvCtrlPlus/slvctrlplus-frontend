@@ -1,19 +1,17 @@
 {
   "compilerOptions": {
     "lib": ["es2017"],
+    "module": "esnext",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "types": ["vite/client"],
+    "moduleResolution": "bundler",
+    "skipLibCheck": true
   },
-  "files": [],
-  "references": [
-    {
-      "path": "./tsconfig.vite-config.json"
-    },
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.vitest.json"
-    }
-  ]
+  "include": ["src/**/*.ts", "src/**/*.vue"]
 }

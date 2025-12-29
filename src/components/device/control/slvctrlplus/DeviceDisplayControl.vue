@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, reactive } from "vue";
-import type DeviceDisplay from "../../../model/DeviceDisplay";
+import { computed } from "vue";
+import type {DeviceDisplay} from "@/model/devices/slvctrl/DeviceDisplay";
 
 interface Props {
   device: DeviceDisplay;
@@ -15,14 +15,13 @@ interface DisplayElement {
 
 const props = defineProps<Props>();
 
-const device = reactive<DeviceDisplay>(props.device);
-
 const displayHtml = computed(() => {
-  if (null === device.data || null === device.data["content"]) {
+  const contentBase64 = props.device.attributes.content.value;
+
+  if (undefined === contentBase64) {
     return "";
   }
 
-  const contentBase64 = device.data["content"];
   const content = JSON.parse(atob(contentBase64)) as DisplayElement[];
 
   let html = "";

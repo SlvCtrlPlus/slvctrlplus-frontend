@@ -1,19 +1,25 @@
 <script setup lang="ts">
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
-import type DeviceGeneric from "@/model/DeviceGeneric";
-import type Device from "@/model/Device";
+import type Device from "@/model/devices/Device";
+import type { DeviceAttribute } from "@/model/devices/Device";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
+import {hasProperty, isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
+import {computed} from "vue";
 
 interface Props {
-  device: DeviceGeneric;
+  device: Device;
 }
 
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
-const deviceComm = new DeviceCommunicator(props.device as Device, io);
+const deviceComm = new DeviceCommunicator(props.device, io);
+
+const definedAttributes = computed(() =>
+    typedEntries(props.device.attributes).filter(([, attr]) => attr !== undefined) as [string, DeviceAttribute][]
+);
 
 const attributeChangeHandler = (attrName: string, newValue: string | boolean | number | null): void => {
   if (newValue === null) {
@@ -24,15 +30,15 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
 </script>
 
 <template>
-  <div :key="attr.name" v-for="attr in props.device.attributes">
+  <div :key="key" v-for="[key, attr] in definedAttributes">
     <dl>
       <dt>
-        <label>{{ attr.label ?? attr.name }} <span v-if="attr.uom">({{ attr.uom }})</span></label>
+        <label>{{ attr.label ?? attr.name }}<span v-if="hasProperty(attr, 'uom') && 'string' === typeof attr.uom"> ({{ attr.uom }})</span></label>
       </dt>
       <dd>
         <v-switch
           v-if="attr.type === 'bool'"
-          :model-value="props.device.data[attr.name]"
+          :model-value="attr.value"
           color="primary"
           :hide-details="true"
           class="pa-0 ma-0"
@@ -41,9 +47,9 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
         ></v-switch>
 
         <v-select
-          v-if="attr.type === 'list'"
-          :model-value="props.device.data[attr.name]"
-          :items="Object.entries(attr.values || {}).map(([key, value]) => ({ title: value, value: parseInt(key, 10) }))"
+          v-if="isListDeviceAttribute(attr)"
+          :model-value="attr.value"
+          :items="Object.entries(attr.values || {}).map(([laKey, value]) => ({ title: value, value: parseInt(laKey, 10) }))"
           color="primary"
           class="pa-0 ma-0"
           @update:modelValue="value => attributeChangeHandler(attr.name, value)"
@@ -54,7 +60,7 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
           v-if="
             attr.type === 'str' || attr.type === 'float' || attr.type === 'int'
           "
-          :model-value="props.device.data[attr.name]"
+          :model-value="attr.value"
           color="primary"
           class="pa-0 ma-0"
           :type="attr.type === 'str' ? 'text' : 'number'"
@@ -63,8 +69,8 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
         ></v-text-field>
 
         <DebouncedSlider
-          v-if="attr.type === 'range'"
-          :model-value="props.device.data[attr.name] as number"
+          v-if="isIntRangeDeviceAttribute(attr)"
+          :model-value="attr.value"
           @update:model-value="value => attributeChangeHandler(attr.name, value)"
           :attribute="attr"
           :disabled="attr.modifier === 'ro'"

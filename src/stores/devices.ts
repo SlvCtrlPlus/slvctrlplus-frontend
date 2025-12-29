@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref, reactive, computed } from "vue";
-import type Device from "@/model/Device";
 import {apiFetch} from "@/utils/apiFetch";
+import type Device from "@/model/devices/Device";
 
 export const useDevicesStore = defineStore("devices", () => {
   // State: use reactive for objects, ref for primitives
@@ -18,7 +18,7 @@ export const useDevicesStore = defineStore("devices", () => {
         .then((data) => {
           data.items.forEach((v: Device) => {
             v.receiveUpdates = true;
-            devices[v.deviceId as string] = v;
+            devices[v.deviceId] = v;
           });
           devicesLoaded.value = true;
         })
@@ -26,16 +26,16 @@ export const useDevicesStore = defineStore("devices", () => {
   }
 
   function removeDevice(removedDevice: Device) {
-    delete devices[removedDevice.deviceId as string];
+    delete devices[removedDevice.deviceId];
   }
 
   function addDevice(device: Device) {
     device.receiveUpdates = true;
-    devices[device.deviceId as string] = device;
+    devices[device.deviceId] = device;
   }
 
   function updateDevice(updatedDevice: Device) {
-    const device = devices[updatedDevice.deviceId as string];
+    const device = devices[updatedDevice.deviceId];
     if (!device || !device.receiveUpdates) {
       return;
     }
@@ -44,10 +44,6 @@ export const useDevicesStore = defineStore("devices", () => {
 
     if ('attributes' in device && 'attributes' in updatedDevice) {
       device.attributes = updatedDevice.attributes;
-    }
-
-    if ('data' in device && 'data' in updatedDevice) {
-      device.data = updatedDevice.data;
     }
   }
 

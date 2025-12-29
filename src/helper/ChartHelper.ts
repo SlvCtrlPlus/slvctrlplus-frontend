@@ -10,7 +10,7 @@ export default abstract class ChartHelper {
     refreshMs: number,
     delayMs: number,
     onRefresh: ((this: RealTimeScale, chart: Chart) => void | null) | null
-  ): ChartOptions {
+  ): ChartOptions<"line"> {
     return {
       responsive: true,
       maintainAspectRatio: false,
@@ -64,10 +64,11 @@ export default abstract class ChartHelper {
       fill: "origin",
       tension: tension,
       data: [],
+      spanGaps: 1000,
     };
   }
 
-  public static pauseChart(options: ChartOptions): void {
+  public static pauseChart(options: ChartOptions<"line">): void {
     if (options.plugins?.streaming?.pause !== undefined) {
       options.plugins.streaming.pause = true;
     }
@@ -80,7 +81,7 @@ export default abstract class ChartHelper {
     }
   }
 
-  public static resumeChart(options: ChartOptions): void {
+  public static resumeChart(options: ChartOptions<"line">): void {
     if (options.plugins?.streaming?.pause !== undefined) {
       options.plugins.streaming.pause = false;
     }

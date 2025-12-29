@@ -1,7 +1,7 @@
 import { globalIgnores } from 'eslint/config'
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
-import pluginVue from 'eslint-plugin-vue'
-import pluginVitest from '@vitest/eslint-plugin'
+import * as pluginVue from 'eslint-plugin-vue'
+import * as pluginVitest from '@vitest/eslint-plugin'
 import skipFormatting from '@vue/eslint-config-prettier/skip-formatting'
 
 // To allow more languages other than `ts` in `.vue` files, uncomment the following lines:
@@ -21,7 +21,7 @@ export default defineConfigWithVueTs(
     vueTsConfigs.recommended,
 
     {
-      ...pluginVitest.configs.recommended,
+      ...pluginVitest.default.configs.recommended,
       files: ['src/**/__tests__/*'],
     },
     skipFormatting,

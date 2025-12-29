@@ -6,9 +6,9 @@ import "@mdi/font/css/materialdesignicons.css";
 import { loadFonts } from "./plugins/webfontloader";
 import { vueSocketIOClient } from "./plugins/vueSocketIOClient.js";
 import { createPinia } from "pinia";
-import { vuetify } from "./plugins/vuetify.js";
+import { vuetify } from "./plugins/vuetify";
 import VueFullscreen from "vue-fullscreen";
-import {useBackendStore} from "@/stores/backend.ts";
+import {useBackendStore} from "@/stores/backend";
 
 loadFonts().catch(console.log);
 

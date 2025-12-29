@@ -11,13 +11,13 @@ import {
   CategoryScale,
   Filler,
 } from "chart.js";
-import type { ChartOptions, ChartData } from "chart.js";
+import type { ChartOptions, ChartData, Plugin } from "chart.js";
 import "chartjs-adapter-luxon";
 import ChartStreaming from "chartjs-plugin-streaming";
 
 interface Props {
-  chartData: ChartData;
-  chartOptions: ChartOptions;
+  chartData: ChartData<"line">;
+  chartOptions: ChartOptions<"line">;
 }
 
 const props = defineProps<Props>();
@@ -34,7 +34,7 @@ ChartJS.register(
   ChartStreaming
 );
 
-const plugins = [];
+const plugins: Plugin[] = [];
 </script>
 
 <template>

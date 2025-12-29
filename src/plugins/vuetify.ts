@@ -5,13 +5,12 @@ import "vuetify/styles";
 // Vuetify
 import { createVuetify } from "vuetify";
 import type { App, Plugin } from "vue";
-import type { ThemeDefinition } from "vuetify/dist/vuetify.js";
 import * as components from "vuetify/components";
 import * as directives from "vuetify/directives";
 import { aliases, mdi } from "vuetify/iconsets/mdi";
 
-const dark: ThemeDefinition = {
-  dark: true,
+const dark = {
+  dark2: true,
   colors: {
     primary: "#00BD7E",
     "primary-darken-1": "#008055",
@@ -27,7 +26,7 @@ const dark: ThemeDefinition = {
   },
 };
 
-const light: ThemeDefinition = {
+const light = {
   dark: false,
   colors: {
     primary: "#00BD7E",

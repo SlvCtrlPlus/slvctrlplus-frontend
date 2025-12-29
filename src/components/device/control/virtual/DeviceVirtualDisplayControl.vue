@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { useFullscreen, useWakeLock } from "@vueuse/core";
-import type VirtualDeviceDisplay from "../../../model/virtual/VirtualDeviceDisplay";
+import {VirtualDeviceDisplay} from "@/model/devices/virtual/VirtualDeviceDisplay";
 
 type TimerId = ReturnType<typeof setTimeout>;
 
@@ -10,13 +10,12 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const device = reactive<VirtualDeviceDisplay>(props.device);
 
 const displayHtml = computed(() => {
-  if (null === device.data || null === device.data["content"]) {
+  if (undefined === props.device.attributes.content.value) {
     return "";
   }
-  return device.data["content"];
+  return props.device.attributes.content.value;
 });
 
 const fullscreenElement = ref<HTMLElement | null>(null);
@@ -59,7 +58,7 @@ const toggleFullscreen = (toggle: () => Promise<void>) => {
     console.log(`Enter fullscreen and request wake lock`);
     toggle();
     if (isSupported.value) {
-      requestWakeLock();
+      requestWakeLock('screen');
     } else {
       console.warn("Wake Lock API is not supported on this browser.");
     }

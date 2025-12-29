@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import type Device from "@/model/Device";
+import type Device from "@/model/devices/Device";
 import DeviceIcon from "./icons/DeviceIcon.vue";
 import { computed, reactive } from "vue";
+import {hasProperty} from "@/utils/utils";
 
 interface Props {
   device: Device;
@@ -22,12 +23,22 @@ const deviceTypeModel = computed<string>((): string => {
   }`;
 });
 
-function formatFwVersion(fwVersion: string): string {
+function formatFwVersion(fwVersion: string|number): string {
+  fwVersion = String(fwVersion);
+
+  if (!fwVersion.match(/^\d{5,}$/)) {
+    return fwVersion;
+  }
+
   const bugfix = Number(fwVersion.slice(-2));
   const minor = Number(fwVersion.slice(-4, -2));
   const major = Number(fwVersion.slice(0, -4));
 
   return `${major}.${minor}.${bugfix}`;
+}
+
+function isStringOrNumber(val: unknown): val is string | number {
+  return typeof val === "string" || typeof val === "number";
 }
 </script>
 
@@ -48,7 +59,7 @@ function formatFwVersion(fwVersion: string): string {
           <v-list-item-title>Type</v-list-item-title>
           <v-list-item-subtitle>{{ deviceTypeModel }}</v-list-item-subtitle>
         </v-list-item>
-        <v-list-item v-if="device.type === 'slvCtrlPlus'">
+        <v-list-item v-if="hasProperty<Device, 'fwVersion'>(device, 'fwVersion') && isStringOrNumber(device.fwVersion)">
           <v-list-item-title>Firmware</v-list-item-title>
           <v-list-item-subtitle>{{
             formatFwVersion(device.fwVersion)

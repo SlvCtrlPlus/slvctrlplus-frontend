@@ -2,7 +2,7 @@
 import { useDevicesStore } from "./stores/devices.js";
 import { useSocketIO } from "./plugins/vueSocketIOClient.js";
 import type { Socket } from "socket.io-client";
-import type Device from "./model/Device.js";
+import type Device from "./model/devices/Device";
 import { useSettingsStore } from "./stores/settings.js";
 import { useAutomationStore } from "./stores/automation.js";
 import { storeToRefs } from "pinia";
