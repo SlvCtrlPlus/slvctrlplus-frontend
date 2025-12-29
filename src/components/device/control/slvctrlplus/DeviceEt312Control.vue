@@ -93,7 +93,7 @@ const modeChangeHandler = (newMode: number): void =>
             :model-value="props.device.attributes.levelA.value"
             @update:model-value="levelChangeHandlerA"
             :attribute="props.device.attributes.levelA"
-            :disabled="!props.device.attributes.adc.value || !props.device.attributes.levelA.value"
+            :disabled="props.device.attributes.adc.value || undefined === props.device.attributes.levelA.value"
             :slider-debounce="50"
             :input-debounce="100"
           />
@@ -106,7 +106,7 @@ const modeChangeHandler = (newMode: number): void =>
             :model-value="props.device.attributes.levelB.value"
             @update:model-value="levelChangeHandlerB"
             :attribute="props.device.attributes.levelB"
-            :disabled="!props.device.attributes.adc.value || !props.device.attributes.levelB.value"
+            :disabled="props.device.attributes.adc.value || undefined === props.device.attributes.levelB.value"
             :slider-debounce="50"
             :input-debounce="100"
           />
