@@ -8,6 +8,13 @@ export type DeviceData<D extends Device> = {
    [K in keyof D['attributes']]: D['attributes'][K] extends { value: infer V } ? V : never
 };
 
+export type DeviceStatus = 'READY' | 'BUSY' | 'ERROR';
+
+export type DeviceError = {
+   reason: string;
+   occurredAt: Date;
+}
+
 export interface DeviceAttribute<V extends DeviceAttributeValue = DeviceAttributeValue> {
    name: string;
    label?: string;
@@ -39,6 +46,8 @@ export default interface Device<T extends DeviceAttributes = DeviceAttributes> {
    deviceName: string;
    deviceModel: string;
    type: string;
+   state: DeviceStatus;
+   errorInfo: DeviceError | undefined;
    connectedSince: string;
    lastRefresh: string;
    receiveUpdates: boolean;

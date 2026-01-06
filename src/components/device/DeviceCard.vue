@@ -10,7 +10,6 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const device = reactive<Device>(props.device);
 
 let popup: Window | null = null;
 const isPopupOpen = ref(false);
@@ -43,7 +42,7 @@ const openInNewWindow = (device: Device): void => {
     if (!popup) {
       return;
     }
-    popup.document.title = `${document.title}: ${device.deviceName}`;
+    popup.document.title = `${document.title}: ${props.device.deviceName}`;
     popup.addEventListener("beforeunload", () => onPopupClose());
   });
 
@@ -61,8 +60,8 @@ onBeforeUnmount(() => {
   <v-card class="rounded-sm">
     <v-card-title class="d-flex justify-space-between pr-2">
       <div>
-        <DeviceIcon :device="device" class="icon" />
-        {{ device.deviceName }}
+        <DeviceIcon :device="props.device" class="icon" />
+        {{ props.device.deviceName }}
       </div>
 
       <v-btn
@@ -76,7 +75,10 @@ onBeforeUnmount(() => {
     </v-card-title>
     <v-divider></v-divider>
     <v-card-text class="fill-height-grid">
-      <DeviceControl :device="device" />
+      <v-alert type="error" variant="tonal" v-if="props.device.state === 'ERROR'">
+        {{ props.device.errorInfo?.reason }}
+      </v-alert>
+      <DeviceControl v-else :device="props.device" />
     </v-card-text>
   </v-card>
 </template>
