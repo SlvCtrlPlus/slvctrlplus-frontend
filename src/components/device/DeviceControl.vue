@@ -54,6 +54,9 @@ const comp = computed<Component>(() => {
       case "tts":
         controlComponent = "virtual/DeviceVirtualTtsControl";
         break;
+      case "piper":
+        controlComponent = "virtual/DeviceVirtualPiperTtsControl";
+        break;
       default:
         controlComponent = "GenericDeviceControl";
     }

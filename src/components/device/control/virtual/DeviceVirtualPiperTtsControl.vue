@@ -3,10 +3,10 @@ import { computed, ref, nextTick } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
-import {VirtualDeviceTts} from "@/model/devices/virtual/VirtualDeviceTts";
+import {VirtualDevicePiperTts} from "@/model/devices/virtual/VirtualDevicePiperTts";
 
 interface Props {
-  device: VirtualDeviceTts;
+  device: VirtualDevicePiperTts;
 }
 
 const props = defineProps<Props>();
@@ -16,15 +16,8 @@ const deviceComm = new DeviceCommunicator(props.device, io);
 
 const text = ref<string>(props.device.attributes.text.value ?? "");
 const textAreaRef = ref();
-const currentlySpeaking = computed<string>(() => {
-  return undefined === props.device.attributes.speaking.value || !props.device.attributes.speaking.value
-    ? "no"
-    : "yes";
-});
 const queuingLabel = computed<string>(() => {
-  return props.device.attributes.queuing.value
-    ? `Queuing enabled (Queue: ${props.device.attributes.queueLength.value})`
-    : "Queuing disabled";
+  return props.device.attributes.queuing.value ? `Queuing enabled` : "Queuing disabled";
 });
 
 const sendTextHandler = (): void => {
@@ -64,19 +57,6 @@ const changeQueuing = (newValue: boolean | null): void => {
     :label="queuingLabel"
     @update:modelValue="changeQueuing"
   ></v-switch>
-
-  <dl v-if="true === props.device.attributes.queuing.value" class="mt-4 mb-4">
-    <dt><label>Queue length</label></dt>
-    <dd>
-      <b>{{ props.device.attributes.queueLength.value || "empty" }}</b>
-    </dd>
-  </dl>
-  <dl class="mt-4">
-    <dt><label>Currently speaking</label></dt>
-    <dd>
-      <b>{{ currentlySpeaking }}</b>
-    </dd>
-  </dl>
 </template>
 
 <style scoped></style>

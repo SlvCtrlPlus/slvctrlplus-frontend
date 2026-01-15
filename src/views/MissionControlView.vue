@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import LoadingState from "../components/LoadingState.vue";
-import { useDevicesStore } from "../stores/devices.js";
 import { storeToRefs } from "pinia";
-import EmptyState from "../components/EmptyState.vue";
-import DeviceCard from "../components/device/DeviceCard.vue";
+import LoadingState from "@/components/LoadingState.vue";
+import { useDevicesStore } from "@/stores/devices";
+import EmptyState from "@/components/EmptyState.vue";
+import DeviceCard from "@/components/device/DeviceCard.vue";
 
 const devicesStore = useDevicesStore();
 const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
