@@ -2,7 +2,7 @@
 import DeviceIcon from "../icons/DeviceIcon.vue";
 import DeviceControl from "./DeviceControl.vue";
 import type Device from "../../model/devices/Device";
-import { onBeforeUnmount, reactive, ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 
 interface Props {
   device: Device;
