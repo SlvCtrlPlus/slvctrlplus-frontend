@@ -22,7 +22,7 @@ const currentlySpeaking = computed<string>(() => {
     : "yes";
 });
 const queuingLabel = computed<string>(() => {
-  return props.device.attributes.queuing
+  return props.device.attributes.queuing.value
     ? `Queuing enabled (Queue: ${props.device.attributes.queueLength.value})`
     : "Queuing disabled";
 });

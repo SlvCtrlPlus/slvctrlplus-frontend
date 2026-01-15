@@ -17,7 +17,7 @@ const deviceComm = new DeviceCommunicator(props.device, io);
 const text = ref<string>(props.device.attributes.text.value ?? "");
 const textAreaRef = ref();
 const queuingLabel = computed<string>(() => {
-  return props.device.attributes.queuing ? `Queuing enabled` : "Queuing disabled";
+  return props.device.attributes.queuing.value ? `Queuing enabled` : "Queuing disabled";
 });
 
 const sendTextHandler = (): void => {
