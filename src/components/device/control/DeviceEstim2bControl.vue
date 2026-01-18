@@ -23,8 +23,11 @@ const deviceComm = new DeviceCommunicator(props.device, io);
 
 const attrChangeHandler = (
   attrName: keyof DeviceData<DeviceEstim2b>,
-  value: string | number | boolean
+  value: string | number | boolean | null
 ): void => {
+  if (null === value) {
+    return;
+  }
   deviceComm.setAttribute(attrName, value);
 };
 
