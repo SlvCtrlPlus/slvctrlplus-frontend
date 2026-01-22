@@ -49,7 +49,7 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
         <v-select
           v-if="isListDeviceAttribute(attr)"
           :model-value="attr.value"
-          :items="Object.entries(attr.values || {}).map(([laKey, value]) => ({ title: value, value: parseInt(laKey, 10) }))"
+          :items="Object.entries(attr.values || {}).map(([laKey, value]) => ({ title: value, value: laKey }))"
           color="primary"
           class="pa-0 ma-0"
           @update:modelValue="value => attributeChangeHandler(attr.name, value)"
