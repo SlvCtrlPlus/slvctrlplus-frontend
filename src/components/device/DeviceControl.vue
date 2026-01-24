@@ -35,6 +35,9 @@ const comp = computed<Component>(() => {
       case "display":
         controlComponent = "slvctrlplus/DeviceDisplayControl";
         break;
+      case "nogasm":
+        controlComponent = "slvctrlplus/DeviceNogasmControl";
+        break;
       default:
         controlComponent = "GenericDeviceControl";
     }

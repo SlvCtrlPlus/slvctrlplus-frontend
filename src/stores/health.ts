@@ -58,19 +58,37 @@ export const useHealthStore = defineStore("health", (): HealthStore => {
   const chartData = reactive({
     processMemory: {
       datasets: [
-        ChartHelper.createEmptyDataSet("Resident Set Size", { r: 0, g: 189, b: 126 }, 0),
-        ChartHelper.createEmptyDataSet("Heap total", { r: 0, g: 189, b: 126 }, 0),
-        ChartHelper.createEmptyDataSet("Heap used", { r: 204, g: 0, b: 0 }, 0),
+        ChartHelper.createEmptyDataSet({
+          label: "Resident Set Size",
+          color: { r: 0, g: 189, b: 126 },
+          tension: 0,
+        }),
+        ChartHelper.createEmptyDataSet({
+          label: "Heap total", color: { r: 0, g: 189, b: 126 }, tension: 0,
+        }),
+        ChartHelper.createEmptyDataSet({
+          label: "Heap used",
+          color: { r: 204, g: 0, b: 0 },
+          tension: 0,
+        }),
       ],
     } as ChartData<"line">,
     systemCpu: {
       datasets: [
-        ChartHelper.createEmptyDataSet("Percentage", { r: 0, g: 189, b: 126 }, 0),
+        ChartHelper.createEmptyDataSet({
+          label: "Percentage",
+          color: { r: 0, g: 189, b: 126 },
+          tension: 0,
+        }),
       ],
     } as ChartData<"line">,
     systemMemory: {
       datasets: [
-        ChartHelper.createEmptyDataSet("Percentage", { r: 0, g: 189, b: 126 }, 0),
+        ChartHelper.createEmptyDataSet({
+          label: "Percentage",
+          color: { r: 0, g: 189, b: 126 },
+          tension: 0,
+        }),
       ],
     } as ChartData<"line">,
   });

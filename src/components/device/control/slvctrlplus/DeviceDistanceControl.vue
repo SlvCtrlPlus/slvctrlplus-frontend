@@ -27,7 +27,11 @@ const currentDistance = computed((): number|undefined => {
 
 const chartData: ChartData<"line"> = {
   datasets: [
-    ChartHelper.createEmptyDataSet("Distance", { r: 0, g: 189, b: 126 }),
+    ChartHelper.createEmptyDataSet({
+      label: "Distance",
+      color: { r: 0, g: 189, b: 126 },
+      spanGaps: 1000,
+    }),
   ],
 };
 

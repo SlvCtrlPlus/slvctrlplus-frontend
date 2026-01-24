@@ -1,8 +1,23 @@
-import type { ChartDataset, ChartOptions, ScatterDataPoint } from "chart.js";
+import {ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from "chart.js";
 import type { Chart } from "chart.js";
 import type { RealTimeScale } from "chartjs-plugin-streaming";
 
+export type LineChartOptions = ChartOptions<'line'>;
+
 type rgb = { r: number; g: number; b: number };
+
+type DatasetOptions = {
+  label: string,
+  color: rgb,
+  densityLine?: number,
+  densityBackground?: number,
+  tension?: number,
+  fill?: boolean,
+  stack?: string,
+  spanGaps?: number,
+  segment?: Partial<LineOptions['segment']>,
+  borderDash?: Partial<LineOptions['borderDash']>
+}
 
 export default abstract class ChartHelper {
   public static createStreamChartOptions(
@@ -27,12 +42,7 @@ export default abstract class ChartHelper {
             duration: duration,
             refresh: refreshMs,
             delay: delayMs,
-            onRefresh:
-              onRefresh !== null
-                ? onRefresh
-                : () => {
-                    /* no-op */
-                  },
+            onRefresh: onRefresh !== null ? onRefresh : () => { /* no-op */ },
           },
           display: false,
         },
@@ -52,23 +62,27 @@ export default abstract class ChartHelper {
   }
 
   public static createEmptyDataSet(
-    label: string,
-    color: rgb,
-    tension = 0.5
+    options: DatasetOptions
   ): ChartDataset<"line", (number | ScatterDataPoint | null)[]> {
+    const densityLine = options.densityLine ?? 0.5;
+    const densityBackground = options.densityBackground ?? 0.1;
+
     return {
-      label: label,
-      pointBackgroundColor: `rgba(${color.r}, ${color.g}, ${color.b})`,
-      backgroundColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.1)`,
-      borderColor: `rgba(${color.r}, ${color.g}, ${color.b}, 0.5)`,
-      fill: "origin",
-      tension: tension,
+      label: options.label,
+      pointBackgroundColor: `rgba(${options.color.r}, ${options.color.g}, ${options.color.b})`,
+      backgroundColor: `rgba(${options.color.r}, ${options.color.g}, ${options.color.b}, ${densityBackground})`,
+      borderColor: `rgba(${options.color.r}, ${options.color.g}, ${options.color.b}, ${densityLine})`,
+      fill: options.fill ?? "origin",
+      tension: options.tension ?? 0.5,
+      spanGaps: options.spanGaps ?? undefined,
+      stack: options.stack ?? undefined,
+      segment: options.segment ?? undefined,
+      borderDash: options.borderDash ?? undefined,
       data: [],
-      spanGaps: 1000,
     };
   }
 
-  public static pauseChart(options: ChartOptions<"line">): void {
+  public static pauseChart(options: LineChartOptions): void {
     if (options.plugins?.streaming?.pause !== undefined) {
       options.plugins.streaming.pause = true;
     }
@@ -81,7 +95,7 @@ export default abstract class ChartHelper {
     }
   }
 
-  public static resumeChart(options: ChartOptions<"line">): void {
+  public static resumeChart(options: LineChartOptions): void {
     if (options.plugins?.streaming?.pause !== undefined) {
       options.plugins.streaming.pause = false;
     }
@@ -92,5 +106,12 @@ export default abstract class ChartHelper {
       options.elements.point.radius = 0;
       options.elements.point.hoverRadius = 0;
     }
+  }
+
+  public static getY(v: number | ScatterDataPoint | null): number | undefined {
+    if (v == null) return undefined;
+    if (typeof v === 'number') return v;
+    if (typeof v === 'object') return v.y;
+    return undefined;
   }
 }
