@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import StreamLineChart from "../../../chart/StreamLineChart.vue";
-import type {Chart, ChartData, ChartOptions} from "chart.js";
-import ChartHelper from "../../../../helper/ChartHelper";
+import type {Chart, ChartOptions} from "chart.js";
+import ChartHelper, {LineChartData} from "../../../../helper/ChartHelper";
 import { merge } from "chart.js/helpers";
 import {DeviceDistance} from "@/model/devices/slvctrl/DeviceDistance";
 
@@ -25,7 +25,7 @@ const currentDistance = computed((): number|undefined => {
   return tmpDistance;
 });
 
-const chartData: ChartData<"line"> = {
+const chartData: LineChartData = {
   datasets: [
     ChartHelper.createEmptyDataSet({
       label: "Distance",

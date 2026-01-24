@@ -1,14 +1,15 @@
-import {ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from "chart.js";
+import {ChartData, ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from "chart.js";
 import type { Chart } from "chart.js";
 import type { RealTimeScale } from "chartjs-plugin-streaming";
 
 export type LineChartOptions = ChartOptions<'line'>;
+export type LineChartData = ChartData<'line'>;
 
-type rgb = { r: number; g: number; b: number };
+export type Color = { r: number; g: number; b: number };
 
 type DatasetOptions = {
   label: string,
-  color: rgb,
+  color: Color,
   densityLine?: number,
   densityBackground?: number,
   tension?: number,
@@ -25,7 +26,7 @@ export default abstract class ChartHelper {
     refreshMs: number,
     delayMs: number,
     onRefresh: ((this: RealTimeScale, chart: Chart) => void | null) | null
-  ): ChartOptions<"line"> {
+  ): LineChartOptions {
     return {
       responsive: true,
       maintainAspectRatio: false,
@@ -113,5 +114,9 @@ export default abstract class ChartHelper {
     if (typeof v === 'number') return v;
     if (typeof v === 'object') return v.y;
     return undefined;
+  }
+
+  public static getCssColor(color: Color, alpha: number = 1) {
+    return `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`;
   }
 }

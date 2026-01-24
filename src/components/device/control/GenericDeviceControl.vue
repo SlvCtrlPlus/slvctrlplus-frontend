@@ -51,7 +51,7 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
           :model-value="attr.value"
           :items="Object.entries(attr.values || {}).map(([laKey, value]) => ({ title: value, value: laKey }))"
           color="primary"
-          class="pa-0 ma-0"
+          class="pa-0 mt-2"
           @update:modelValue="value => attributeChangeHandler(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-select>

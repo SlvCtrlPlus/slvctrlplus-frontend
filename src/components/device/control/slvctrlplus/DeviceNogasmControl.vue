@@ -3,12 +3,11 @@ import {computed, ref} from "vue";
 import StreamLineChart from "../../../chart/StreamLineChart.vue";
 import {
   Chart,
-  ChartData,
   Color,
   LinearScaleOptions,
   ScriptableLineSegmentContext
 } from "chart.js";
-import ChartHelper, {LineChartOptions} from "../../../../helper/ChartHelper";
+import ChartHelper, {LineChartData, LineChartOptions} from "../../../../helper/ChartHelper";
 import { merge } from "chart.js/helpers";
 import {DeviceNogasm} from "@/model/devices/slvctrl/DeviceNogasm";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
@@ -25,10 +24,13 @@ const io = useSocketIO() as Socket;
 const deviceComm = new DeviceCommunicator<Props['device']>(props.device, io);
 
 const modeNames = new Map<string, string>([['1', 'Manual'],['2', 'Automatic']]);
+const colorThreshold = { r: 244, g: 67, b: 54 };
+const colorDeviationOk = {r: 0, g: 189, b: 126 };
+const colorDeviationNok = {r: 255, g: 152, b: 0};
 
 const thresholdDataset = ChartHelper.createEmptyDataSet({
   label: "Threshold",
-  color: { r: 244, g: 67, b: 54 },
+  color: colorThreshold,
   densityLine: 0.7,
   fill: false,
 });
@@ -39,17 +41,17 @@ const dynamicLineColoring = (alpha: number) => (ctx: ScriptableLineSegmentContex
   const a0 = ChartHelper.getY(thresholdDataset.data[i0]);
   const a1 = ChartHelper.getY(thresholdDataset.data[i1]);
 
-  if (a0 === undefined || a1 === undefined) return "orange";
+  if (a0 === undefined || a1 === undefined) return ChartHelper.getCssColor(colorDeviationOk, alpha);
 
   const below = p0.parsed.y < a0 && p1.parsed.y < a1;
-  return below ? `rgba(0,189,126,${alpha})` : `rgba(255,152,0,${alpha})`;
+  return ChartHelper.getCssColor(below ? colorDeviationOk : colorDeviationNok, alpha);
 };
 
-const chartData: ChartData<"line"> = {
+const chartData: LineChartData = {
   datasets: [
     ChartHelper.createEmptyDataSet({
       label: "Pressure deviation",
-      color: {r: 0, g: 189, b: 126 },
+      color: colorDeviationOk,
       segment: {
         borderColor: dynamicLineColoring(1),
         backgroundColor: dynamicLineColoring(0.1),
@@ -60,16 +62,18 @@ const chartData: ChartData<"line"> = {
 };
 
 const onRefresh = (chart: Chart): void => {
-  if (undefined === props.device.attributes.avgPressure.value ||
-      undefined === props.device.attributes.currentPressure.value ||
-      undefined === props.device.attributes.maxPressureDelta.value
+  const deviceAttrs = props.device.attributes;
+
+  if (undefined === deviceAttrs.avgPressure.value ||
+      undefined === deviceAttrs.currentPressure.value ||
+      undefined === deviceAttrs.maxPressureDelta.value
   ) {
     return;
   }
 
-  const avgPressureValue = props.device.attributes.avgPressure.value;
-  const maxNormalizedPressure = props.device.attributes.maxPressureDelta.value * 1.3;
-  let normalizePressure = props.device.attributes.currentPressure.value - avgPressureValue;
+  const avgPressureValue = deviceAttrs.avgPressure.value;
+  const maxNormalizedPressure = deviceAttrs.maxPressureDelta.value * 1.3;
+  let normalizePressure = deviceAttrs.currentPressure.value - avgPressureValue;
 
   normalizePressure = (normalizePressure > maxNormalizedPressure) ? maxNormalizedPressure : normalizePressure;
 
@@ -80,7 +84,7 @@ const onRefresh = (chart: Chart): void => {
 
   chart.data.datasets[1].data.push({
     x: Date.now(),
-    y: Number(props.device.attributes.maxPressureDelta.value),
+    y: Number(deviceAttrs.maxPressureDelta.value),
   });
 
   (chart.options.scales!.y! as LinearScaleOptions).suggestedMax = maxNormalizedPressure;
@@ -112,6 +116,7 @@ const maxCurrentSpeed = computed(() => props.device.attributes.mode.value === '1
   ? props.device.attributes.currentSpeed.max
   : props.device.attributes.maxSpeed.value
 );
+const isAutomaticMode = computed(() => props.device.attributes.mode.value === '2');
 </script>
 
 <template>
@@ -132,7 +137,7 @@ const maxCurrentSpeed = computed(() => props.device.attributes.mode.value === '1
     <dd>
       <v-select
           :model-value="props.device.attributes.mode.value"
-          :items="Object.entries(props.device.attributes.mode.values || {}).map(([laKey, value]) => ({ title: modeNames.get(laKey) ?? value, value: laKey }))"
+          :items="Object.entries(props.device.attributes.mode.values).map(([laKey, value]) => ({ title: modeNames.get(laKey) ?? value, value: laKey }))"
           color="primary"
           class="pa-0 mt-2"
           density="compact"
@@ -158,8 +163,26 @@ const maxCurrentSpeed = computed(() => props.device.attributes.mode.value === '1
       />
     </dd>
   </dl>
+  <dl v-if="isAutomaticMode">
+    <dt><label>Max. vibrator speed <v-tooltip location="left" class="tooltip">
+      <template #activator="{ props }">
+        <v-icon v-bind="props" color="grey-darken-2" icon="mdi-information-outline" size="small" />
+      </template>
+      The maximum speed the vibrator will reach in "Automatic" mode after being fully ramped up.
+    </v-tooltip></label></dt>
+    <dd>
+      <DebouncedSlider
+          :model-value="props.device.attributes.maxSpeed.value"
+          @update:model-value="value => deviceComm.setAttribute('maxSpeed', value)"
+          :attribute="props.device.attributes.maxSpeed"
+          :slider-debounce="50"
+          :input-debounce="100"
+          :disabled="!isAutomaticMode"
+      />
+    </dd>
+  </dl>
   <dl>
-    <dt><label>Vibrator speed <v-tooltip v-if="props.device.attributes.mode.value !== '1'" location="left" class="tooltip">
+    <dt><label>Current vibrator speed <v-tooltip v-if="isAutomaticMode" location="left" class="tooltip">
       <template #activator="{ props }">
         <v-icon v-bind="props" color="grey-darken-2" icon="mdi-information-outline" size="small" />
       </template>
@@ -173,7 +196,25 @@ const maxCurrentSpeed = computed(() => props.device.attributes.mode.value === '1
           :slider-debounce="50"
           :input-debounce="100"
           :max="maxCurrentSpeed"
-          :disabled="props.device.attributes.mode.value !== '1'"
+          :disabled="isAutomaticMode"
+      />
+    </dd>
+  </dl>
+  <dl v-if="isAutomaticMode">
+    <dt><label>Ramp up time (seconds) <v-tooltip location="left" class="tooltip">
+      <template #activator="{ props }">
+        <v-icon v-bind="props" color="grey-darken-2" icon="mdi-information-outline" size="small" />
+      </template>
+      The time it takes in seconds to ramp the vibrator up from 0 to the "Max. vibrator speed" after a cooldown period has ended.
+    </v-tooltip></label></dt>
+    <dd>
+      <DebouncedSlider
+          :model-value="props.device.attributes.rampUpTime.value"
+          @update:model-value="value => deviceComm.setAttribute('rampUpTime', value)"
+          :attribute="props.device.attributes.rampUpTime"
+          :slider-debounce="50"
+          :input-debounce="100"
+          :disabled="!isAutomaticMode"
       />
     </dd>
   </dl>
