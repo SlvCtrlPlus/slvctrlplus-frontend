@@ -18,7 +18,7 @@ const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
     <h2 class="text-h4 text-grey-darken-1 py-4 flex-shrink-0 flex-grow-0">
       Mission control
     </h2>
-    <v-container fluid class="pa-0">
+    <v-container fluid class="pa-0 flex-shrink-0 flex-grow-1">
       <v-container v-if="deviceList.length > 0" fluid grid-list-md class="px-0">
         <div class="masonry">
           <v-sheet

@@ -73,7 +73,7 @@ const onRefresh = (chart: Chart): void => {
   }
 
   const avgPressureValue = deviceAttrs.avgPressure.value;
-  const maxNormalizedPressure = deviceAttrs.maxPressureDelta.value * 1.3;
+  const maxNormalizedPressure = Math.round(deviceAttrs.maxPressureDelta.value * 1.3);
   let normalizePressure = deviceAttrs.currentPressure.value - avgPressureValue;
 
   normalizePressure = (normalizePressure > maxNormalizedPressure) ? maxNormalizedPressure : normalizePressure;
@@ -142,8 +142,8 @@ const modeOptions = computed(() => props.device.attributes.mode.values.map(e => 
   <StreamLineChart
     :chartData="chartData"
     :chartOptions="chartOptionsRef"
-    @mouseover="ChartHelper.pauseChart(chartOptionsRef)"
-    @mouseleave="ChartHelper.resumeChart(chartOptionsRef)"
+    @mouseover="ChartHelper.pauseChart(chartOptions)"
+    @mouseleave="ChartHelper.resumeChart(chartOptions)"
   />
   <div v-if="isAutomaticMode" class="pa-0 my-4 transition-bg">
     <v-divider class="my-4"></v-divider>
