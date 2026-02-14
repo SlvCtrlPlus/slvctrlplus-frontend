@@ -2,7 +2,7 @@
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
-import {DeviceEt312} from "@/model/devices/slvctrl/DeviceEt312";
+import type {DeviceEt312} from "@/model/devices/slvctrl/DeviceEt312";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 
 interface Props {

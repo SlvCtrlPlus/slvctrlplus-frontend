@@ -1,4 +1,4 @@
-import {ChartData, ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from "chart.js";
+import type {ChartData, ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from "chart.js";
 import type { Chart } from "chart.js";
 import type { RealTimeScale } from "chartjs-plugin-streaming";
 

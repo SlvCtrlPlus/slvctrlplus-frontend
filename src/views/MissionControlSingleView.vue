@@ -3,7 +3,8 @@ import LoadingState from "../components/LoadingState.vue";
 import { useDevicesStore } from "@/stores/devices.js";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import {ref, watch, nextTick, ComponentPublicInstance} from "vue";
+import {ref, watch, nextTick} from "vue";
+import type { ComponentPublicInstance } from "vue";
 import type Device from "@/model/devices/Device";
 import DeviceCard from "@/components/device/DeviceCard.vue";
 

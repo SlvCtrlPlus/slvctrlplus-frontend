@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 import StreamLineChart from "../../../chart/StreamLineChart.vue";
-import {
+import type {
   Chart,
   Color,
   LinearScaleOptions,
   ScriptableLineSegmentContext
 } from "chart.js";
-import ChartHelper, {LineChartData, LineChartOptions} from "../../../../helper/ChartHelper";
+import ChartHelper from "../../../../helper/ChartHelper";
+import type {LineChartData, LineChartOptions} from "@/helper/ChartHelper";
 import { merge } from "chart.js/helpers";
-import {DeviceNogasm} from "@/model/devices/slvctrl/DeviceNogasm";
+import type {DeviceNogasm} from "@/model/devices/slvctrl/DeviceNogasm";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import {useSocketIO} from "@/plugins/vueSocketIOClient";

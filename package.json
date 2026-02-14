@@ -1,17 +1,15 @@
 {
   "name": "slvctrl-plus-frontend",
-  "version": "0.1.0",
   "license": "LGPL-3.0-only",
   "type": "module",
   "scripts": {
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit -p tsconfig.app.json --composite false && vite build",
     "test:unit": "vitest --environment jsdom",
     "test:e2e": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress open'",
     "lint": "eslint . --fix",
     "dev": "vite",
     "preview": "vite preview --port 5050",
-    "test:e2e:ci": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress run'",
-    "typecheck": "vue-tsc --noEmit --composite false"
+    "test:e2e:ci": "start-server-and-test preview http://127.0.0.1:5050/ 'cypress run'"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -67,11 +65,8 @@
     "vite-plugin-monaco-editor-esm": "^2.0.2",
     "vite-plugin-vue-devtools": "^7.7.7",
     "vitest": "^3.2.4",
-    "vue-cli-plugin-vuetify": "~2.5.8",
     "vue-eslint-parser": "^10.1.4",
-    "vue-tsc": "^2.2.10",
-    "webpack": "^5.99.9",
-    "webpack-plugin-vuetify": "^3.1.1"
+    "vue-tsc": "^2.2.10"
   },
   "resolutions": {
     "monaco-editor": "^0.52.2"

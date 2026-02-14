@@ -2,9 +2,10 @@
 import { computed, ref } from "vue";
 import StreamLineChart from "../../../chart/StreamLineChart.vue";
 import type {Chart, ChartOptions} from "chart.js";
-import ChartHelper, {LineChartData} from "../../../../helper/ChartHelper";
+import ChartHelper from "@/helper/ChartHelper";
+import type {LineChartData} from "@/helper/ChartHelper";
 import { merge } from "chart.js/helpers";
-import {DeviceDistance} from "@/model/devices/slvctrl/DeviceDistance";
+import type {DeviceDistance} from "@/model/devices/slvctrl/DeviceDistance";
 
 interface Props {
   device: DeviceDistance;

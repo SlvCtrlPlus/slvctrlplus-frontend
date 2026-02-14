@@ -3,7 +3,7 @@ import { computed, ref, nextTick } from "vue";
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
-import {VirtualDevicePiperTts} from "@/model/devices/virtual/VirtualDevicePiperTts";
+import type {VirtualDevicePiperTts} from "@/model/devices/virtual/VirtualDevicePiperTts";
 
 interface Props {
   device: VirtualDevicePiperTts;

@@ -5,7 +5,7 @@ import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 import {isIntRangeDeviceAttribute, typedEntries} from "@/utils/utils";
-import {
+import type {
   DeviceEstim2b,
   PatternDeviceEStim2bAttributes,
   PowerLevelDeviceEStim2bAttributes
