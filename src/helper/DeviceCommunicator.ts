@@ -1,15 +1,19 @@
 import type { Socket } from "socket.io-client";
 import TimeoutHelper from "./TimeoutHelper";
-import type Device from "../model/devices/Device";
+import type Device from "@/model/devices/Device";
 
-export default class DeviceCommunicator {
+type DeviceData<D extends Device> = {
+  [K in keyof D['attributes']]-?: Exclude<D['attributes'][K], undefined> extends { value: infer V } ? V : never
+};
+
+export default class DeviceCommunicator<T extends Device> {
   private readonly io: Socket;
 
   private readonly timeout: TimeoutHelper;
 
-  private readonly device: Device;
+  private readonly device: T;
 
-  public constructor(device: Device, io: Socket) {
+  public constructor(device: T, io: Socket) {
     this.io = io;
     this.device = device;
     this.timeout = new TimeoutHelper(
@@ -18,10 +22,13 @@ export default class DeviceCommunicator {
     );
   }
 
-  public setAttribute(
-    attrName: string,
-    newValue: string | boolean | number
-  ): void {
+  public setAttribute<K extends keyof T['attributes']>(attrName: K, newValue: DeviceData<T>[K] | null): void {
+    const attributes = this.device.attributes as T['attributes'];
+
+    if (null === newValue || undefined === attributes[attrName]) {
+      return;
+    }
+
     this.device.receiveUpdates = false;
 
     this.io.emit("deviceUpdate", {

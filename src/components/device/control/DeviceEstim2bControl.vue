@@ -4,9 +4,8 @@ import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import type {DeviceData} from "@/model/devices/Device";
 import {isIntRangeDeviceAttribute, typedEntries} from "@/utils/utils";
-import {
+import type {
   DeviceEstim2b,
   PatternDeviceEStim2bAttributes,
   PowerLevelDeviceEStim2bAttributes
@@ -21,16 +20,6 @@ const io = useSocketIO() as Socket;
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const attrChangeHandler = (
-  attrName: keyof DeviceData<DeviceEstim2b>,
-  value: string | number | boolean | null
-): void => {
-  if (null === value) {
-    return;
-  }
-  deviceComm.setAttribute(attrName, value);
-};
-
 // Get all slider attributes (powerChannels + patternAttributes) sorted
 const sliderAttributes = computed(() => {
   const powerChannelAttributes = Object.fromEntries(
@@ -42,14 +31,6 @@ const sliderAttributes = computed(() => {
   ) as Required<PatternDeviceEStim2bAttributes>;
 
   return { powerChannelAttributes, patternAttributes };
-});
-
-const modeItems = computed(() => {
-  const values = props.device.attributes.mode.values ?? {};
-  return Object.entries(values).map(([key, value]) => ({
-    title: value,
-    value: parseInt(key, 10)
-  }));
 });
 
 const batteryIcon = computed(() => {
@@ -73,10 +54,10 @@ const batteryIcon = computed(() => {
 <template>
   <v-select
     :model-value="props.device.attributes.mode.value"
-    :items="modeItems"
+    :items="(props.device.attributes.mode.values || []).map(e => ({ title: e.value, value: e.key }))"
     label="Mode"
     hide-details
-    @update:modelValue="value => attrChangeHandler('mode', value)"
+    @update:modelValue="value => deviceComm.setAttribute('mode', value)"
   ></v-select>
 
   <!-- Pattern attributes -->
@@ -92,7 +73,7 @@ const batteryIcon = computed(() => {
         <DebouncedSlider
             v-if="isIntRangeDeviceAttribute(attr)"
             :model-value="attr.value"
-            @update:model-value="value => attrChangeHandler(key, value)"
+            @update:model-value="value => deviceComm.setAttribute(key, value)"
             :attribute="attr"
             :slider-debounce="50"
             :input-debounce="100"
@@ -111,7 +92,7 @@ const batteryIcon = computed(() => {
       <dd>
         <DebouncedSlider
           :model-value="attr.value"
-          @update:model-value="value => attrChangeHandler(key, value)"
+          @update:model-value="value => deviceComm.setAttribute(key, value)"
           :attribute="attr"
           :slider-debounce="50"
           :input-debounce="100"
@@ -131,7 +112,7 @@ const batteryIcon = computed(() => {
           color="primary"
           :hide-details="true"
           class="pa-0 ma-0"
-          @update:modelValue="value => attrChangeHandler('highPowerMode', value)"
+          @update:modelValue="value => deviceComm.setAttribute('highPowerMode', value)"
       ></v-switch>
     </dd>
   </dl>

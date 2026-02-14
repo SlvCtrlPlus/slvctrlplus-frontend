@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
-import {VirtualDeviceRandomGenerator} from "@/model/devices/virtual/VirtualRandomGenerator";
+import type {VirtualDeviceRandomGenerator} from "@/model/devices/virtual/VirtualRandomGenerator";
 
 interface Props {
   device: VirtualDeviceRandomGenerator;

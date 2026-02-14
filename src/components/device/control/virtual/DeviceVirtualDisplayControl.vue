@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useFullscreen, useWakeLock } from "@vueuse/core";
-import {VirtualDeviceDisplay} from "@/model/devices/virtual/VirtualDeviceDisplay";
+import type {VirtualDeviceDisplay} from "@/model/devices/virtual/VirtualDeviceDisplay";
 
 type TimerId = ReturnType<typeof setTimeout>;
 

@@ -88,9 +88,15 @@ const handleEnd = (): void => {
           density="compact"
           variant="outlined"
           type="number"
-          style="width: 80px"
+          class="slider-range-input"
           :disabled="disabled"
       ></v-text-field>
     </template>
   </v-slider>
 </template>
+
+<style scoped>
+.slider-range-input {
+  width: 80px;
+}
+</style>

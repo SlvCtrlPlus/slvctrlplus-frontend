@@ -1,12 +1,8 @@
-type DeviceAttributes = Record<string, DeviceAttribute | undefined>
+export type DeviceAttributes = Record<string, DeviceAttribute | undefined>;
 
 export type DeviceAttributeModifier = 'ro' | 'rw' | 'wo';
 export type DeviceAttributeType = 'bool' | 'list' | 'str' | 'float' | 'int' | 'range';
 export type DeviceAttributeValue = string | number | boolean | undefined;
-
-export type DeviceData<D extends Device> = {
-   [K in keyof D['attributes']]: D['attributes'][K] extends { value: infer V } ? V : never
-};
 
 export type DeviceStatus = 'READY' | 'BUSY' | 'ERROR';
 
@@ -38,7 +34,7 @@ export type StrDeviceAttribute<V extends string|undefined = string|undefined> = 
 export type BoolDeviceAttribute<V extends boolean|undefined = boolean|undefined> = DeviceAttribute<V>;
 
 export interface ListDeviceAttribute<IKey extends number|string, IValue extends number|string> extends DeviceAttribute<IKey> {
-   values: Record<IKey, IValue>;
+   values: { key: IKey, value: IValue }[];
 }
 
 export default interface Device<T extends DeviceAttributes = DeviceAttributes> {

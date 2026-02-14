@@ -9,7 +9,6 @@ import type {
   PowerChannelDeviceZc95Attributes
 } from "@/model/devices/zc95/DeviceZc95";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import type {DeviceData} from "@/model/devices/Device";
 import {isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
 
 interface Props {
@@ -20,13 +19,6 @@ const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
 const deviceComm = new DeviceCommunicator(props.device, io);
-
-const attrChangeHandler = (
-  attrName: keyof DeviceData<DeviceZc95>,
-  value: string | number | boolean
-): void => {
-  deviceComm.setAttribute(attrName, value);
-};
 
 // Get all slider attributes (powerChannels + patternAttributes) sorted
 const sliderAttributes = computed(() => {
@@ -42,11 +34,8 @@ const sliderAttributes = computed(() => {
 });
 
 const activePatternItems = computed(() => {
-  const values = props.device.attributes.activePattern.values ?? {};
-  return Object.entries(values).map(([key, value]) => ({
-    title: value,
-    value: parseInt(key, 10)
-  }));
+  const values = props.device.attributes.activePattern.values ?? [];
+  return values.map(e => ({ title: e.value, value: e.key }));
 });
 </script>
 
@@ -56,23 +45,26 @@ const activePatternItems = computed(() => {
     :items="activePatternItems"
     label="Mode"
     hide-details
-    @update:modelValue="value => attrChangeHandler('activePattern', value)"
+    @update:modelValue="value => deviceComm.setAttribute('activePattern', value)"
   ></v-select>
-  <v-btn :color="(!props.device.attributes.patternStarted.value ? 'primary' : 'red')" class="mt-4" @click="() => attrChangeHandler('patternStarted', !props.device.attributes.patternStarted.value)"
+  <v-btn
+      :color="(!props.device.attributes.patternStarted.value ? 'primary' : 'red')"
+      class="mt-4"
+      @click="() => deviceComm.setAttribute('patternStarted', !props.device.attributes.patternStarted.value)"
   ><span v-if="!props.device.attributes.patternStarted.value">start</span><span v-else>stop</span></v-btn >
 
   <div v-if="props.device.attributes.patternStarted.value">
     <!-- Power Channels -->
     <div v-if="Object.keys(sliderAttributes.powerChannelAttributes).length > 0">
       <v-divider class="my-4" />
-      <dl :key="attr.name" v-for="[key, attr] in typedEntries(sliderAttributes.powerChannelAttributes)">
+      <dl :key="attr.name" v-for="[key, attr] in typedEntries(sliderAttributes.powerChannelAttributes, true)">
         <dt>
           <label>{{ attr.label ?? attr.name }} <span v-if="attr.uom">({{ attr.uom }})</span></label>
         </dt>
         <dd>
           <DebouncedSlider
             :model-value="attr.value"
-            @update:model-value="value => attrChangeHandler(key, value)"
+            @update:model-value="value => deviceComm.setAttribute(key, value)"
             :attribute="attr"
             :disabled="!props.device.attributes.patternStarted.value || attr.min === attr.max"
             :slider-debounce="50"
@@ -96,7 +88,7 @@ const activePatternItems = computed(() => {
           <DebouncedSlider
             v-if="isIntRangeDeviceAttribute(attr)"
             :model-value="attr.value"
-            @update:model-value="value => attrChangeHandler(key, value)"
+            @update:model-value="value => deviceComm.setAttribute(key, value)"
             :attribute="attr"
             :disabled="!props.device.attributes.patternStarted.value"
             :slider-debounce="50"
@@ -105,10 +97,10 @@ const activePatternItems = computed(() => {
           <v-select
               v-if="isListDeviceAttribute(attr)"
               :model-value="attr.value"
-              :items="Object.entries(attr.values || {}).map(([paKey, value]) => ({ title: value, value: parseInt(paKey, 10) }))"
+              :items="(attr.values || []).map(e => ({ title: e.value, value: e.key }))"
               color="primary"
               class="pa-0 ma-0"
-              @update:modelValue="value => attrChangeHandler(key, value)"
+              @update:modelValue="value => deviceComm.setAttribute(key, value)"
               :disabled="attr.modifier === 'ro'"
           ></v-select>
         </dd>

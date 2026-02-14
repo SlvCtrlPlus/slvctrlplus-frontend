@@ -2,7 +2,7 @@
 import { useSocketIO } from "@/plugins/vueSocketIOClient";
 import type { Socket } from "socket.io-client";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
-import {DeviceEt312} from "@/model/devices/slvctrl/DeviceEt312";
+import type {DeviceEt312} from "@/model/devices/slvctrl/DeviceEt312";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 
 interface Props {
@@ -50,20 +50,6 @@ for (const modeKey in modes) {
 }
 
 const deviceComm = new DeviceCommunicator(props.device, io);
-
-const adcChangeHandler = (newAdc: boolean | null): void =>
-  deviceComm.setAttribute("adc", newAdc ?? false);
-
-const levelChangeHandler = (channel: string, level: number): void =>
-  deviceComm.setAttribute("level" + channel.toUpperCase(), level);
-
-const levelChangeHandlerA = (level: number): void =>
-  levelChangeHandler("A", level);
-const levelChangeHandlerB = (level: number): void =>
-  levelChangeHandler("B", level);
-
-const modeChangeHandler = (newMode: number): void =>
-  deviceComm.setAttribute("mode", newMode);
 </script>
 
 <template>
@@ -73,7 +59,7 @@ const modeChangeHandler = (newMode: number): void =>
       :items="selectModes"
       label="Mode"
       hide-details
-      @update:modelValue="modeChangeHandler"
+      @update:modelValue="value => deviceComm.setAttribute('mode', value)"
     ></v-select>
     <v-checkbox
       :model-value="props.device.attributes.adc.value"
@@ -83,7 +69,7 @@ const modeChangeHandler = (newMode: number): void =>
       color="primary"
       :hide-details="true"
       class="pa-0 ma-0"
-      @update:modelValue="adcChangeHandler"
+      @update:modelValue="value => deviceComm.setAttribute('adc', value ?? false)"
     ></v-checkbox>
     <div class="levels">
       <dl>
@@ -91,7 +77,7 @@ const modeChangeHandler = (newMode: number): void =>
         <dd>
           <DebouncedSlider
             :model-value="props.device.attributes.levelA.value"
-            @update:model-value="levelChangeHandlerA"
+            @update:model-value="value => deviceComm.setAttribute('levelA', value)"
             :attribute="props.device.attributes.levelA"
             :disabled="props.device.attributes.adc.value || undefined === props.device.attributes.levelA.value"
             :slider-debounce="50"
@@ -104,7 +90,7 @@ const modeChangeHandler = (newMode: number): void =>
         <dd>
           <DebouncedSlider
             :model-value="props.device.attributes.levelB.value"
-            @update:model-value="levelChangeHandlerB"
+            @update:model-value="value => deviceComm.setAttribute('levelB', value)"
             :attribute="props.device.attributes.levelB"
             :disabled="props.device.attributes.adc.value || undefined === props.device.attributes.levelB.value"
             :slider-debounce="50"
