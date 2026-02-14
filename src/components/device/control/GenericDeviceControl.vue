@@ -6,31 +6,19 @@ import type { DeviceAttribute } from "@/model/devices/Device";
 import DeviceCommunicator from "@/helper/DeviceCommunicator";
 import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
 import {hasProperty, isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
-import {computed} from "vue";
 
 interface Props {
-  device: Device;
+  device: Device<Record<string, DeviceAttribute>>;
 }
 
 const props = defineProps<Props>();
 const io = useSocketIO() as Socket;
 
 const deviceComm = new DeviceCommunicator(props.device, io);
-
-const definedAttributes = computed(() =>
-    typedEntries(props.device.attributes).filter(([, attr]) => attr !== undefined) as [string, DeviceAttribute][]
-);
-
-const attributeChangeHandler = (attrName: string, newValue: string | boolean | number | null): void => {
-  if (newValue === null) {
-    return;
-  }
-  deviceComm.setAttribute(attrName, newValue);
-};
 </script>
 
 <template>
-  <div :key="key" v-for="[key, attr] in definedAttributes">
+  <div :key="key" v-for="[key, attr] in typedEntries(props.device.attributes)">
     <dl>
       <dt>
         <label>{{ attr.label ?? attr.name }}<span v-if="hasProperty(attr, 'uom') && 'string' === typeof attr.uom"> ({{ attr.uom }})</span></label>
@@ -42,17 +30,17 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
           color="primary"
           :hide-details="true"
           class="pa-0 ma-0"
-          @update:modelValue="value => attributeChangeHandler(attr.name, value)"
+          @update:modelValue="value => deviceComm.setAttribute(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-switch>
 
         <v-select
           v-if="isListDeviceAttribute(attr)"
           :model-value="attr.value"
-          :items="Object.entries(attr.values || {}).map(([laKey, value]) => ({ title: value, value: laKey }))"
+          :items="(attr.values || []).map(e => ({ title: e.value, value: e.key }))"
           color="primary"
           class="pa-0 mt-2"
-          @update:modelValue="value => attributeChangeHandler(attr.name, value)"
+          @update:modelValue="value => deviceComm.setAttribute(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-select>
 
@@ -64,14 +52,14 @@ const attributeChangeHandler = (attrName: string, newValue: string | boolean | n
           color="primary"
           class="pa-0 ma-0"
           :type="attr.type === 'str' ? 'text' : 'number'"
-          @update:modelValue="value => attributeChangeHandler(attr.name, value)"
+          @update:modelValue="value => deviceComm.setAttribute(attr.name, value)"
           :disabled="attr.modifier === 'ro'"
         ></v-text-field>
 
         <DebouncedSlider
           v-if="isIntRangeDeviceAttribute(attr)"
           :model-value="attr.value"
-          @update:model-value="value => attributeChangeHandler(attr.name, value)"
+          @update:model-value="value => deviceComm.setAttribute(attr.name, value)"
           :attribute="attr"
           :disabled="attr.modifier === 'ro'"
           :slider-debounce="50"
