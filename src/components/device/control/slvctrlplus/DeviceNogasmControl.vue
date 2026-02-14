@@ -141,7 +141,7 @@ const modeOptions = computed(() => props.device.attributes.mode.values.map(e => 
 <template>
   <StreamLineChart
     :chartData="chartData"
-    :chartOptions="chartOptions"
+    :chartOptions="chartOptionsRef"
     @mouseover="ChartHelper.pauseChart(chartOptionsRef)"
     @mouseleave="ChartHelper.resumeChart(chartOptionsRef)"
   />
@@ -229,12 +229,7 @@ const modeOptions = computed(() => props.device.attributes.mode.values.map(e => 
     </dd>
   </dl>
   <dl v-if="!isAutomaticMode">
-    <dt><label>Current vibrator speed <v-tooltip v-if="isAutomaticMode" location="left" class="tooltip">
-      <template #activator="{ props }">
-        <v-icon v-bind="props" color="grey-darken-2" icon="mdi-information-outline" size="small" />
-      </template>
-      The vibrator speed cannot be controlled manually while the device is running in "Automatic" mode.
-    </v-tooltip></label></dt>
+    <dt><label>Vibrator speed</label></dt>
     <dd>
       <DebouncedSlider
           :model-value="props.device.attributes.currentSpeed.value"

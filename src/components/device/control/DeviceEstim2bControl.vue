@@ -33,14 +33,6 @@ const sliderAttributes = computed(() => {
   return { powerChannelAttributes, patternAttributes };
 });
 
-const modeItems = computed(() => {
-  const values = props.device.attributes.mode.values ?? {};
-  return Object.entries(values).map(([key, value]) => ({
-    title: value,
-    value: parseInt(key, 10)
-  }));
-});
-
 const batteryIcon = computed(() => {
   switch (props.device.attributes.batteryStatus.value) {
     case 'mains':
@@ -62,7 +54,7 @@ const batteryIcon = computed(() => {
 <template>
   <v-select
     :model-value="props.device.attributes.mode.value"
-    :items="modeItems"
+    :items="(props.device.attributes.mode.values || []).map(e => ({ title: e.value, value: e.key }))"
     label="Mode"
     hide-details
     @update:modelValue="value => deviceComm.setAttribute('mode', value)"

@@ -17,7 +17,7 @@ type DatasetOptions = {
   stack?: string,
   spanGaps?: number,
   segment?: Partial<LineOptions['segment']>,
-  borderDash?: Partial<LineOptions['borderDash']>
+  borderDash?: LineOptions['borderDash'],
 }
 
 export default abstract class ChartHelper {
