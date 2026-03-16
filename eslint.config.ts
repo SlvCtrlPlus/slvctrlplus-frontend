@@ -25,7 +25,7 @@ export default defineConfigWithVueTs(
     },
     {
       rules: {
-        'quotes': ['warn', 'single', { 'allowTemplateLiterals': true }],
+        'quotes': ['error', 'single', { 'allowTemplateLiterals': true }],
       },
     },
 )
