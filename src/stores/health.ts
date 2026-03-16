@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { ref, reactive, type Ref } from "vue";
-import type { ChartData } from "chart.js";
-import ChartHelper from "../helper/ChartHelper";
-import { useBackendStore } from "@/stores/backend";
-import { apiFetch } from "@/utils/apiFetch";
+import { defineStore } from 'pinia';
+import { ref, reactive, type Ref } from 'vue';
+import type { ChartData } from 'chart.js';
+import ChartHelper from '../helper/ChartHelper';
+import { useBackendStore } from '@/stores/backend';
+import { apiFetch } from '@/utils/apiFetch';
 
 interface SystemInfo {
   process: {
@@ -39,9 +39,9 @@ interface SystemInfo {
 }
 
 type HealthChartData = {
-  processMemory: ChartData<"line">;
-  systemCpu: ChartData<"line">;
-  systemMemory: ChartData<"line">;
+  processMemory: ChartData<'line'>;
+  systemCpu: ChartData<'line'>;
+  systemMemory: ChartData<'line'>;
 }
 
 type HealthStore = {
@@ -50,7 +50,7 @@ type HealthStore = {
   init: () => void;
 };
 
-export const useHealthStore = defineStore("health", (): HealthStore => {
+export const useHealthStore = defineStore('health', (): HealthStore => {
   // state refs/reactive
   const state = ref<SystemInfo | undefined>(undefined);
 
@@ -59,38 +59,38 @@ export const useHealthStore = defineStore("health", (): HealthStore => {
     processMemory: {
       datasets: [
         ChartHelper.createEmptyDataSet({
-          label: "Resident Set Size",
+          label: 'Resident Set Size',
           color: { r: 0, g: 189, b: 126 },
           tension: 0,
         }),
         ChartHelper.createEmptyDataSet({
-          label: "Heap total", color: { r: 0, g: 189, b: 126 }, tension: 0,
+          label: 'Heap total', color: { r: 0, g: 189, b: 126 }, tension: 0,
         }),
         ChartHelper.createEmptyDataSet({
-          label: "Heap used",
+          label: 'Heap used',
           color: { r: 204, g: 0, b: 0 },
           tension: 0,
         }),
       ],
-    } as ChartData<"line">,
+    } as ChartData<'line'>,
     systemCpu: {
       datasets: [
         ChartHelper.createEmptyDataSet({
-          label: "Percentage",
+          label: 'Percentage',
           color: { r: 0, g: 189, b: 126 },
           tension: 0,
         }),
       ],
-    } as ChartData<"line">,
+    } as ChartData<'line'>,
     systemMemory: {
       datasets: [
         ChartHelper.createEmptyDataSet({
-          label: "Percentage",
+          label: 'Percentage',
           color: { r: 0, g: 189, b: 126 },
           tension: 0,
         }),
       ],
-    } as ChartData<"line">,
+    } as ChartData<'line'>,
   });
 
   // actions
@@ -104,7 +104,7 @@ export const useHealthStore = defineStore("health", (): HealthStore => {
 
       const response = await apiFetch(`/health`);
       state.value = await response.json();
-    }, 500);
+    }, 3000);
 
     setInterval(() => {
       if (!backendStore.isServerOnline || !chartData || !state.value) {
@@ -133,7 +133,7 @@ export const useHealthStore = defineStore("health", (): HealthStore => {
         x: Date.now(),
         y: Number(state.value.system.memory.usedMemPercentage.toFixed(2)),
       });
-    }, 425);
+    }, 1000);
   }
 
   return {

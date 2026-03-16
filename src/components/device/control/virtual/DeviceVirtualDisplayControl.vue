@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import { useFullscreen, useWakeLock } from "@vueuse/core";
-import type {VirtualDeviceDisplay} from "@/model/devices/virtual/VirtualDeviceDisplay";
+import { computed, ref, watch } from 'vue';
+import { useFullscreen, useWakeLock } from '@vueuse/core';
+import type {VirtualDeviceDisplay} from '@/model/devices/virtual/VirtualDeviceDisplay';
 
 type TimerId = ReturnType<typeof setTimeout>;
 
@@ -13,7 +13,7 @@ const props = defineProps<Props>();
 
 const displayHtml = computed(() => {
   if (undefined === props.device.attributes.content.value) {
-    return "";
+    return '';
   }
   return props.device.attributes.content.value;
 });
@@ -22,7 +22,7 @@ const fullscreenElement = ref<HTMLElement | null>(null);
 
 const { isFullscreen, toggle } = useFullscreen(fullscreenElement);
 const icon = computed<string>(() =>
-  isFullscreen.value ? "mdi-fullscreen-exit" : "mdi-fullscreen"
+  isFullscreen.value ? 'mdi-fullscreen-exit' : 'mdi-fullscreen'
 );
 
 // useWakeLock
@@ -60,7 +60,7 @@ const toggleFullscreen = (toggle: () => Promise<void>) => {
     if (isSupported.value) {
       requestWakeLock('screen');
     } else {
-      console.warn("Wake Lock API is not supported on this browser.");
+      console.warn('Wake Lock API is not supported on this browser.');
     }
   }
 };
@@ -140,9 +140,9 @@ function updateCursorVisibility() {
     !controlsVisible.value &&
     !controlsCurrentlyHovered.value
   ) {
-    fullscreenElement.value.style.cursor = "none";
+    fullscreenElement.value.style.cursor = 'none';
   } else {
-    fullscreenElement.value.style.cursor = "auto";
+    fullscreenElement.value.style.cursor = 'auto';
   }
 }
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, nextTick } from "vue";
-import { useSocketIO } from "@/plugins/vueSocketIOClient";
-import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
-import type {VirtualDeviceTts} from "@/model/devices/virtual/VirtualDeviceTts";
+import { computed, ref, nextTick } from 'vue';
+import { useSocketIO } from '@/plugins/vueSocketIOClient';
+import type { Socket } from 'socket.io-client';
+import DeviceCommunicator from '../../../../helper/DeviceCommunicator';
+import type {VirtualDeviceTts} from '@/model/devices/virtual/VirtualDeviceTts';
 
 interface Props {
   device: VirtualDeviceTts;
@@ -14,32 +14,32 @@ const io = useSocketIO() as Socket;
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const text = ref<string>(props.device.attributes.text.value ?? "");
+const text = ref<string>(props.device.attributes.text.value ?? '');
 const textAreaRef = ref();
 const currentlySpeaking = computed<string>(() => {
   return undefined === props.device.attributes.speaking.value || !props.device.attributes.speaking.value
-    ? "no"
-    : "yes";
+    ? 'no'
+    : 'yes';
 });
 const queuingLabel = computed<string>(() => {
   return props.device.attributes.queuing.value
     ? `Queuing enabled (Queue: ${props.device.attributes.queueLength.value})`
-    : "Queuing disabled";
+    : 'Queuing disabled';
 });
 
 const sendTextHandler = (): void => {
   if (undefined === text.value || 0 === text.value.trim().length) {
     return;
   }
-  deviceComm.setAttribute("text", text.value);
-  text.value = "";
+  deviceComm.setAttribute('text', text.value);
+  text.value = '';
   nextTick(() => {
     textAreaRef.value?.focus();
   });
 };
 const changeQueuing = (newValue: boolean | null): void => {
   if (newValue !== null) {
-    deviceComm.setAttribute("queuing", newValue);
+    deviceComm.setAttribute('queuing', newValue);
   }
 };
 </script>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type {DeviceAirValve} from "@/model/devices/slvctrl/DeviceAirValve";
-import { useSocketIO } from "@/plugins/vueSocketIOClient";
-import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "../../../../helper/DeviceCommunicator";
-import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
+import type {DeviceAirValve} from '@/model/devices/slvctrl/DeviceAirValve';
+import { useSocketIO } from '@/plugins/vueSocketIOClient';
+import type { Socket } from 'socket.io-client';
+import DeviceCommunicator from '../../../../helper/DeviceCommunicator';
+import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
 
 interface Props {
   device: DeviceAirValve;

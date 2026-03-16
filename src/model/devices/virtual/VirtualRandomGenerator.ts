@@ -1,5 +1,5 @@
-import type Device from "../Device";
-import type { IntDeviceAttribute } from "../Device";
+import type Device from '../Device';
+import type { IntDeviceAttribute } from '../Device';
 
 type VirtualDeviceRandomGeneratorAttributes = {
   value: IntDeviceAttribute;

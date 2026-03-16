@@ -4,8 +4,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import type Device from "../../model/devices/Device";
+import { computed } from 'vue';
+import type Device from '../../model/devices/Device';
 
 interface Props {
   device: Device;
@@ -17,24 +17,24 @@ const comp = computed<string>(() => {
   let iconComponentName: string;
 
   const deviceTypeModel = `${props.device.type}${
-    props.device.type === "generic" ? `-${props.device.deviceModel}` : ""
+    props.device.type === 'generic' ? `-${props.device.deviceModel}` : ''
   }`;
 
   switch (deviceTypeModel) {
-    case "generic-air_valve":
-      iconComponentName = "mdi-fan";
+    case 'generic-air_valve':
+      iconComponentName = 'mdi-fan';
       break;
-    case "generic-et312":
-      iconComponentName = "mdi-lightning-bolt";
+    case 'generic-et312':
+      iconComponentName = 'mdi-lightning-bolt';
       break;
-    case "generic-strikerMk2":
-      iconComponentName = "mdi-swap-horizontal";
+    case 'generic-strikerMk2':
+      iconComponentName = 'mdi-swap-horizontal';
       break;
-    case "generic-distance":
-      iconComponentName = "mdi-ruler";
+    case 'generic-distance':
+      iconComponentName = 'mdi-ruler';
       break;
     default:
-      iconComponentName = "mdi-robot";
+      iconComponentName = 'mdi-robot';
       break;
   }
 

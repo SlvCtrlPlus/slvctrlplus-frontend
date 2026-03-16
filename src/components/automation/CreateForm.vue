@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useAutomationStore } from "@/stores/automation.js";
-import { useAppStore } from "@/stores/app.js";
+import { ref } from 'vue';
+import { useAutomationStore } from '@/stores/automation.js';
+import { useAppStore } from '@/stores/app.js';
 
-const emit = defineEmits(["save", "cancel"]);
+const emit = defineEmits(['save', 'cancel']);
 
 const appStore = useAppStore();
 const automationStore = useAutomationStore();
 
-const newScriptName = ref("");
+const newScriptName = ref('');
 const isValid = ref(true);
 
 const scriptNameRules = [
   (value: string) => {
     if (value) return true;
-    return "You must enter a script name.";
+    return 'You must enter a script name.';
   },
   (value: string) => {
     if (value.length >= 3) return true;
-    return "The script name needs to be at least 3 characters long.";
+    return 'The script name needs to be at least 3 characters long.';
   },
   (value: string) => {
     if (value.length < 64) return true;
-    return "The script name needs to no more than 64 characters long.";
+    return 'The script name needs to no more than 64 characters long.';
   },
   (value: string) => {
     if (value.match(/^[a-z\d-_.]+$/)) return true;
-    return "Only lower case letters, numbers, hyphens, underscores and dots are allowed.";
+    return 'Only lower case letters, numbers, hyphens, underscores and dots are allowed.';
   },
 ];
 
@@ -45,10 +45,10 @@ function createScript(): void {
       automationStore.fetchScript(scriptNameWithExt);
     })
     .then(() => {
-      emit("save");
-      newScriptName.value = "";
+      emit('save');
+      newScriptName.value = '';
     })
-    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
 }
 </script>
 

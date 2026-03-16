@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import StreamLineChart from "../../../chart/StreamLineChart.vue";
-import type {Chart, ChartOptions} from "chart.js";
-import ChartHelper from "@/helper/ChartHelper";
-import type {LineChartData} from "@/helper/ChartHelper";
-import { merge } from "chart.js/helpers";
-import type {DeviceDistance} from "@/model/devices/slvctrl/DeviceDistance";
+import { computed, ref } from 'vue';
+import StreamLineChart from '../../../chart/StreamLineChart.vue';
+import type {Chart, ChartOptions} from 'chart.js';
+import ChartHelper from '@/helper/ChartHelper';
+import type {LineChartData} from '@/helper/ChartHelper';
+import { merge } from 'chart.js/helpers';
+import type {DeviceDistance} from '@/model/devices/slvctrl/DeviceDistance';
 
 interface Props {
   device: DeviceDistance;
@@ -29,7 +29,7 @@ const currentDistance = computed((): number|undefined => {
 const chartData: LineChartData = {
   datasets: [
     ChartHelper.createEmptyDataSet({
-      label: "Distance",
+      label: 'Distance',
       color: { r: 0, g: 189, b: 126 },
       spanGaps: 1000,
     }),
@@ -59,7 +59,7 @@ const chartOptions = merge(
   }
 );
 
-const chartOptionsRef = ref<ChartOptions<"line">>(chartOptions);
+const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
 </script>
 
 <template>

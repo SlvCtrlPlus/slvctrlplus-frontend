@@ -1,6 +1,6 @@
-import type {ChartData, ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from "chart.js";
-import type { Chart } from "chart.js";
-import type { RealTimeScale } from "chartjs-plugin-streaming";
+import type {ChartData, ChartDataset, ChartOptions, LineOptions, ScatterDataPoint} from 'chart.js';
+import type { Chart } from 'chart.js';
+import type { RealTimeScale } from 'chartjs-plugin-streaming';
 
 export type LineChartOptions = ChartOptions<'line'>;
 export type LineChartData = ChartData<'line'>;
@@ -38,7 +38,7 @@ export default abstract class ChartHelper {
       },
       scales: {
         x: {
-          type: "realtime",
+          type: 'realtime',
           realtime: {
             duration: duration,
             refresh: refreshMs,
@@ -64,7 +64,7 @@ export default abstract class ChartHelper {
 
   public static createEmptyDataSet(
     options: DatasetOptions
-  ): ChartDataset<"line", (number | ScatterDataPoint | null)[]> {
+  ): ChartDataset<'line', (number | ScatterDataPoint | null)[]> {
     const densityLine = options.densityLine ?? 0.5;
     const densityBackground = options.densityBackground ?? 0.1;
 
@@ -73,7 +73,7 @@ export default abstract class ChartHelper {
       pointBackgroundColor: `rgba(${options.color.r}, ${options.color.g}, ${options.color.b})`,
       backgroundColor: `rgba(${options.color.r}, ${options.color.g}, ${options.color.b}, ${densityBackground})`,
       borderColor: `rgba(${options.color.r}, ${options.color.g}, ${options.color.b}, ${densityLine})`,
-      fill: options.fill ?? "origin",
+      fill: options.fill ?? 'origin',
       tension: options.tension ?? 0.5,
       spanGaps: options.spanGaps ?? undefined,
       stack: options.stack ?? undefined,

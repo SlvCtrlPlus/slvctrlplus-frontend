@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import LoadingState from "../components/LoadingState.vue";
-import { useDevicesStore } from "@/stores/devices.js";
-import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
-import {ref, watch, nextTick} from "vue";
-import type { ComponentPublicInstance } from "vue";
-import type Device from "@/model/devices/Device";
-import DeviceCard from "@/components/device/DeviceCard.vue";
+import LoadingState from '../components/LoadingState.vue';
+import { useDevicesStore } from '@/stores/devices.js';
+import { storeToRefs } from 'pinia';
+import { useRoute } from 'vue-router';
+import {ref, watch, nextTick} from 'vue';
+import type { ComponentPublicInstance } from 'vue';
+import type Device from '@/model/devices/Device';
+import DeviceCard from '@/components/device/DeviceCard.vue';
 
 const devicesStore = useDevicesStore();
 const { devicesLoaded, deviceList } = storeToRefs(devicesStore);
@@ -24,7 +24,7 @@ function resizeToContent() {
       }
       const el = containerRef.value.$el;
       // Temporarily remove fill-height and d-flex classes
-      const removedClasses = removeClasses(el, ["fill-height", "d-flex"]);
+      const removedClasses = removeClasses(el, ['fill-height', 'd-flex']);
       // Measure height
       const height = el.scrollHeight;
       const browserOverheadHeight = window.outerHeight - window.innerHeight;

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type Device from "@/model/devices/Device";
-import DeviceIcon from "./icons/DeviceIcon.vue";
-import { computed, reactive } from "vue";
-import {hasProperty} from "@/utils/utils";
+import type Device from '@/model/devices/Device';
+import DeviceIcon from './icons/DeviceIcon.vue';
+import { computed, reactive } from 'vue';
+import {hasProperty} from '@/utils/utils';
 
 interface Props {
   device: Device;
@@ -14,12 +14,12 @@ const device = reactive<Device>(props.device);
 const lastRefreshed = computed<string>((): string => {
   return device.lastRefresh
     ? new Date(device.lastRefresh).toISOString()
-    : "n/a";
+    : 'n/a';
 });
 
 const deviceTypeModel = computed<string>((): string => {
   return `${device.type} ${
-    device.type === "slvCtrlPlus" ? ` (model: ${device.deviceModel})` : ""
+    device.type === 'slvCtrlPlus' ? ` (model: ${device.deviceModel})` : ''
   }`;
 });
 
@@ -38,7 +38,7 @@ function formatFwVersion(fwVersion: string|number): string {
 }
 
 function isStringOrNumber(val: unknown): val is string | number {
-  return typeof val === "string" || typeof val === "number";
+  return typeof val === 'string' || typeof val === 'number';
 }
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type {VirtualDeviceRandomGenerator} from "@/model/devices/virtual/VirtualRandomGenerator";
+import { computed } from 'vue';
+import type {VirtualDeviceRandomGenerator} from '@/model/devices/virtual/VirtualRandomGenerator';
 
 interface Props {
   device: VirtualDeviceRandomGenerator;
@@ -10,7 +10,7 @@ const props = defineProps<Props>();
 
 const displayHtml = computed(() => {
   if (undefined === props.device.attributes.value.value) {
-    return "";
+    return '';
   }
   return props.device.attributes.value.value;
 });

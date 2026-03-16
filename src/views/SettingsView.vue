@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import {defineAsyncComponent, nextTick, ref, watch} from "vue";
-import { useSettingsStore } from "@/stores/settings";
-import { useAppStore } from "@/stores/app";
-import { storeToRefs } from "pinia";
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api";
-import {useBackendStore} from "@/stores/backend";
+import {defineAsyncComponent, nextTick, ref, watch} from 'vue';
+import { useSettingsStore } from '@/stores/settings';
+import { useAppStore } from '@/stores/app';
+import { storeToRefs } from 'pinia';
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
+import {useBackendStore} from '@/stores/backend';
 
 // Load Monaco Editor asynchronously for performance reasons
 const MonacoEditor = defineAsyncComponent(() => import('monaco-editor-vue3'));
 
-const tab = ref("tab-ui");
+const tab = ref('tab-ui');
 
 const validUserInterfaceFrom = ref(false);
 
@@ -42,20 +42,20 @@ function editorWillMount(monacoInstance: typeof monaco): void {
 function storeEditorInstance(
   editor: monaco.editor.IStandaloneCodeEditor
 ): void {
-  const container = document.getElementById("monaco-wrapper");
+  const container = document.getElementById('monaco-wrapper');
 
   if (container) {
     const rect = container.getBoundingClientRect();
     editor.layout({ width: rect.width, height: rect.height });
   }
 
-  window.addEventListener("resize", () => {
+  window.addEventListener('resize', () => {
     // make editor as small as possible
     editor.layout({ width: 0, height: 0 });
 
     // wait for next frame to ensure last layout finished
     window.requestAnimationFrame(() => {
-      const monacoElement = document.getElementById("monaco-wrapper");
+      const monacoElement = document.getElementById('monaco-wrapper');
 
       if (null === editor || null === monacoElement) {
         return;
@@ -72,7 +72,7 @@ function storeEditorInstance(
 function saveServerSettings(): void {
   settingsStore.saveServerSettings()
       .then(() => appStore.displaySnackbar(`Server settings saved`))
-      .catch((err: Error) => appStore.displaySnackbar(`Sever settings could not be saved: ${err.message}`, "red"));
+      .catch((err: Error) => appStore.displaySnackbar(`Sever settings could not be saved: ${err.message}`, 'red'));
 }
 
 function clearBackendUrl(): void {

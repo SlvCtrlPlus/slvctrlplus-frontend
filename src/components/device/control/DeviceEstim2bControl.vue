@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useSocketIO } from "@/plugins/vueSocketIOClient";
-import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "@/helper/DeviceCommunicator";
-import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import {isIntRangeDeviceAttribute, typedEntries} from "@/utils/utils";
+import { computed } from 'vue';
+import { useSocketIO } from '@/plugins/vueSocketIOClient';
+import type { Socket } from 'socket.io-client';
+import DeviceCommunicator from '@/helper/DeviceCommunicator';
+import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
+import {isIntRangeDeviceAttribute, typedEntries} from '@/utils/utils';
 import type {
   DeviceEstim2b,
   PatternDeviceEStim2bAttributes,
   PowerLevelDeviceEStim2bAttributes
-} from "@/model/devices/estim2b/DeviceEstim2b";
+} from '@/model/devices/estim2b/DeviceEstim2b';
 
 interface Props {
   device: DeviceEstim2b;

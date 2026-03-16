@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useSettingsStore } from "@/stores/settings.js";
-import { storeToRefs } from "pinia";
-import {defineAsyncComponent, watch} from "vue";
-import type * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
+import { useSettingsStore } from '@/stores/settings.js';
+import { storeToRefs } from 'pinia';
+import {defineAsyncComponent, watch} from 'vue';
+import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api.js';
 
 // Load Monaco Editor asynchronously for performance reasons
 const MonacoEditor = defineAsyncComponent(() => import('monaco-editor-vue3'));
@@ -28,7 +28,7 @@ const options: monaco.editor.IEditorOptions = {
   minimap: { enabled: false },
 };
 
-window.addEventListener("resize", () => {
+window.addEventListener('resize', () => {
   if (editorInstance === null) {
     return;
   }
@@ -37,7 +37,7 @@ window.addEventListener("resize", () => {
 
   // wait for next frame to ensure last layout finished
   window.requestAnimationFrame(() => {
-    const monacoElement = document.getElementById("monaco-wrapper");
+    const monacoElement = document.getElementById('monaco-wrapper');
 
     if (null === editorInstance || null === monacoElement) {
       return;
@@ -85,11 +85,11 @@ declare const console: {
   trace: (...args: any[]) => void;
 };
 `;
-  const libUri = "ts:filename/facts.d.ts";
+  const libUri = 'ts:filename/facts.d.ts';
 
   const compilerOptions = {
     target: monacoInstance.languages.typescript.ScriptTarget.ES2020,
-    lib: ["es2020"],
+    lib: ['es2020'],
     allowNonTsExtensions: true,
   };
 
@@ -124,9 +124,9 @@ watch(
   }
 );
 
-const emit = defineEmits(["update:code"]);
+const emit = defineEmits(['update:code']);
 
-const updateValue = (event: string) => emit("update:code", event);
+const updateValue = (event: string) => emit('update:code', event);
 </script>
 
 <template>

@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
-import {apiFetch} from "@/utils/apiFetch";
-import type Device from "@/model/devices/Device";
+import { defineStore } from 'pinia';
+import { ref, reactive, computed } from 'vue';
+import {apiFetch} from '@/utils/apiFetch';
+import type Device from '@/model/devices/Device';
 
-export const useDevicesStore = defineStore("devices", () => {
+export const useDevicesStore = defineStore('devices', () => {
   // State: use reactive for objects, ref for primitives
   const devices = reactive<{ [key: string]: Device }>({});
   const devicesLoaded = ref(false);
@@ -47,11 +47,18 @@ export const useDevicesStore = defineStore("devices", () => {
     }
   }
 
+  function clear() {
+    for (const key in devices) {
+      delete devices[key];
+    }
+  }
+
   return {
     devices,
     devicesLoaded,
     deviceList,
     init,
+    clear,
     removeDevice,
     addDevice,
     updateDevice,

@@ -1,4 +1,4 @@
-import { defineConfig } from "@vue/cli-service";
+import { defineConfig } from '@vue/cli-service';
 module.exports = defineConfig({
   pluginOptions: {
     vuetify: {
