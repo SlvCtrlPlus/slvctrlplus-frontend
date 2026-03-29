@@ -6,7 +6,7 @@ import type { DeviceAttribute } from '@/model/devices/Device';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
 import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
 import DebouncedTextField from '@/components/device/DebouncedTextField.vue';
-import {hasProperty, isBoolDeviceAttribute, isFloatDeviceAttribute, isIntDeviceAttribute, isIntRangeDeviceAttribute, isListDeviceAttribute, isStringDeviceAttribute, typedEntries} from '@/utils/utils';
+import {isBoolDeviceAttribute, isFloatDeviceAttribute, isIntDeviceAttribute, isIntRangeDeviceAttribute, isListDeviceAttribute, isStringDeviceAttribute, typedEntries} from '@/utils/utils';
 
 interface Props {
   device: Device<Record<string, DeviceAttribute>>;
@@ -18,7 +18,7 @@ const io = useSocketIO() as Socket;
 const deviceComm = new DeviceCommunicator(props.device, io);
 
 const hasUom = (attr: DeviceAttribute): attr is DeviceAttribute & { uom: string } => {
-  return hasProperty(attr, 'uom') && typeof attr.uom === 'string';
+  return 'uom' in attr && typeof attr.uom === 'string';
 }
 </script>
 

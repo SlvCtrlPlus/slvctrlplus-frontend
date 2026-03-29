@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, reactive, computed } from 'vue';
 import {apiFetch} from '@/utils/apiFetch';
 import type Device from '@/model/devices/Device';
+import { deepMergeReactive } from '@/utils/utils';
 
 export const useDevicesStore = defineStore('devices', () => {
   // State: use reactive for objects, ref for primitives
@@ -40,11 +41,7 @@ export const useDevicesStore = defineStore('devices', () => {
       return;
     }
 
-    device.lastRefresh = updatedDevice.lastRefresh;
-
-    if ('attributes' in device && 'attributes' in updatedDevice) {
-      device.attributes = updatedDevice.attributes;
-    }
+    deepMergeReactive(device, updatedDevice);
   }
 
   function clear() {

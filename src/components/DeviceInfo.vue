@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import type Device from '@/model/devices/Device';
 import DeviceIcon from './icons/DeviceIcon.vue';
-import { computed, reactive } from 'vue';
-import {hasProperty} from '@/utils/utils';
+import { computed } from 'vue';
 
 interface Props {
   device: Device;
 }
 
 const props = defineProps<Props>();
-const device = reactive<Device>(props.device);
 
 const lastRefreshed = computed<string>((): string => {
-  return device.lastRefresh
-    ? new Date(device.lastRefresh).toISOString()
+  return props.device.lastRefresh
+    ? new Date(props.device.lastRefresh).toISOString()
     : 'n/a';
 });
 
 const deviceTypeModel = computed<string>((): string => {
-  return `${device.type} ${
-    device.type === 'slvCtrlPlus' ? ` (model: ${device.deviceModel})` : ''
+  return `${props.device.type} ${
+    props.device.type === 'slvCtrlPlus' ? ` (model: ${props.device.deviceModel})` : ''
   }`;
 });
 
@@ -59,16 +57,20 @@ function isStringOrNumber(val: unknown): val is string | number {
           <v-list-item-title>Type</v-list-item-title>
           <v-list-item-subtitle>{{ deviceTypeModel }}</v-list-item-subtitle>
         </v-list-item>
-        <v-list-item v-if="hasProperty<Device, 'fwVersion'>(device, 'fwVersion') && isStringOrNumber(device.fwVersion)">
+        <v-list-item v-if="'fwVersion' in props.device && isStringOrNumber(props.device.fwVersion)">
           <v-list-item-title>Firmware</v-list-item-title>
           <v-list-item-subtitle>{{
-            formatFwVersion(device.fwVersion)
+            formatFwVersion(props.device.fwVersion)
           }}</v-list-item-subtitle>
+        </v-list-item>
+        <v-list-item v-if="'rssi' in props.device">
+          <v-list-item-title>Signal strength</v-list-item-title>
+          <v-list-item-subtitle>{{props.device.rssi}}</v-list-item-subtitle>
         </v-list-item>
         <v-list-item>
           <v-list-item-title>Connected since</v-list-item-title>
           <v-list-item-subtitle>{{
-            new Date(device.connectedSince).toISOString()
+            new Date(props.device.connectedSince).toISOString()
           }}</v-list-item-subtitle>
         </v-list-item>
         <v-list-item>

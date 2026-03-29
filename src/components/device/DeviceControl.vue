@@ -47,6 +47,8 @@ const comp = computed<Component>(() => {
     controlComponent = 'DeviceZc95Control';
   } else if (props.device.type === 'estim2b') {
     controlComponent = 'DeviceEstim2bControl';
+  } else if (props.device.type === 'airotic') {
+    controlComponent = 'DeviceAiroticControl';
   } else if (props.device.type === 'virtual') {
     controlComponent = '';
     switch (props.device.deviceModel) {
