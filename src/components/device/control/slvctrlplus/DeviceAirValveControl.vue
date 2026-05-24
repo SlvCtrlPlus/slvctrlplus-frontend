@@ -29,9 +29,7 @@ const deviceComm = new DeviceCommunicator(props.device, io);
   </dl>
   <v-divider class="my-4"></v-divider>
   <div>
-    <v-btn color="grey-darken-3" class="mr-4" @click="deviceComm.setAttribute('flow', 100)"
-      >open</v-btn
-    >
+    <v-btn color="grey-darken-3" class="mr-4" @click="deviceComm.setAttribute('flow', 100)">open</v-btn>
     <v-btn color="grey-darken-3" @click="deviceComm.setAttribute('flow', 0)">close</v-btn>
   </div>
 </template>

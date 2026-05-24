@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { HueSlider } from 'vue-color'
 import { useSocketIO } from '@/plugins/vueSocketIOClient';
 import type { Socket } from 'socket.io-client';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
@@ -30,13 +31,14 @@ const localBreathInColor = ref({ r: 0, g: 0, b: 0 });
         hide-inputs
         hide-eye-dropper
       />
-      <v-btn @click="console.log(localRestColor); deviceComm.setAttribute('restColor', localRestColor.r + ',' + localRestColor.g + ',' + localRestColor.b)">
+      <!--HueSlider v-model:tinyColor="localRestColor" /-->
+      <v-btn color="primary" @click="console.log(localRestColor); deviceComm.setAttribute('restColor', localRestColor.r + ',' + localRestColor.g + ',' + localRestColor.b)">
         Apply Color
       </v-btn>
     </dd>
   </dl>
   
-  <dl>
+  <dl class="my-4">
     <dt><label>Breath in color</label></dt>
     <dd>
       <v-color-picker
@@ -45,17 +47,19 @@ const localBreathInColor = ref({ r: 0, g: 0, b: 0 });
         hide-inputs
         hide-eye-dropper
       />
-      <v-btn @click="console.log(localBreathInColor); deviceComm.setAttribute('breathInColor', localBreathInColor.r + ',' + localBreathInColor.g + ',' + localBreathInColor.b)">
+      <v-btn color="primary" @click="console.log(localBreathInColor); deviceComm.setAttribute('breathInColor', localBreathInColor.r + ',' + localBreathInColor.g + ',' + localBreathInColor.b)">
         Apply Color
       </v-btn>
     </dd>
   </dl>
 
-  <v-btn @click="console.log('Reset colors'); deviceComm.setAttribute('resetColors', true)">
+  <v-divider class="my-4"></v-divider>
+
+  <v-btn class="mr-4" @click="console.log('Reset colors'); deviceComm.setAttribute('resetColors', true)">
     Reset Colors
   </v-btn>
 
-  <v-btn @click="console.log('Reboot'); deviceComm.setAttribute('reboot', true)">
+  <v-btn  color="grey-darken-3" @click="console.log('Reboot'); deviceComm.setAttribute('reboot', true)">
     Reboot
   </v-btn>
 </template>
