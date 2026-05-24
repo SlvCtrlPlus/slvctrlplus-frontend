@@ -3,15 +3,17 @@ import { ref, computed } from "vue";
 import type AutomationScript from "../model/AutomationScript";
 import {apiFetch} from "@/utils/apiFetch";
 
-const defaultCode = `// Write your automation here. The script will fire on device events:
-//
-//  - deviceUpdateReceived: A device got updated through the external API
-//  - deviceConnected: A new device was connected to SlvCtrl+
-//  - deviceDisconnected: A device was disconnected from SlvCtrl+
-//  - deviceRefreshed: New data has been pulled from a device
-//
-// You can get information about the event and the device that invoked your script through the global "event"
-// variable. To access other devices you can use the global variable "devices" -> devices.getById(\`{device uuid}\`)
+const defaultCode = `(async () => {
+    // Write your automation here. The script will fire on device events:
+    //
+    //  - deviceUpdateReceived: A device got updated through the external API
+    //  - deviceConnected: A new device was connected to SlvCtrl+
+    //  - deviceDisconnected: A device was disconnected from SlvCtrl+
+    //  - deviceRefreshed: New data has been pulled from a device
+    //
+    // You can get information about the event and the device that invoked your script through the global "event"
+    // variable. To access other devices you can use the global variable "devices" -> devices.getById(\`{device uuid}\`)
+})();
 `;
 
 export const useAutomationStore = defineStore("automation", () => {
