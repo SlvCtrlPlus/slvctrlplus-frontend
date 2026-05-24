@@ -55,11 +55,22 @@ function editorWillMount(monacoInstance: typeof monaco): void {
 
   // extra libraries
   const libSource = `
+type DeviceAttributeModifier = 'ro' | 'rw' | 'wo';
+type DeviceAttributeType = 'bool' | 'list' | 'str' | 'float' | 'int' | 'range';
+type DeviceAttributeValue = string | number | boolean | undefined;
+interface DeviceAttribute
+{
+    name: string;
+    label?: string;
+    type: DeviceAttributeType;
+    modifier: DeviceAttributeModifier;
+    value: DeviceAttributeValue;
+}
 interface Device
 {
     getDeviceId: string
-    getAttribute(attrName: string): bool|number|string
-    setAttribute(attrName: string, value: bool|number|string): void
+    getAttribute(attrName: string): Promise<DeviceAttribute | undefined>
+    setAttribute(attrName: string, value: DeviceAttributeValue): void
 }
 enum DeviceEventType {
     deviceUpdateReceived = "deviceUpdateReceived",
