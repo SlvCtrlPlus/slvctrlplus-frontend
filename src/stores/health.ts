@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { ref, reactive, type Ref } from "vue";
 import type { ChartData } from "chart.js";
 import ChartHelper from "../helper/ChartHelper";
-import { useBackendStore } from "@/stores/backend";
 import type { Socket } from "socket.io-client";
 
 interface SystemInfo {
