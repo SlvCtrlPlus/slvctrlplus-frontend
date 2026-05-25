@@ -3,7 +3,7 @@ import { ref, reactive, type Ref } from "vue";
 import type { ChartData } from "chart.js";
 import ChartHelper from "../helper/ChartHelper";
 import { useBackendStore } from "@/stores/backend";
-import { apiFetch } from "@/utils/apiFetch";
+import type { Socket } from "socket.io-client";
 
 interface SystemInfo {
   process: {
@@ -47,7 +47,7 @@ type HealthChartData = {
 type HealthStore = {
   state: Ref<SystemInfo | undefined>;
   chartData: HealthChartData;
-  init: () => void;
+  init: (socket: Socket) => void;
 };
 
 export const useHealthStore = defineStore("health", (): HealthStore => {
@@ -94,46 +94,37 @@ export const useHealthStore = defineStore("health", (): HealthStore => {
   });
 
   // actions
-  function init(): void {
-    const backendStore = useBackendStore();
+  function init(socket: Socket): void {
+    socket.on("healthMetrics", (data: SystemInfo) => {
+      state.value = data;
 
-    setInterval(async () => {
-      if (!backendStore.isServerOnline) {
-        return;
-      }
-
-      const response = await apiFetch(`/health`);
-      state.value = await response.json();
-    }, 500);
-
-    setInterval(() => {
-      if (!backendStore.isServerOnline || !chartData || !state.value) {
+      if (!chartData) {
         return;
       }
 
       chartData.processMemory.datasets[0].data.push({
         x: Date.now(),
-        y: Number((state.value.process.memoryUsage.rss / 1024 / 1024).toFixed(2)),
+        y: Number((data.process.memoryUsage.rss / 1024 / 1024).toFixed(2)),
       });
       chartData.processMemory.datasets[1].data.push({
         x: Date.now(),
-        y: Number((state.value.process.memoryUsage.heapTotal / 1024 / 1024).toFixed(2)),
+        y: Number((data.process.memoryUsage.heapTotal / 1024 / 1024).toFixed(2)),
       });
       chartData.processMemory.datasets[2].data.push({
         x: Date.now(),
-        y: Number((state.value.process.memoryUsage.heapUsed / 1024 / 1024).toFixed(2)),
+        y: Number((data.process.memoryUsage.heapUsed / 1024 / 1024).toFixed(2)),
       });
 
       chartData.systemCpu.datasets[0].data.push({
         x: Date.now(),
-        y: Number(state.value.system.cpu.usage.toFixed(2)),
+        y: Number(data.system.cpu.usage.toFixed(2)),
       });
 
       chartData.systemMemory.datasets[0].data.push({
         x: Date.now(),
-        y: Number(state.value.system.memory.usedMemPercentage.toFixed(2)),
+        y: Number(data.system.memory.usedMemPercentage.toFixed(2)),
       });
-    }, 425);
+    });
   }
 
   return {

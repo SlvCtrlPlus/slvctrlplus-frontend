@@ -30,7 +30,7 @@ if (backendStore.backendUrl) {
     settingsStore.init();
     automationStore.init();
     devicesStore.init();
-    healthStore.init();
+    healthStore.init(io);
   });
   io.on("disconnect", () => backendStore.setServerOnline(false));
 

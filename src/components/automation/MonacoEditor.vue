@@ -70,7 +70,7 @@ interface Device
 {
     getDeviceId: string
     getAttribute(attrName: string): Promise<DeviceAttribute | undefined>
-    setAttribute(attrName: string, value: DeviceAttributeValue): void
+    setAttribute(attrName: string, value: DeviceAttributeValue): Promise<void>
 }
 enum DeviceEventType {
     deviceUpdateReceived = "deviceUpdateReceived",
