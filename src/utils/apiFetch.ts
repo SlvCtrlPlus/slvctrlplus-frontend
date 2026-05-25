@@ -1,5 +1,5 @@
 import { useBackendStore } from '@/stores/backend';
-import { useAppStore } from "@/stores/app";
+import { useAppStore } from '@/stores/app';
 
 export async function apiFetch(path: string, options?: RequestInit): Promise<Response> {
     const backendStore = useBackendStore();

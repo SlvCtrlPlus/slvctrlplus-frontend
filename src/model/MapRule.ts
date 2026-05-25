@@ -1,6 +1,6 @@
-import Rule from "./Rule.js";
-import type Device from "./devices/Device";
-import type ValueMap from "./ValueMap.js";
+import Rule from './Rule.js';
+import type Device from './devices/Device';
+import type ValueMap from './ValueMap.js';
 
 export default class MapRule extends Rule {
   public fromDevice: Device | null = null;

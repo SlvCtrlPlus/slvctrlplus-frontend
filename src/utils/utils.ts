@@ -1,4 +1,4 @@
-import type {IntRangeDeviceAttribute, ListDeviceAttribute} from "@/model/devices/Device";
+import type {BoolDeviceAttribute, FloatDeviceAttribute, IntDeviceAttribute, IntRangeDeviceAttribute, ListDeviceAttribute, StrDeviceAttribute} from '@/model/devices/Device';
 
 type StringKey<T> = Extract<keyof T, string>;
 
@@ -26,6 +26,22 @@ export const isIntRangeDeviceAttribute = (obj: object): obj is IntRangeDeviceAtt
 
 export const isListDeviceAttribute = (obj: object): obj is ListDeviceAttribute<number | string, number | string> => {
     return hasType(obj, 'list');
+}
+
+export const isStringDeviceAttribute = (obj: object): obj is StrDeviceAttribute => {
+    return hasType(obj, 'str') || hasType(obj, 'float') || hasType(obj, 'int');
+}
+
+export const isIntDeviceAttribute = (obj: object): obj is IntDeviceAttribute => {
+    return hasType(obj, 'int');
+}
+
+export const isFloatDeviceAttribute = (obj: object): obj is FloatDeviceAttribute => {
+    return hasType(obj, 'float');
+}
+
+export const isBoolDeviceAttribute = (obj: object): obj is BoolDeviceAttribute => {
+    return hasType(obj, 'bool');
 }
 
 export const hasType = (obj: unknown, expectedType: string): boolean => {

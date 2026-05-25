@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import type {DeviceDisplay} from "@/model/devices/slvctrl/DeviceDisplay";
+import { computed } from 'vue';
+import type {DeviceDisplay} from '@/model/devices/slvctrl/DeviceDisplay';
 
 interface Props {
   device: DeviceDisplay;
@@ -19,24 +19,24 @@ const displayHtml = computed(() => {
   const contentBase64 = props.device.attributes.content.value;
 
   if (undefined === contentBase64) {
-    return "";
+    return '';
   }
 
   const content = JSON.parse(atob(contentBase64)) as DisplayElement[];
 
-  let html = "";
+  let html = '';
 
   for (const comp of content) {
-    let style = "";
-    let translateX = "0";
-    let translateY = "0";
+    let style = '';
+    let translateX = '0';
+    let translateY = '0';
 
-    if (comp.posX === "left") {
+    if (comp.posX === 'left') {
       style += ` left: 0; `;
-    } else if (comp.posX === "center") {
+    } else if (comp.posX === 'center') {
       style += ` left: 50%; `;
-      translateX = "-50%";
-    } else if (comp.posX === "right") {
+      translateX = '-50%';
+    } else if (comp.posX === 'right') {
       style += ` right: 0; `;
     } else {
       const posXNum = Number(comp.posX);
@@ -48,12 +48,12 @@ const displayHtml = computed(() => {
       }
     }
 
-    if (comp.posY === "top") {
+    if (comp.posY === 'top') {
       style += ` top: 0; `;
-    } else if (comp.posY === "center") {
+    } else if (comp.posY === 'center') {
       style += ` top: 50%; `;
-      translateY = "-50%";
-    } else if (comp.posY === "bottom") {
+      translateY = '-50%';
+    } else if (comp.posY === 'bottom') {
       style += ` bottom: 0; `;
     } else {
       const posYNum = Number(comp.posY);

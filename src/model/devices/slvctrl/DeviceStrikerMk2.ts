@@ -1,5 +1,5 @@
-import type Device from "../Device";
-import type { IntRangeDeviceAttribute } from "../Device";
+import type Device from '../Device';
+import type { IntRangeDeviceAttribute } from '../Device';
 
 type DeviceStrikerMk2Attributes = {
   speed: IntRangeDeviceAttribute;

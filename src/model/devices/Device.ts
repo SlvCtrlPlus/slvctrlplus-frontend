@@ -23,6 +23,10 @@ export interface IntDeviceAttribute<V extends number|undefined = number|undefine
    uom?: string;
 }
 
+export interface FloatDeviceAttribute<V extends number|undefined = number|undefined> extends DeviceAttribute<V> {
+   uom?: string;
+}
+
 export interface IntRangeDeviceAttribute<V extends number|undefined = number|undefined> extends IntDeviceAttribute<V> {
    min: number;
    max: number;

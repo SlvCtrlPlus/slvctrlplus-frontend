@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {useBackendStore} from "@/stores/backend";
-import {storeToRefs} from "pinia";
-import {computed, ref, watch} from "vue";
-import {format} from "date-fns";
+import {useBackendStore} from '@/stores/backend';
+import {storeToRefs} from 'pinia';
+import {computed, ref, watch} from 'vue';
+import {format} from 'date-fns';
 
 const backendStore = useBackendStore();
 const { backendUrl, isServerOnline, wasServerEverOnline } = storeToRefs(backendStore);

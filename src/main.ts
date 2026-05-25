@@ -1,14 +1,14 @@
-import { createApp } from "vue";
-import App from "./App.vue";
-import router from "./router";
-import "vuetify/styles";
-import "@mdi/font/css/materialdesignicons.css";
-import { loadFonts } from "./plugins/webfontloader";
-import { vueSocketIOClient } from "./plugins/vueSocketIOClient.js";
-import { createPinia } from "pinia";
-import { vuetify } from "./plugins/vuetify";
-import VueFullscreen from "vue-fullscreen";
-import {useBackendStore} from "@/stores/backend";
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css';
+import { loadFonts } from './plugins/webfontloader';
+import { vueSocketIOClient } from './plugins/vueSocketIOClient.js';
+import { createPinia } from 'pinia';
+import { vuetify } from './plugins/vuetify';
+import VueFullscreen from 'vue-fullscreen';
+import {useBackendStore} from '@/stores/backend';
 
 loadFonts().catch(console.log);
 
@@ -22,4 +22,4 @@ app
   .use(router)
   .use(vuetify)
   .use(VueFullscreen)
-  .mount("#app");
+  .mount('#app');

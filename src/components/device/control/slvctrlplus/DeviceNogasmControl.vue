@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
-import StreamLineChart from "../../../chart/StreamLineChart.vue";
+import {computed, ref} from 'vue';
+import StreamLineChart from '../../../chart/StreamLineChart.vue';
 import type {
   Chart,
   Color,
   LinearScaleOptions,
   ScriptableLineSegmentContext
-} from "chart.js";
-import ChartHelper from "../../../../helper/ChartHelper";
-import type {LineChartData, LineChartOptions} from "@/helper/ChartHelper";
-import { merge } from "chart.js/helpers";
-import type {DeviceNogasm} from "@/model/devices/slvctrl/DeviceNogasm";
-import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import DeviceCommunicator from "@/helper/DeviceCommunicator";
-import {useSocketIO} from "@/plugins/vueSocketIOClient";
-import type {Socket} from "socket.io-client";
+} from 'chart.js';
+import ChartHelper from '../../../../helper/ChartHelper';
+import type {LineChartData, LineChartOptions} from '@/helper/ChartHelper';
+import { merge } from 'chart.js/helpers';
+import type {DeviceNogasm} from '@/model/devices/slvctrl/DeviceNogasm';
+import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
+import DeviceCommunicator from '@/helper/DeviceCommunicator';
+import {useSocketIO} from '@/plugins/vueSocketIOClient';
+import type {Socket} from 'socket.io-client';
 
 interface Props {
   device: DeviceNogasm;
@@ -30,7 +30,7 @@ const colorDeviationOk = {r: 0, g: 189, b: 126 };
 const colorDeviationNok = {r: 255, g: 152, b: 0};
 
 const thresholdDataset = ChartHelper.createEmptyDataSet({
-  label: "Threshold",
+  label: 'Threshold',
   color: colorThreshold,
   densityLine: 0.7,
   fill: false,
@@ -51,7 +51,7 @@ const dynamicLineColoring = (alpha: number) => (ctx: ScriptableLineSegmentContex
 const chartData: LineChartData = {
   datasets: [
     ChartHelper.createEmptyDataSet({
-      label: "Pressure deviation",
+      label: 'Pressure deviation',
       color: colorDeviationOk,
       segment: {
         borderColor: dynamicLineColoring(1),
