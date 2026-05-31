@@ -82,6 +82,8 @@ declare interface DeviceEvent {
 }
 
 declare function onEvent(handler: (event: DeviceEvent) => void | Promise<void>): void;
+declare function onStart(handler: () => void | Promise<void>): void;
+declare function onStop(handler: () => void | Promise<void>): void;
 
 declare const devices: {
     getById(id: string): Device | null;

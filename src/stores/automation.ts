@@ -3,10 +3,19 @@ import { ref, computed } from "vue";
 import type AutomationScript from "../model/AutomationScript";
 import {apiFetch} from "@/utils/apiFetch";
 
-const defaultCode = `onEvent(async (event) => {
-    // Write your automation here. The script will fire on device events:
+const defaultCode = `onStart(async () => {
+    // This function will fire once when your script starts.
+    // You can initialize variables or set device attributes here.
+});
+
+onStop(async () => {
+    // This function will fire once when your script stops.
+    // You can clean up any resources or reset device attributes here.
+});
+
+onEvent(async (event) => {
+    // This function will be called on any device event. Possible events are:
     //
-    //  - deviceUpdateReceived: A device got updated through the external API
     //  - deviceConnected: A new device was connected to SlvCtrl+
     //  - deviceDisconnected: A device was disconnected from SlvCtrl+
     //  - deviceRefreshed: New data has been pulled from a device
