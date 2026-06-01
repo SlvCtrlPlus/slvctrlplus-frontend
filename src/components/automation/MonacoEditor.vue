@@ -90,10 +90,6 @@ declare const devices: {
     getAll(): Device[];
 };
 
-declare function getAttribute(deviceId: string, attributeName: string): Promise<unknown | null>;
-declare function setAttribute(deviceId: string, attributeName: string, value: unknown): Promise<void>;
-declare function getDevices(): Array<{ id: string; name: string }>;
-
 declare const console: {
   log: (...args: any[]) => void;
   error: (...args: any[]) => void;
