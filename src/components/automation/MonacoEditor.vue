@@ -58,7 +58,9 @@ function editorWillMount(monacoInstance: typeof monaco): void {
 type DeviceAttributeModifier = 'ro' | 'rw' | 'wo';
 type DeviceAttributeType = 'bool' | 'list' | 'str' | 'float' | 'int' | 'range';
 type DeviceAttributeValue = string | number | boolean | undefined;
-interface DeviceAttribute
+declare type DeviceEventType = 'deviceConnected' | 'deviceDisconnected' | 'deviceRefreshed';
+
+declare interface DeviceAttribute
 {
     name: string;
     label?: string;
@@ -66,27 +68,28 @@ interface DeviceAttribute
     modifier: DeviceAttributeModifier;
     value: DeviceAttributeValue;
 }
-interface Device
-{
-    getDeviceId: string
-    getAttribute(attrName: string): Promise<DeviceAttribute | undefined>
-    setAttribute(attrName: string, value: DeviceAttributeValue): Promise<void>
+
+declare interface Device {
+    readonly getDeviceId: string;
+    readonly getDeviceName: string;
+    getAttribute(name: string): Promise<DeviceAttribute | undefined>;
+    setAttribute(name: string, value: DeviceAttributeValue): Promise<void>;
 }
-enum DeviceEventType {
-    deviceUpdateReceived = "deviceUpdateReceived",
-    deviceConnected = "deviceConnected",
-    deviceDisconnected = "deviceDisconnected",
-    deviceRefreshed = "deviceRefreshed",
+
+declare interface DeviceEvent {
+    readonly type: DeviceEventType;
+    readonly device: Device;
 }
-type DeviceEvent = { type: DeviceEventType, device: Device }
-interface DeviceRepositoryInterface
-{
+
+declare function onEvent(handler: (event: DeviceEvent) => void | Promise<void>): void;
+declare function onStart(handler: () => void | Promise<void>): void;
+declare function onStop(handler: () => void | Promise<void>): void;
+
+declare const devices: {
+    getById(id: string): Device | null;
     getAll(): Device[];
-    getById(uuid: string): Device|null;
-}
-declare const event: DeviceEvent;
-declare const devices: DeviceRepositoryInterface;
-declare const context: { [key: string]: any };
+};
+
 declare const console: {
   log: (...args: any[]) => void;
   error: (...args: any[]) => void;
