@@ -21,7 +21,7 @@ onEvent(async (event) => {
     //  - deviceRefreshed: New data has been pulled from a device
     //
     // You can get information about the event and the device that invoked your script through the "event"
-    // variable. To access other devices you can use the global variable "devices" -> devices.getById(\`{device uuid}\`)
+    // variable. To access other devices you can use the global variable "devices" -> devices.getById("{device uuid}")
 });
 `;
 
