@@ -67,7 +67,7 @@ function stopScript() {
     </v-sheet>
   </v-app-bar>
 
-  <v-navigation-drawer v-model="drawer" absolute bottom temporary>
+  <v-navigation-drawer v-model="drawer" temporary>
     <v-list>
       <v-list-item
         color="primary"
