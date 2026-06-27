@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { HueSlider } from 'vue-color'
 import { useSocketIO } from '@/plugins/vueSocketIOClient';
 import type { Socket } from 'socket.io-client';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
