@@ -55,27 +55,41 @@ function editorWillMount(monacoInstance: typeof monaco): void {
 
   // extra libraries
   const libSource = `
-interface Device
+type DeviceAttributeModifier = 'ro' | 'rw' | 'wo';
+type DeviceAttributeType = 'bool' | 'list' | 'str' | 'float' | 'int' | 'range';
+type DeviceAttributeValue = string | number | boolean | undefined;
+declare type DeviceEventType = 'deviceConnected' | 'deviceDisconnected' | 'deviceRefreshed';
+
+declare interface DeviceAttribute
 {
-    getDeviceId: string
-    getAttribute(attrName: string): bool|number|string
-    setAttribute(attrName: string, value: bool|number|string): void
+    name: string;
+    label?: string;
+    type: DeviceAttributeType;
+    modifier: DeviceAttributeModifier;
+    value: DeviceAttributeValue;
 }
-enum DeviceEventType {
-    deviceUpdateReceived = "deviceUpdateReceived",
-    deviceConnected = "deviceConnected",
-    deviceDisconnected = "deviceDisconnected",
-    deviceRefreshed = "deviceRefreshed",
+
+declare interface Device {
+    readonly getDeviceId: string;
+    readonly getDeviceName: string;
+    getAttribute(name: string): Promise<DeviceAttribute | undefined>;
+    setAttribute(name: string, value: DeviceAttributeValue): Promise<void>;
 }
-type DeviceEvent = { type: DeviceEventType, device: Device }
-interface DeviceRepositoryInterface
-{
+
+declare interface DeviceEvent {
+    readonly type: DeviceEventType;
+    readonly device: Device;
+}
+
+declare function onEvent(handler: (event: DeviceEvent) => void | Promise<void>): void;
+declare function onStart(handler: () => void | Promise<void>): void;
+declare function onStop(handler: () => void | Promise<void>): void;
+
+declare const devices: {
+    getById(id: string): Device | null;
     getAll(): Device[];
-    getById(uuid: string): Device|null;
-}
-declare const event: DeviceEvent;
-declare const devices: DeviceRepositoryInterface;
-declare const context: { [key: string]: any };
+};
+
 declare const console: {
   log: (...args: any[]) => void;
   error: (...args: any[]) => void;

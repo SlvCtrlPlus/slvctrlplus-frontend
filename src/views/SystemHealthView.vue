@@ -87,9 +87,7 @@ const uptime = computed(() => {
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>Operating System</v-list-item-title>
-                  <v-list-item-subtitle>{{
-                    `${state.system.os.name} (${state.system.os.type})`
-                  }}</v-list-item-subtitle>
+                  <v-list-item-subtitle>{{ state.system.os.type }}</v-list-item-subtitle>
                 </v-list-item>
                 <v-list-item class="px-1">
                   <v-list-item-title>IP address</v-list-item-title>
