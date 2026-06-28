@@ -3,7 +3,9 @@ import { ref, computed } from 'vue';
 import type AutomationScript from '../model/AutomationScript';
 import {apiFetch} from '@/utils/apiFetch';
 
-const defaultCode = `onStart(async () => {
+const defaultCode = `// To access any device you can use the global variable "devices" -> devices.getById("{device uuid}")
+
+onStart(async () => {
     // This function will fire once when your script starts.
     // You can initialize variables or set device attributes here.
 });
@@ -13,15 +15,20 @@ onStop(async () => {
     // You can clean up any resources or reset device attributes here.
 });
 
-onEvent(async (event) => {
-    // This function will be called on any device event. Possible events are:
-    //
-    //  - deviceConnected: A new device was connected to SlvCtrl+
-    //  - deviceDisconnected: A device was disconnected from SlvCtrl+
-    //  - deviceRefreshed: New data has been pulled from a device
-    //
-    // You can get information about the event and the device that invoked your script through the "event"
-    // variable. To access other devices you can use the global variable "devices" -> devices.getById("{device uuid}")
+onEvent('deviceConnected', async (device: Device) => {
+    // This function will be called when a new device was connected to SlvCtrl+
+});
+
+onEvent('deviceDisconnected', async (device: Device) => {
+    // This function will be called when a device was disconnected from SlvCtrl+
+});
+
+onEvent('deviceRefreshed', async (device: Device) => {
+    // This function will be called when new data has been pulled from a device
+});
+
+onEvent('deviceNotification', async (device: Device, notification: DeviceNotification) => {
+    // This function will be called when a device sends a notification
 });
 `;
 

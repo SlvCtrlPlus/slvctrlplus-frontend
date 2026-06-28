@@ -55,6 +55,9 @@ function editorWillMount(monacoInstance: typeof monaco): void {
 
   // extra libraries
   const libSource = `
+type JsonObject = { [key: string]: JsonValue };
+type JsonValue = null | boolean | number | string | JsonValue[] | JsonObject;
+
 type DeviceAttributeModifier = 'ro' | 'rw' | 'wo';
 type DeviceAttributeType = 'bool' | 'list' | 'str' | 'float' | 'int' | 'range';
 type DeviceAttributeValue = string | number | boolean | undefined;
@@ -81,7 +84,16 @@ declare interface DeviceEvent {
     readonly device: Device;
 }
 
-declare function onEvent(handler: (event: DeviceEvent) => void | Promise<void>): void;
+declare interface DeviceNotification {
+    readonly type: string;
+    readonly data: JsonObject;
+}
+
+declare function onEvent(
+    eventName: 'deviceConnected' | 'deviceDisconnected' | 'deviceRefreshed',
+    handler: (device: Device) => void | Promise<void>
+): void;
+declare function onEvent(eventName: 'deviceNotification', handler: (device: Device, notification: DeviceNotification) => void | Promise<void>): void;
 declare function onStart(handler: () => void | Promise<void>): void;
 declare function onStop(handler: () => void | Promise<void>): void;
 
