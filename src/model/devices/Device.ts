@@ -53,3 +53,7 @@ export default interface Device<T extends DeviceAttributes = DeviceAttributes> {
    receiveUpdates: boolean;
    attributes: T;
 }
+
+export interface WirelessDevice<T extends DeviceAttributes = DeviceAttributes> extends Device<T> {
+   rssi: number;
+}

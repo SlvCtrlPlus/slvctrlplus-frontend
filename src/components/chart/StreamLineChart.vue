@@ -18,9 +18,14 @@ import ChartStreaming from 'chartjs-plugin-streaming';
 interface Props {
   chartData: ChartData<'line'>;
   chartOptions: ChartOptions<'line'>;
+  width?: number;
+  height?: number;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  width: 400,
+  height: 200,
+});
 
 ChartJS.register(
   Title,
@@ -42,8 +47,8 @@ const plugins: Plugin[] = [];
     :chartData="props.chartData"
     :chartOptions="props.chartOptions"
     chartId="foo-id"
-    :width="400"
-    :height="200"
+    :width="props.width"
+    :height="props.height"
     :plugins="plugins"
   />
 </template>

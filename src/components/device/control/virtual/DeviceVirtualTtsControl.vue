@@ -21,11 +21,6 @@ const currentlySpeaking = computed<string>(() => {
     ? 'no'
     : 'yes';
 });
-const queuingLabel = computed<string>(() => {
-  return props.device.attributes.queuing.value
-    ? `Queuing enabled (Queue: ${props.device.attributes.queueLength.value})`
-    : 'Queuing disabled';
-});
 
 const sendTextHandler = (): void => {
   if (undefined === text.value || 0 === text.value.trim().length) {
@@ -54,16 +49,24 @@ const changeQueuing = (newValue: boolean | null): void => {
     type="text"
     hide-details
   ></v-textarea>
-  <v-btn color="primary" class="mt-4 mr-4" @click="sendTextHandler">send</v-btn>
+  <v-row align="center" no-gutters>
+    <v-col cols="auto">
+      <v-btn color="primary" class="mt-4 mr-4" @click="sendTextHandler">send</v-btn>
+    </v-col>
+    <v-spacer />
+    <v-col cols="auto">
+      <v-switch
+        :model-value="props.device.attributes.queuing.value"
+        :hide-details="true"
+        color="primary"
+        class="pa-0 ma-0 mt-4 switch-label-left"
+        label="Queuing disabled"
+        @update:modelValue="changeQueuing"
+      ></v-switch>
+    </v-col>
+  </v-row>
 
-  <v-switch
-    :model-value="props.device.attributes.queuing.value"
-    :hide-details="true"
-    color="primary"
-    class="pa-0 ma-0"
-    :label="queuingLabel"
-    @update:modelValue="changeQueuing"
-  ></v-switch>
+  <v-divider class="mt-4" />
 
   <dl v-if="true === props.device.attributes.queuing.value" class="mt-4 mb-4">
     <dt><label>Queue length</label></dt>
@@ -79,4 +82,10 @@ const changeQueuing = (newValue: boolean | null): void => {
   </dl>
 </template>
 
-<style scoped></style>
+<style scoped>
+.switch-label-left :deep(.v-selection-control) {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+}
+</style>

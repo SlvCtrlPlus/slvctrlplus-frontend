@@ -1,11 +1,11 @@
-import type Device from '../Device';
-import type { BoolDeviceAttribute, StrDeviceAttribute } from '../Device';
+import type { BoolDeviceAttribute, FloatDeviceAttribute, StrDeviceAttribute, WirelessDevice } from '../Device';
 
 export type DeviceAiroticAttributes = {
     restColor: StrDeviceAttribute,
     breathInColor: StrDeviceAttribute,
     resetColors: BoolDeviceAttribute,
     reboot: BoolDeviceAttribute,
+    breathsPerMin: FloatDeviceAttribute,
 };
 
-export type DeviceAirotic = Device<DeviceAiroticAttributes>;
+export type DeviceAirotic = WirelessDevice<DeviceAiroticAttributes>;

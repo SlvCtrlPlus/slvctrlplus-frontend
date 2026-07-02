@@ -48,16 +48,28 @@ const changeQueuing = (newValue: boolean | null): void => {
     type="text"
     hide-details
   ></v-textarea>
-  <v-btn color="primary" class="mt-4 mr-4" @click="sendTextHandler">send</v-btn>
-
-  <v-switch
-    :model-value="props.device.attributes.queuing.value"
-    :hide-details="true"
-    color="primary"
-    class="pa-0 ma-0"
-    :label="queuingLabel"
-    @update:modelValue="changeQueuing"
-  ></v-switch>
+  <v-row align="center" no-gutters>
+    <v-col cols="auto">
+      <v-btn color="primary" class="mt-4 mr-4" @click="sendTextHandler">send</v-btn>
+    </v-col>
+    <v-spacer />
+    <v-col cols="auto">
+      <v-switch
+        :model-value="props.device.attributes.queuing.value"
+        :hide-details="true"
+        color="primary"
+        class="pa-0 ma-0 mt-4 switch-label-left"
+        :label="queuingLabel"
+        @update:modelValue="changeQueuing"
+      ></v-switch>
+    </v-col>
+  </v-row>
 </template>
 
-<style scoped></style>
+<style scoped>
+.switch-label-left :deep(.v-selection-control) {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+}
+</style>

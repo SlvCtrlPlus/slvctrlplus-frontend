@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDevicesStore } from './stores/devices.js';
 import { useSocketIO } from './plugins/vueSocketIOClient.js';
-import type { Socket } from 'socket.io-client';
 import type Device from './model/devices/Device';
 import { useSettingsStore } from './stores/settings.js';
 import { useAutomationStore } from './stores/automation.js';
@@ -9,6 +8,7 @@ import { storeToRefs } from 'pinia';
 import { useAppStore } from './stores/app';
 import { useHealthStore } from './stores/health';
 import { useBackendStore } from '@/stores/backend';
+import { useDeviceNotificationsStore } from '@/stores/deviceNotifications';
 import ServerStatusOverlay from '@/components/ServerStatusOverlay.vue';
 
 const settingsStore = useSettingsStore();
@@ -17,13 +17,14 @@ const appStore = useAppStore();
 const automationStore = useAutomationStore();
 const devicesStore = useDevicesStore();
 const backendStore = useBackendStore();
+const deviceNotificationsStore = useDeviceNotificationsStore();
 
 const { theme } = storeToRefs(settingsStore);
 
 if (backendStore.backendUrl) {
-  const io = useSocketIO() as Socket;
+  const io = useSocketIO();
 
-  io.on('connect', () => {
+  io?.on('connect', () => {
     backendStore.setServerOnline(true);
 
     // Init/update stores with initial data from server
@@ -32,12 +33,12 @@ if (backendStore.backendUrl) {
     devicesStore.init();
     healthStore.init(io);
   });
-  io.on('disconnect', () => {
+  io?.on('disconnect', () => {
     backendStore.setServerOnline(false);
     devicesStore.clear();
   });
 
-  io.on('deviceDisconnected', (device) => {
+  io?.on('deviceDisconnected', (device) => {
     devicesStore.removeDevice(device);
 
     appStore.displaySnackbar(
@@ -46,7 +47,7 @@ if (backendStore.backendUrl) {
       }) disconnected`
     );
   });
-  io.on('deviceConnected', (device) => {
+  io?.on('deviceConnected', (device) => {
     devicesStore.addDevice(device);
 
     appStore.displaySnackbar(
@@ -55,17 +56,20 @@ if (backendStore.backendUrl) {
       }) connected`
     );
   });
-  io.on('deviceRefreshed', (device) => {
+  io?.on('deviceRefreshed', (device) => {
     devicesStore.updateDevice(device);
   });
-  io.on('automationConsoleLog', (data: string) => {
+  io?.on('deviceNotification', (device, notification) => {
+    deviceNotificationsStore.dispatch(device, notification);
+  });
+  io?.on('automationConsoleLog', (data: string) => {
     automationStore.logMessages.push(data);
 
     if (automationStore.logMessages.length > 500) {
       automationStore.logMessages.shift();
     }
   });
-  io.on('settingsChanged', async () => {
+  io?.on('settingsChanged', async () => {
     await settingsStore.getServerSettings()
   });
 }
