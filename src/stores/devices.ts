@@ -41,6 +41,14 @@ export const useDevicesStore = defineStore('devices', () => {
       return;
     }
 
+    for (const key of Object.keys(device.attributes)) {
+      const incomingAttr = updatedDevice.attributes?.[key];
+      if (incomingAttr && !('value' in incomingAttr)) {
+        const attr = device.attributes[key];
+        if (attr) attr.value = undefined;
+      }
+    }
+
     deepMergeReactive(device, updatedDevice);
   }
 

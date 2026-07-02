@@ -6,6 +6,7 @@ export type DeviceAiroticAttributes = {
     resetColors: BoolDeviceAttribute,
     reboot: BoolDeviceAttribute,
     breathsPerMin: FloatDeviceAttribute,
+    bpmTrend: StrDeviceAttribute<'up' | 'down' | 'stable' | undefined>,
 };
 
 export type DeviceAirotic = WirelessDevice<DeviceAiroticAttributes>;

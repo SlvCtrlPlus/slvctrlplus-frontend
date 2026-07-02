@@ -19,7 +19,6 @@ const props = defineProps<Props>();
 const io = useRequiredSocketIO();
 
 const deviceComm = new DeviceCommunicator(props.device, io);
-//const localDevice = reactive({ ...props.device });
 
 const localRestColor = ref({ r: 0, g: 0, b: 0 });
 const localBreathInColor = ref({ r: 0, g: 0, b: 0 });
@@ -51,6 +50,8 @@ const breathsPerMin = computed(() => {
   const rawData = props.device.attributes.breathsPerMin.value;
   return (undefined === rawData) ? undefined : Math.round(rawData * 10) / 10;
 });
+
+const bpmTrend = computed(() => props.device.attributes.bpmTrend.value);
 
 const deviceNotificationsStore = useDeviceNotificationsStore();
 
@@ -118,8 +119,11 @@ const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
 
   <dl>
     <dt class="mt-4 mb-2"><label>Breathing frequency</label></dt>
-    <dd class="text-h3 text-primary">
+    <dd class="text-h3 text-primary d-flex align-center ga-2">
       {{ undefined === breathsPerMin ? '&ndash;' : `${breathsPerMin.toFixed(1)}/min` }}
+      <span v-if="bpmTrend === 'up'">&ShortUpArrow;</span>
+      <span v-if="bpmTrend === 'down'">&ShortDownArrow;</span>
+      <span v-if="bpmTrend === 'stable'">&ShortRightArrow;</span>
     </dd>
   </dl>
 
