@@ -13,15 +13,14 @@ import { merge } from 'chart.js/helpers';
 import type {DeviceNogasm} from '@/model/devices/slvctrl/DeviceNogasm';
 import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
-import {useSocketIO} from '@/plugins/vueSocketIOClient';
-import type {Socket} from 'socket.io-client';
+import {useRequiredSocketIO} from '@/plugins/vueSocketIOClient';
 
 interface Props {
   device: DeviceNogasm;
 }
 
 const props = defineProps<Props>();
-const io = useSocketIO() as Socket;
+const io = useRequiredSocketIO();
 const deviceComm = new DeviceCommunicator(props.device, io);
 
 const modeNames = new Map<number, string>([[1, 'Manual'],[2, 'Automatic']]);

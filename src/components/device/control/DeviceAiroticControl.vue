@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSocketIO } from '@/plugins/vueSocketIOClient';
+import { useRequiredSocketIO } from '@/plugins/vueSocketIOClient';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
 import type { DeviceAirotic } from '@/model/devices/airotic/DeviceAirotic';
 import { ref, computed, watch } from 'vue';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const io = useSocketIO();
+const io = useRequiredSocketIO();
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 //const localDevice = reactive({ ...props.device });

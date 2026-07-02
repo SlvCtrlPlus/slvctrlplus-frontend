@@ -1,10 +1,10 @@
+import type { AllOrNone } from '@/types/utility';
 import type Device from '../Device';
 import type {
     BoolDeviceAttribute,
     IntRangeDeviceAttribute,
     ListDeviceAttribute
 } from '../Device';
-import type {AllOrNone} from '@/types';
 
 type RequiredDeviceZc95Attributes = {
     activePattern: ListDeviceAttribute<number, string>;

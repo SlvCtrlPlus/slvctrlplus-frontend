@@ -21,9 +21,9 @@ const deviceNotificationsStore = useDeviceNotificationsStore();
 
 const { theme } = storeToRefs(settingsStore);
 
-if (backendStore.backendUrl) {
-  const io = useSocketIO();
+const io = useSocketIO();
 
+if (backendStore.backendUrl) {
   io?.on('connect', () => {
     backendStore.setServerOnline(true);
 

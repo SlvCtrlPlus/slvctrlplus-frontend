@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '20.x'
       - name: Install modules
-        run: yarn install
+        run: yarn install --frozen-lockfile
       - name: Linting
         run: |
           yarn run lint

@@ -1,16 +1,16 @@
-import type { Socket } from 'socket.io-client';
 import type Device from '@/model/devices/Device';
+import type { AppSocket } from '@/types/socket';
 
 type DeviceData<D extends Device> = {
   [K in keyof D['attributes']]-?: Exclude<D['attributes'][K], undefined> extends { value: infer V } ? V : never
 };
 
 export default class DeviceCommunicator<T extends Device> {
-  private readonly io: Socket;
+  private readonly io: AppSocket;
 
   private readonly device: T;
 
-  public constructor(device: T, io: Socket) {
+  public constructor(device: T, io: AppSocket) {
     this.io = io;
     this.device = device;
   }

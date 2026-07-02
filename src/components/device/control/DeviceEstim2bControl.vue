@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useSocketIO } from '@/plugins/vueSocketIOClient';
-import type { Socket } from 'socket.io-client';
+import { useRequiredSocketIO } from '@/plugins/vueSocketIOClient';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
 import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
 import {isIntRangeDeviceAttribute, typedEntries} from '@/utils/utils';
@@ -16,7 +15,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const io = useSocketIO() as Socket;
+const io = useRequiredSocketIO();
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 

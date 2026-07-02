@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useSocketIO } from '@/plugins/vueSocketIOClient';
-import type { Socket } from 'socket.io-client';
+import { useRequiredSocketIO } from '@/plugins/vueSocketIOClient';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
 import type {DeviceEt312} from '@/model/devices/slvctrl/DeviceEt312';
 import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
@@ -15,7 +14,7 @@ type SelectItem = {
 };
 
 const props = defineProps<Props>();
-const io = useSocketIO() as Socket;
+const io = useRequiredSocketIO();
 
 const modes: { [key: number]: string } = {
   0x76: 'Waves',

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useSocketIO } from '@/plugins/vueSocketIOClient';
-import type { Socket } from 'socket.io-client';
+import { useRequiredSocketIO } from '@/plugins/vueSocketIOClient';
 import type Device from '@/model/devices/Device';
 import type { DeviceAttribute } from '@/model/devices/Device';
 import DeviceCommunicator from '@/helper/DeviceCommunicator';
@@ -13,7 +12,7 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const io = useSocketIO() as Socket;
+const io = useRequiredSocketIO();
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 

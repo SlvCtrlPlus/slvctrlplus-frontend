@@ -2,40 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, reactive, type Ref } from 'vue';
 import type { ChartData } from 'chart.js';
 import ChartHelper from '../helper/ChartHelper';
-import type { Socket } from 'socket.io-client';
-
-interface SystemInfo {
-  process: {
-    memoryUsage: {
-      rss: number;
-      heapTotal: number;
-      heapUsed: number;
-      external: number;
-    };
-  };
-  system: {
-    cpu: {
-      usage: number;
-      model: string;
-      cores: string;
-    };
-    memory: {
-      totalMemMb: number;
-      usedMemMb: number;
-      freeMemMb: number;
-      usedMemPercentage: number;
-      freeMemPercentage: number;
-    };
-    os: {
-      name: string;
-      arch: string;
-      type: string;
-    };
-    uptime: number;
-    hostname: string;
-    ip: string;
-  };
-}
+import type { AppSocket, SystemInfo } from '@/types/socket';
 
 type HealthChartData = {
   processMemory: ChartData<'line'>;
@@ -46,7 +13,7 @@ type HealthChartData = {
 type HealthStore = {
   state: Ref<SystemInfo | undefined>;
   chartData: HealthChartData;
-  init: (socket: Socket) => void;
+  init: (socket: AppSocket) => void;
 };
 
 export const useHealthStore = defineStore('health', (): HealthStore => {
@@ -93,8 +60,8 @@ export const useHealthStore = defineStore('health', (): HealthStore => {
   });
 
   // actions
-  function init(socket: Socket): void {
-    socket.on('healthMetrics', (data: SystemInfo) => {
+  function init(socket: AppSocket): void {
+    socket.on('healthMetrics', (data) => {
       state.value = data;
 
       if (!chartData) {
