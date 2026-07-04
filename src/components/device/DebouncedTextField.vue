@@ -32,7 +32,16 @@ watch(
 );
 
 const emitValue = (value: string | number): void => {
-  emit('update:modelValue', value);
+  let valueToEmit = value;
+
+  if (props.type === 'number' && typeof value === 'string') {
+    const numericValue = Number(value);
+    if (!Number.isNaN(numericValue)) {
+      valueToEmit = numericValue;
+    }
+  }
+
+  emit('update:modelValue', valueToEmit);
 };
 
 const handleValueChange = (value: string | number): void => {

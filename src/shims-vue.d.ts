@@ -1,9 +1,9 @@
 declare module '*.vue';
 declare module '*.js';
-import type { Socket } from 'socket.io-client';
+import type { AppSocket } from '@/types/socket';
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
-    $socket: Socket;
+    $socket: AppSocket;
   }
 }
