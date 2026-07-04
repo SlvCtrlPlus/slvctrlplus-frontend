@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { defineStore } from 'pinia';
+import { reactive } from 'vue';
 
 export type AppState = {
   snackbar: {
@@ -16,19 +16,19 @@ export type AppState = {
   getVersion(): string;
 };
 
-export const useAppStore = defineStore("app", (): AppState => {
+export const useAppStore = defineStore('app', (): AppState => {
   // reactive state
-  const snackbar = reactive<AppState["snackbar"]>({
+  const snackbar = reactive<AppState['snackbar']>({
     display: false,
-    text: "",
-    color: "primary",
+    text: '',
+    color: 'primary',
     timeout: 5000,
   });
 
   // actions
   function displaySnackbar(
       text: string,
-      color: string = "primary",
+      color: string = 'primary',
       timeout: number = 5000
   ): void {
     snackbar.text = text;

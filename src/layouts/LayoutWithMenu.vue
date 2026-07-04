@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useAutomationStore } from "../stores/automation";
-import { storeToRefs } from "pinia";
-import { useAppStore } from "../stores/app";
+import { ref } from 'vue';
+import { useAutomationStore } from '../stores/automation';
+import { storeToRefs } from 'pinia';
+import { useAppStore } from '../stores/app';
 
 const drawer = ref(false);
 const menuItems = [
   {
-    title: "Mission Control",
-    to: "/mission-control",
-    icon: "mdi-rocket-launch",
+    title: 'Mission Control',
+    to: '/mission-control',
+    icon: 'mdi-rocket-launch',
   },
   {
-    title: "Automation",
-    to: "/automation",
-    icon: "mdi-play",
+    title: 'Automation',
+    to: '/automation',
+    icon: 'mdi-play',
   },
   {
-    title: "Devices",
-    to: "/devices",
-    icon: "mdi-devices",
+    title: 'Devices',
+    to: '/devices',
+    icon: 'mdi-devices',
   },
   {
-    title: "System health",
-    to: "/health",
-    icon: "mdi-heart",
+    title: 'System health',
+    to: '/health',
+    icon: 'mdi-heart',
   },
   {
-    title: "Settings",
-    to: "/settings",
-    icon: "mdi-cog",
+    title: 'Settings',
+    to: '/settings',
+    icon: 'mdi-cog',
   },
 ];
 
@@ -44,7 +44,7 @@ function stopScript() {
     .then(() => {
       appStore.displaySnackbar(`Script execution stopped`);
     })
-    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
 }
 </script>
 

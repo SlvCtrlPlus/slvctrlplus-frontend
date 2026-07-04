@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import DeviceIcon from "../icons/DeviceIcon.vue";
-import DeviceControl from "./DeviceControl.vue";
-import type Device from "../../model/devices/Device";
-import { onBeforeUnmount, ref } from "vue";
+import DeviceIcon from '../icons/DeviceIcon.vue';
+import DeviceControl from './DeviceControl.vue';
+import type Device from '../../model/devices/Device';
+import { onBeforeUnmount, ref } from 'vue';
 
 interface Props {
   device: Device;
@@ -27,23 +27,23 @@ const openInNewWindow = (device: Device): void => {
     return;
   }
 
-  console.log("open popup for device: " + device.deviceId);
+  console.log('open popup for device: ' + device.deviceId);
   popup = window.open(
     `${location.protocol}//${location.host}/mission-control/device/${device.deviceId}`,
-    "",
-    "width=600,height=400"
+    '',
+    'width=600,height=400'
   );
 
   if (!popup) {
     return;
   }
 
-  popup.addEventListener("load", () => {
+  popup.addEventListener('load', () => {
     if (!popup) {
       return;
     }
     popup.document.title = `${document.title}: ${props.device.deviceName}`;
-    popup.addEventListener("beforeunload", () => onPopupClose());
+    popup.addEventListener('beforeunload', () => onPopupClose());
   });
 
   isPopupOpen.value = true;

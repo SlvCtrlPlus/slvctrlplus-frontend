@@ -1,10 +1,10 @@
-import type Device from "../Device";
+import type Device from '../Device';
 import type {
     BoolDeviceAttribute,
     IntRangeDeviceAttribute,
     ListDeviceAttribute,
     StrDeviceAttribute
-} from "../Device";
+} from '../Device';
 
 export type PowerLevelDeviceEStim2bAttributes = {
     channelALevel: IntRangeDeviceAttribute,

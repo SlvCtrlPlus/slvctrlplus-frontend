@@ -1,6 +1,6 @@
-import type Device from "../Device"
-import type {IntRangeDeviceAttribute, ListDeviceAttribute} from "../Device";
-import type { IntDeviceAttribute } from "../Device";
+import type Device from '../Device'
+import type {IntRangeDeviceAttribute, ListDeviceAttribute} from '../Device';
+import type { IntDeviceAttribute } from '../Device';
 
 type DeviceNogasmAttributes = {
   timestampMs: IntDeviceAttribute;

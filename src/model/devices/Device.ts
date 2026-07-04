@@ -23,6 +23,10 @@ export interface IntDeviceAttribute<V extends number|undefined = number|undefine
    uom?: string;
 }
 
+export interface FloatDeviceAttribute<V extends number|undefined = number|undefined> extends DeviceAttribute<V> {
+   uom?: string;
+}
+
 export interface IntRangeDeviceAttribute<V extends number|undefined = number|undefined> extends IntDeviceAttribute<V> {
    min: number;
    max: number;
@@ -48,4 +52,8 @@ export default interface Device<T extends DeviceAttributes = DeviceAttributes> {
    lastRefresh: string;
    receiveUpdates: boolean;
    attributes: T;
+}
+
+export interface WirelessDevice<T extends DeviceAttributes = DeviceAttributes> extends Device<T> {
+   rssi: number;
 }

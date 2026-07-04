@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useAutomationStore } from "@/stores/automation";
-import { storeToRefs } from "pinia";
-import {computed, defineAsyncComponent, ref} from "vue";
-import { useAppStore } from "@/stores/app";
-import CreateForm from "@/components/automation/CreateForm.vue";
-import type AutomationScript from "@/model/AutomationScript";
-import LogViewer from "@/components/automation/LogViewer.vue";
-import {useBackendStore} from "@/stores/backend";
+import { useAutomationStore } from '@/stores/automation';
+import { storeToRefs } from 'pinia';
+import {computed, defineAsyncComponent, ref} from 'vue';
+import { useAppStore } from '@/stores/app';
+import CreateForm from '@/components/automation/CreateForm.vue';
+import type AutomationScript from '@/model/AutomationScript';
+import LogViewer from '@/components/automation/LogViewer.vue';
+import {useBackendStore} from '@/stores/backend';
 
 const MonacoEditor = defineAsyncComponent(() => import('@/components/automation/MonacoEditor.vue'));
 
@@ -25,15 +25,15 @@ const {
 const button = computed(() => {
   if (scriptRunning.value) {
     return {
-      label: "stop",
-      color: "red",
-      icon: "mdi-stop",
+      label: 'stop',
+      color: 'red',
+      icon: 'mdi-stop',
     };
   } else {
     return {
-      label: "run",
-      color: "primary",
-      icon: "mdi-play",
+      label: 'run',
+      color: 'primary',
+      icon: 'mdi-play',
     };
   }
 });
@@ -45,14 +45,14 @@ async function runScript(): Promise<void> {
       .then(() => {
         appStore.displaySnackbar(`Script execution started`);
       })
-      .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+      .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
   } else {
     automationStore
       .stopScript()
       .then(() => {
         appStore.displaySnackbar(`Script execution stopped`);
       })
-      .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+      .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
   }
 }
 
@@ -68,13 +68,13 @@ async function saveScript(): Promise<void> {
   automationStore
     .saveScript()
     .then(() => appStore.displaySnackbar(`Automation script "${currentScriptName.value}" saved`))
-    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
 }
 
 function changeScript(newScriptName: string): void {
   automationStore
     .fetchScript(newScriptName)
-    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
 }
 
 function deleteScript(): void {
@@ -88,10 +88,10 @@ function deleteScript(): void {
         currentCode.value = automationStore.getDefaultCode();
       }
 
-      itemKeyDelete.value = "";
+      itemKeyDelete.value = '';
       showDeleteDialog.value = false;
     })
-    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, "red"));
+    .catch((e: Error) => appStore.displaySnackbar(`${e.message}`, 'red'));
 }
 
 function displayDeleteDialog(scriptName: string): void {
@@ -114,7 +114,7 @@ const selectOptions = computed(() =>
 const showCreateDialog = ref(false);
 const showDeleteDialog = ref(false);
 const showLogDialog = ref(false);
-const itemKeyDelete = ref("");
+const itemKeyDelete = ref('');
 </script>
 
 <template>

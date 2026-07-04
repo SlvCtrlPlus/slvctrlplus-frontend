@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref } from "vue";
+import { ref } from 'vue';
 
 
 export const useBackendStore = defineStore('backend', () => {
@@ -29,7 +29,7 @@ export const useBackendStore = defineStore('backend', () => {
             localStorage.setItem(backendUrlLocalStoreName, url);
             backendUrl.value = url;
         } catch (error) {
-            console.error("Error setting backend URL:", error);
+            console.error('Error setting backend URL:', error);
         }
 
         if (!history.value.includes(url)) {
@@ -42,7 +42,7 @@ export const useBackendStore = defineStore('backend', () => {
             try {
                 localStorage.setItem(historyLocalStoreName, JSON.stringify(history.value));
             } catch (error) {
-                console.error("Error saving backend history:", error);
+                console.error('Error saving backend history:', error);
             }
         }
     }
@@ -54,7 +54,7 @@ export const useBackendStore = defineStore('backend', () => {
             wasServerEverOnline.value = false;
             isServerOnline.value = false;
         } catch (error) {
-            console.error("Error clearing backend URL:", error);
+            console.error('Error clearing backend URL:', error);
         }
     }
 
@@ -69,7 +69,7 @@ export const useBackendStore = defineStore('backend', () => {
         try {
             localStorage.setItem(historyLocalStoreName, JSON.stringify(history.value));
         } catch (error) {
-            console.error("Error saving backend history:", error);
+            console.error('Error saving backend history:', error);
         }
     }
 

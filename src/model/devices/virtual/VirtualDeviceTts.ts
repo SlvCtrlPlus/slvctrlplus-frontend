@@ -1,5 +1,5 @@
-import type Device from "../Device";
-import type { BoolDeviceAttribute, IntDeviceAttribute, StrDeviceAttribute } from "../Device";
+import type Device from '../Device';
+import type { BoolDeviceAttribute, IntDeviceAttribute, StrDeviceAttribute } from '../Device';
 
 type VirtualDeviceTtsAttributes = {
   text: StrDeviceAttribute;

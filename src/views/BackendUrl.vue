@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useBackendStore } from '@/stores/backend'
-import { useAppStore } from "@/stores/app";
+import { useAppStore } from '@/stores/app';
 
 const validForm = ref(false);
 
@@ -11,13 +11,13 @@ const backendInput = ref('')
 const history = backendStore.history
 
 const serverUrlRules = [
-  (v: string) => !!v || "Server URL is required",
+  (v: string) => !!v || 'Server URL is required',
   (v: string) =>
-      /^https?:\/\/.+/.test(v) || "Server URL must start with http(s)://",
-  (v: string) => /[^/]$/.test(v) || "Server URL must not end in a /",
+      /^https?:\/\/.+/.test(v) || 'Server URL must start with http(s)://',
+  (v: string) => /[^/]$/.test(v) || 'Server URL must not end in a /',
   (v: string) =>
-      v.length >= 10 || "Server URL must be at least 10 characters long",
-  (v: string) => /^https?:\/\/[^\/?#]+$/.test(v) || "Server URL must not have a path or query",
+      v.length >= 10 || 'Server URL must be at least 10 characters long',
+  (v: string) => /^https?:\/\/[^\/?#]+$/.test(v) || 'Server URL must not have a path or query',
 ];
 
 function connect() {

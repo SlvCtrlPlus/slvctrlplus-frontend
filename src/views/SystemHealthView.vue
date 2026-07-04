@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { ChartOptions } from "chart.js";
-import ChartHelper from "@/helper/ChartHelper.js";
-import { merge } from "chart.js/helpers";
-import StreamLineChart from "@/components/chart/StreamLineChart.vue";
-import LoadingState from "@/components/LoadingState.vue";
-import { computed, ref, toRaw } from "vue";
-import moment from "moment";
-import { storeToRefs } from "pinia";
-import { useHealthStore } from "@/stores/health";
+import type { ChartOptions } from 'chart.js';
+import ChartHelper from '@/helper/ChartHelper.js';
+import { merge } from 'chart.js/helpers';
+import StreamLineChart from '@/components/chart/StreamLineChart.vue';
+import LoadingState from '@/components/LoadingState.vue';
+import { computed, ref, toRaw } from 'vue';
+import moment from 'moment';
+import { storeToRefs } from 'pinia';
+import { useHealthStore } from '@/stores/health';
 
 const healthStore = useHealthStore();
 const { state, chartData } = storeToRefs(healthStore);
@@ -44,24 +44,24 @@ const chartOptionsSystemCpu = merge(
   getScales(0, 100)
 );
 
-const chartOptionsProcessMemoryRef = ref<ChartOptions<"line">>(
+const chartOptionsProcessMemoryRef = ref<ChartOptions<'line'>>(
   chartOptionsProcessMemory
 );
 
-const chartOptionsSystemMemoryRef = ref<ChartOptions<"line">>(
+const chartOptionsSystemMemoryRef = ref<ChartOptions<'line'>>(
   chartOptionsSystemMemory
 );
 
-const chartOptionsSystemCpuRef = ref<ChartOptions<"line">>(
+const chartOptionsSystemCpuRef = ref<ChartOptions<'line'>>(
   chartOptionsSystemCpu
 );
 
 const uptime = computed(() => {
   if (healthStore.state === undefined) {
-    return "calculating...";
+    return 'calculating...';
   }
 
-  return moment.duration(healthStore.state.system.uptime, "seconds").humanize();
+  return moment.duration(healthStore.state.system.uptime, 'seconds').humanize();
 });
 </script>
 

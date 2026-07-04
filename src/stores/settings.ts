@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { apiFetch } from "@/utils/apiFetch";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { apiFetch } from '@/utils/apiFetch';
 
 type ValidationErrors = {
   message: string;
@@ -14,10 +14,10 @@ type ValidationError = {
     keyword: string;
 }
 
-export const useSettingsStore = defineStore("serverSettings", () => {
+export const useSettingsStore = defineStore('serverSettings', () => {
   // state as refs
-  const theme = ref("dark");
-  const serverSettings = ref("");
+  const theme = ref('dark');
+  const serverSettings = ref('');
   const validationErrors = ref<ValidationErrors|null>(null);
 
   // actions
@@ -27,8 +27,8 @@ export const useSettingsStore = defineStore("serverSettings", () => {
 
   async function saveServerSettings(): Promise<void> {
     const response = await apiFetch(`/settings`, {
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      method: "PUT",
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      method: 'PUT',
       body: serverSettings.value,
     });
     if (response.status !== 200) {

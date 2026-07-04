@@ -1,9 +1,9 @@
-import type Device from "../Device";
+import type Device from '../Device';
 import type {
     BoolDeviceAttribute,
     IntRangeDeviceAttribute,
     ListDeviceAttribute
-} from "../Device";
+} from '../Device';
 
 type DeviceEt312Attributes = {
   connected: BoolDeviceAttribute<boolean>;

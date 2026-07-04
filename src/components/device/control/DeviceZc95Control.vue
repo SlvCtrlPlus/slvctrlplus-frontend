@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import { useSocketIO } from "@/plugins/vueSocketIOClient";
-import type { Socket } from "socket.io-client";
-import DeviceCommunicator from "@/helper/DeviceCommunicator";
+import { computed } from 'vue';
+import { useRequiredSocketIO } from '@/plugins/vueSocketIOClient';
+import DeviceCommunicator from '@/helper/DeviceCommunicator';
 import type {
   DeviceZc95,
   PatternDeviceZc95Attributes,
   PowerChannelDeviceZc95Attributes
-} from "@/model/devices/zc95/DeviceZc95";
-import DebouncedSlider from "@/components/device/DebouncedSlider.vue";
-import {isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from "@/utils/utils";
+} from '@/model/devices/zc95/DeviceZc95';
+import DebouncedSlider from '@/components/device/DebouncedSlider.vue';
+import {isIntRangeDeviceAttribute, isListDeviceAttribute, typedEntries} from '@/utils/utils';
 
 interface Props {
   device: DeviceZc95;
 }
 
 const props = defineProps<Props>();
-const io = useSocketIO() as Socket;
+const io = useRequiredSocketIO();
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 

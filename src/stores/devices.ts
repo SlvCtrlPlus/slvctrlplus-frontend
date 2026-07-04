@@ -1,9 +1,10 @@
-import { defineStore } from "pinia";
-import { ref, reactive, computed } from "vue";
-import {apiFetch} from "@/utils/apiFetch";
-import type Device from "@/model/devices/Device";
+import { defineStore } from 'pinia';
+import { ref, reactive, computed } from 'vue';
+import {apiFetch} from '@/utils/apiFetch';
+import type Device from '@/model/devices/Device';
+import { deepMergeReactive } from '@/utils/utils';
 
-export const useDevicesStore = defineStore("devices", () => {
+export const useDevicesStore = defineStore('devices', () => {
   // State: use reactive for objects, ref for primitives
   const devices = reactive<{ [key: string]: Device }>({});
   const devicesLoaded = ref(false);
@@ -40,10 +41,20 @@ export const useDevicesStore = defineStore("devices", () => {
       return;
     }
 
-    device.lastRefresh = updatedDevice.lastRefresh;
+    for (const key of Object.keys(device.attributes)) {
+      const incomingAttr = updatedDevice.attributes?.[key];
+      if (incomingAttr && !('value' in incomingAttr)) {
+        const attr = device.attributes[key];
+        if (attr) attr.value = undefined;
+      }
+    }
 
-    if ('attributes' in device && 'attributes' in updatedDevice) {
-      device.attributes = updatedDevice.attributes;
+    deepMergeReactive(device, updatedDevice);
+  }
+
+  function clear() {
+    for (const key in devices) {
+      delete devices[key];
     }
   }
 
@@ -52,6 +63,7 @@ export const useDevicesStore = defineStore("devices", () => {
     devicesLoaded,
     deviceList,
     init,
+    clear,
     removeDevice,
     addDevice,
     updateDevice,

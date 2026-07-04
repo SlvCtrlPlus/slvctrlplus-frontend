@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue";
-import moment from "moment";
+import { computed, nextTick, ref, watch } from 'vue';
+import moment from 'moment';
 
 interface Props {
   logData: string[];
@@ -11,7 +11,7 @@ const emit = defineEmits(['close']);
 
 const props = defineProps<Props>();
 
-const logData = computed(() => `${props.logData.join("\n")}\n\n`);
+const logData = computed(() => `${props.logData.join('\n')}\n\n`);
 const runningSinceFormatted = computed(() => {
   if (null === props.runningSince) {
     return null;
