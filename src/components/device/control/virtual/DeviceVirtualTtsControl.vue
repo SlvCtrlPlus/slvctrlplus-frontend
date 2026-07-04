@@ -31,6 +31,11 @@ const sendTextHandler = (): void => {
     textAreaRef.value?.focus();
   });
 };
+
+const queuingLabel = computed<string>(() => {
+  return props.device.attributes.queuing.value ? 'Queuing enabled' : 'Queuing disabled';
+});
+
 const changeQueuing = (newValue: boolean | null): void => {
   if (newValue !== null) {
     deviceComm.setAttribute('queuing', newValue);
@@ -59,7 +64,7 @@ const changeQueuing = (newValue: boolean | null): void => {
         :hide-details="true"
         color="primary"
         class="pa-0 ma-0 mt-4 switch-label-left"
-        label="Queuing disabled"
+        :label="queuingLabel"
         @update:modelValue="changeQueuing"
       ></v-switch>
     </v-col>

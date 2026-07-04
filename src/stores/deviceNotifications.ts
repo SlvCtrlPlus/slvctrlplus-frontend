@@ -25,9 +25,19 @@ export const useDeviceNotificationsStore = defineStore('deviceNotifications', ()
         return latest.value[deviceId];
     }
 
+    function remove(deviceId: string): void {
+        delete latest.value[deviceId];
+    }
+
+    function clear(): void {
+        latest.value = {};
+    }
+
     return {
         latest,
         dispatch,
         getLatest,
+        remove,
+        clear,
     };
 });

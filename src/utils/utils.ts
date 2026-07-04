@@ -53,7 +53,7 @@ export const isListDeviceAttribute = (obj: object): obj is ListDeviceAttribute<n
 }
 
 export const isStringDeviceAttribute = (obj: object): obj is StrDeviceAttribute => {
-    return hasType(obj, 'str') || hasType(obj, 'float') || hasType(obj, 'int');
+    return hasType(obj, 'str');
 }
 
 export const isIntDeviceAttribute = (obj: object): obj is IntDeviceAttribute => {
@@ -72,7 +72,7 @@ export const hasType = (obj: unknown, expectedType: string): boolean => {
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        obj.hasOwnProperty('type') &&
-        (obj as { type?: string }).type === expectedType
+        'type' in obj &&
+        obj.type === expectedType
     );
 }

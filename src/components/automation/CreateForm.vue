@@ -21,7 +21,7 @@ const scriptNameRules = [
     return 'The script name needs to be at least 3 characters long.';
   },
   (value: string) => {
-    if (value.length < 64) return true;
+    if (value.length <= 64) return true;
     return 'The script name needs to no more than 64 characters long.';
   },
   (value: string) => {

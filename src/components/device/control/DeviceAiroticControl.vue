@@ -23,7 +23,7 @@ const deviceComm = new DeviceCommunicator(props.device, io);
 const parseColor = (val: string | undefined): { r: number; g: number; b: number } => {
   if (!val) return { r: 0, g: 0, b: 0 };
   const [r, g, b] = val.split(',').map(Number);
-  return { r: r ?? 0, g: g ?? 0, b: b ?? 0 };
+  return { r: Number.isFinite(r) ? r : 0, g: Number.isFinite(g) ? g : 0, b: Number.isFinite(b) ? b : 0 };
 };
 
 const localRestColor = ref(parseColor(props.device.attributes.restColor.value));
@@ -46,8 +46,18 @@ const applyRestColor = (): void => {
   restColorMenu.value = false;
 };
 
+const cancelRestColor = (): void => {
+  localRestColor.value = parseColor(props.device.attributes.restColor.value);
+  restColorMenu.value = false;
+};
+
 const applyBreathInColor = (): void => {
   deviceComm.setAttribute('breathInColor', localBreathInColor.value.r + ',' + localBreathInColor.value.g + ',' + localBreathInColor.value.b);
+  breathInColorMenu.value = false;
+};
+
+const cancelBreathInColor = (): void => {
+  localBreathInColor.value = parseColor(props.device.attributes.breathInColor.value);
   breathInColorMenu.value = false;
 };
 
@@ -92,7 +102,7 @@ watch(latestNotification, (event) => {
   if (type === 'colorChange') {
     breathState.value = data.colorType === 'breathInColor' ? 1 : 0;
   }
-});
+}, { immediate: true });
 
 // Chart
 const chartData: LineChartData = {
@@ -154,7 +164,14 @@ const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
 
   <v-row align="center" no-gutters>
       <v-col cols="6">
-        <div class="d-flex align-center ga-3 color-trigger" @click="restColorMenu = true">
+        <div
+          class="d-flex align-center ga-3 color-trigger"
+          role="button"
+          tabindex="0"
+          @click="restColorMenu = true"
+          @keydown.enter="restColorMenu = true"
+          @keydown.space.prevent="restColorMenu = true"
+        >
           <span class="color-patch" :style="{ backgroundColor: restColorCss }" />
           <div>
             <h3>Rest color</h3>
@@ -177,14 +194,21 @@ const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="restColorMenu = false">Cancel</v-btn>
+              <v-btn @click="cancelRestColor">Cancel</v-btn>
               <v-btn color="primary" @click="applyRestColor">Apply Color</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-col>
       <v-col cols="6">
-        <div class="d-flex align-center ga-3 color-trigger" @click="breathInColorMenu = true">
+        <div
+          class="d-flex align-center ga-3 color-trigger"
+          role="button"
+          tabindex="0"
+          @click="breathInColorMenu = true"
+          @keydown.enter="breathInColorMenu = true"
+          @keydown.space.prevent="breathInColorMenu = true"
+        >
           <span class="color-patch" :style="{ backgroundColor: breathInColorCss }" />
           <div>
             <h3>Breath in color</h3>
@@ -207,7 +231,7 @@ const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click="breathInColorMenu = false">Cancel</v-btn>
+              <v-btn @click="cancelBreathInColor">Cancel</v-btn>
               <v-btn color="primary" @click="applyBreathInColor">Apply Color</v-btn>
             </v-card-actions>
           </v-card>

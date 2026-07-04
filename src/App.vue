@@ -36,6 +36,7 @@ if (backendStore.backendUrl) {
   io?.on('disconnect', () => {
     backendStore.setServerOnline(false);
     devicesStore.clear();
+    deviceNotificationsStore.clear();
   });
 
   io?.on('deviceDisconnected', (device) => {

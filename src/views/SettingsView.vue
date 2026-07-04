@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineAsyncComponent, nextTick, ref, watch} from 'vue';
+import {defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch} from 'vue';
 import { useSettingsStore } from '@/stores/settings';
 import { useAppStore } from '@/stores/app';
 import { storeToRefs } from 'pinia';
@@ -18,6 +18,7 @@ const appStore = useAppStore();
 const backendStore = useBackendStore();
 const { theme, serverSettings, validationErrors } = storeToRefs(settingsStore);
 
+let resizeHandler: (() => void) | null = null;
 let editorInstance: monaco.editor.IStandaloneCodeEditor | null = null;
 const options: monaco.editor.IEditorOptions = {
   fontSize: 16,
@@ -49,7 +50,7 @@ function storeEditorInstance(
     editor.layout({ width: rect.width, height: rect.height });
   }
 
-  window.addEventListener('resize', () => {
+  resizeHandler = () => {
     // make editor as small as possible
     editor.layout({ width: 0, height: 0 });
 
@@ -65,9 +66,16 @@ function storeEditorInstance(
       const rect = monacoElement.getBoundingClientRect();
       editor.layout({ width: rect.width, height: rect.height });
     });
-  });
+  };
+  window.addEventListener('resize', resizeHandler);
   editorInstance = editor;
 }
+
+onBeforeUnmount(() => {
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler);
+  }
+});
 
 function saveServerSettings(): void {
   settingsStore.saveServerSettings()
