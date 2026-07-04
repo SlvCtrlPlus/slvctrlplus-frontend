@@ -5,8 +5,6 @@ import 'vuetify/styles';
 // Vuetify
 import { createVuetify } from 'vuetify';
 import type { App, Plugin } from 'vue';
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 
 const dark = {
@@ -43,11 +41,25 @@ const light = {
   },
 };
 
+// In dev, vite-plugin-vuetify's per-component autoImport resolves to deep
+// module paths (e.g. vuetify/components/VAlert) that Vite's optimizer
+// discovers incrementally as different pages are visited, causing repeated
+// "new dependencies optimized, reloading" full-page reloads. Registering the
+// full components/directives sets upfront avoids that. Production builds
+// still benefit from autoImport's tree-shaking since this branch is dropped
+// at build time. Resolved at module top-level (not inside install()) so
+// install() stays synchronous - main.ts calls app.use(vuetify) without
+// awaiting it.
+const [devComponents, devDirectives] = import.meta.env.DEV
+  ? await Promise.all([import('vuetify/components'), import('vuetify/directives')])
+  : [undefined, undefined];
+
 export const vuetify: Plugin = {
-  install: async (app: App): Promise<void> => {
+  install: (app: App): void => {
     const vuetify = createVuetify({
-      components,
-      directives,
+      ...(devComponents && devDirectives
+        ? { components: devComponents, directives: devDirectives }
+        : {}),
       icons: {
         defaultSet: 'mdi',
         aliases,

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
+dayjs.extend(relativeTime);
 
 interface Props {
   logData: string[];
@@ -17,10 +20,10 @@ const runningSinceFormatted = computed(() => {
     return null;
   }
 
-  const momentDate = moment(props.runningSince);
-  return `${momentDate.format(
+  const runningSinceDate = dayjs(props.runningSince);
+  return `${runningSinceDate.format(
     'YYYY-MM-DD, hh:mm:ss'
-  )} (${momentDate.fromNow()})`;
+  )} (${runningSinceDate.fromNow()})`;
 });
 
 const logDataContainer = ref<HTMLElement | null>(null);

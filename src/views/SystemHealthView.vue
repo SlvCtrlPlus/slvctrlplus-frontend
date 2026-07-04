@@ -5,9 +5,14 @@ import { merge } from 'chart.js/helpers';
 import StreamLineChart from '@/components/chart/StreamLineChart.vue';
 import LoadingState from '@/components/LoadingState.vue';
 import { computed, ref, toRaw } from 'vue';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import { storeToRefs } from 'pinia';
 import { useHealthStore } from '@/stores/health';
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 const healthStore = useHealthStore();
 const { state, chartData } = storeToRefs(healthStore);
@@ -61,7 +66,7 @@ const uptime = computed(() => {
     return 'calculating...';
   }
 
-  return moment.duration(healthStore.state.system.uptime, 'seconds').humanize();
+  return dayjs.duration(healthStore.state.system.uptime, 'seconds').humanize();
 });
 </script>
 
