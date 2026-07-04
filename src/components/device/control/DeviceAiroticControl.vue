@@ -20,8 +20,23 @@ const io = useRequiredSocketIO();
 
 const deviceComm = new DeviceCommunicator(props.device, io);
 
-const localRestColor = ref({ r: 0, g: 0, b: 0 });
-const localBreathInColor = ref({ r: 0, g: 0, b: 0 });
+const parseColor = (val: string | undefined): { r: number; g: number; b: number } => {
+  if (!val) return { r: 0, g: 0, b: 0 };
+  const [r, g, b] = val.split(',').map(Number);
+  return { r: r ?? 0, g: g ?? 0, b: b ?? 0 };
+};
+
+const localRestColor = ref(parseColor(props.device.attributes.restColor.value));
+const localBreathInColor = ref(parseColor(props.device.attributes.breathInColor.value));
+
+const restColorCss = computed(() => {
+  const c = localRestColor.value;
+  return `rgb(${c.r},${c.g},${c.b})`;
+});
+const breathInColorCss = computed(() => {
+  const c = localBreathInColor.value;
+  return `rgb(${c.r},${c.g},${c.b})`;
+});
 
 const restColorMenu = ref(false);
 const breathInColorMenu = ref(false);
@@ -61,6 +76,14 @@ const latestNotification = computed<DeviceNotificationEvent | undefined>(
 
 // 0 = restColor active, 1 = breathInColor active
 const breathState = ref<0 | 1>(0);
+
+watch(() => props.device.attributes.restColor.value, (val) => {
+  localRestColor.value = parseColor(val);
+});
+
+watch(() => props.device.attributes.breathInColor.value, (val) => {
+  localBreathInColor.value = parseColor(val);
+});
 
 watch(latestNotification, (event) => {
   if (!event) return;
@@ -129,63 +152,68 @@ const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
 
   <v-divider class="my-4" />
 
-  <div class="d-flex ga-4">
-    <v-btn class="px-3" color="primary" @click="restColorMenu = true">
-      Set Rest Color
-    </v-btn>
-    <v-dialog v-model="restColorMenu" max-width="360">
-      <v-card>
-        <v-card-title>Rest color</v-card-title>
-        <v-card-text>
-          <v-color-picker
-            v-model="localRestColor"
-            mode="rgb"
-            hide-inputs
-            hide-eye-dropper
-            width="100%"
-            bgColor="grey-darken-3"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="restColorMenu = false">
-            Cancel
-          </v-btn>
-          <v-btn color="primary" @click="applyRestColor">
-            Apply Color
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-
-    <v-btn class="px-3" color="primary" @click="breathInColorMenu = true">
-      Set Breath In Color
-    </v-btn>
-    <v-dialog v-model="breathInColorMenu" max-width="360">
-      <v-card>
-        <v-card-title>Breath in color</v-card-title>
-        <v-card-text>
-          <v-color-picker
-            v-model="localBreathInColor"
-            mode="rgb"
-            hide-inputs
-            hide-eye-dropper
-            width="100%"
-            bgColor="grey-darken-3"
-          />
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="breathInColorMenu = false">
-            Cancel
-          </v-btn>
-          <v-btn color="primary" @click="applyBreathInColor">
-            Apply Color
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-row align="center" no-gutters>
+      <v-col cols="6">
+        <div class="d-flex align-center ga-3 color-trigger" @click="restColorMenu = true">
+          <span class="color-patch" :style="{ backgroundColor: restColorCss }" />
+          <div>
+            <h3>Rest color</h3>
+            <span class="text-link">Change</span>
+          </div>
+        </div>
+        
+        <v-dialog v-model="restColorMenu" max-width="360">
+          <v-card>
+            <v-card-title>Rest color</v-card-title>
+            <v-card-text>
+              <v-color-picker
+                v-model="localRestColor"
+                mode="rgb"
+                hide-inputs
+                hide-eye-dropper
+                width="100%"
+                bgColor="grey-darken-3"
+              />
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="restColorMenu = false">Cancel</v-btn>
+              <v-btn color="primary" @click="applyRestColor">Apply Color</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+      <v-col cols="6">
+        <div class="d-flex align-center ga-3 color-trigger" @click="breathInColorMenu = true">
+          <span class="color-patch" :style="{ backgroundColor: breathInColorCss }" />
+          <div>
+            <h3>Breath in color</h3>
+            <span class="text-link">Change</span>
+          </div>
+        </div>
+        
+        <v-dialog v-model="breathInColorMenu" max-width="360">
+          <v-card>
+            <v-card-title>Breath in color</v-card-title>
+            <v-card-text>
+              <v-color-picker
+                v-model="localBreathInColor"
+                mode="rgb"
+                hide-inputs
+                hide-eye-dropper
+                width="100%"
+                bgColor="grey-darken-3"
+              />
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="breathInColorMenu = false">Cancel</v-btn>
+              <v-btn color="primary" @click="applyBreathInColor">Apply Color</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-col>
+  </v-row>
 
   <v-divider class="mt-4" />
 
@@ -215,4 +243,24 @@ const chartOptionsRef = ref<ChartOptions<'line'>>(chartOptions);
   </v-footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.color-patch {
+  display: inline-block;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: .5em;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.color-trigger {
+  cursor: pointer;
+}
+
+.text-link {
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(var(--v-theme-primary));
+  font-size: 0.875rem;
+}
+</style>
